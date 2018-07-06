@@ -15,13 +15,13 @@
           // var from = document.getElementById("from").value;
           // var to = document.getElementById("to").value;
           
-          // var params2 = {
-          //   fromDate: from,
-          //   toDate: to,
-          //   eventType: eventType,
-          //   businessType: businessType,
-          //   customerType: customerType
-          // };
+          var params2 = {
+            // fromDate: from,
+            // toDate: to,
+            eventType: eventType,
+            businessType: businessType,
+            customerType: customerType
+          };
           
           if (customerType) {
             MP.api.jql(function main() {
@@ -35,7 +35,7 @@
               })
               
               .filter(function(item) {
-                return item.properties.EventType == eventType && item.properties.BusinessType == businessType && item.properties.CustomerType == "Advisory"
+                return item.properties.EventType == params2.eventType && item.properties.BusinessType == params2.businessType && item.properties.CustomerType == "Advisory"
               }
                 )
                 
@@ -54,7 +54,7 @@
               })
               
               .filter(function(item) {
-                return item.properties.EventType == eventType && item.properties.BusinessType == businessType && item.properties.CustomerType != "Advisory"
+                return item.properties.EventType == params2.eventType && item.properties.BusinessType == params2.businessType && item.properties.CustomerType != "Advisory"
               }
                 )
                 
