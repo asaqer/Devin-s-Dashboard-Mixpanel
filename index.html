@@ -18,32 +18,32 @@
           var params2 = {
             // fromDate: from,
             // toDate: to,
-            eventType2: eventType,
-            businessType2: businessType,
-            customerType2: customerType
+            eventType: eventType,
+            businessType: businessType,
+            customerType: customerType
           };
           
-          if (customerType) {
-            MP.api.jql(function main() {
-            return Events ({
-                // from_date: params2.from,
-                // to_date: params2.to,
-                from_date: "2018-05-01",
-                to_date: "2018-05-31",
-              event_selectors:[{event: "Login"}]
-              })
+          // if (customerType) {
+          //   MP.api.jql(function main() {
+          //   return Events ({
+          //       // from_date: params2.from,
+          //       // to_date: params2.to,
+          //       from_date: "2018-05-01",
+          //       to_date: "2018-05-31",
+          //     event_selectors:[{event: "Login"}]
+          //     })
               
-              .filter(function(item) {
-                return item.properties.EventType == params2.eventType2 && item.properties.BusinessType == params2.businessType2 && item.properties.CustomerType == "Advisory"
-              }
-                )
+          //     .filter(function(item) {
+          //       return item.properties.EventType == params2.eventType2 && item.properties.BusinessType == params2.businessType2 && item.properties.CustomerType == "Advisory"
+          //     }
+          //       )
                 
-                .groupBy(["properties.CompanyName"], mixpanel.reducer.count());
-            },params2).done(function(results) {
-              console.log(results[0].key);
-            });
-          } else {
-            alert(params2["eventType2"]);
+          //       .groupBy(["properties.CompanyName"], mixpanel.reducer.count());
+          //   },params2).done(function(results) {
+          //     console.log(results[0].key);
+          //   });
+          // } else {
+            alert(params2.eventType);
             MP.api.jql(function main() {
               alert(5);
             return Events ({
@@ -53,7 +53,7 @@
               })
               
               .filter(function(item) {
-                return item.properties.EventType == params2["eventType2"] && item.properties.BusinessType == params2["businessType2"] && item.properties.CustomerType != "Advisory"
+                return item.properties.EventType == params2.eventType && item.properties.BusinessType == params2.businessType && item.properties.CustomerType != "Advisory"
               }
                 )
                 
@@ -61,7 +61,7 @@
               },params2).done(function(results) {
                 console.log(results[0].key);
               });
-          }
+          //}
           
           
         }
