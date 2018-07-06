@@ -18,14 +18,13 @@
           var params2 = {
             // fromDate: from,
             // toDate: to,
-            eventType: eventType,
-            businessType: businessType,
-            customerType: customerType
+            eventType2: eventType,
+            businessType2: businessType,
+            customerType2: customerType
           };
           
           if (customerType) {
             MP.api.jql(function main() {
-              alert("got in");
             return Events ({
                 // from_date: params2.from,
                 // to_date: params2.to,
@@ -35,7 +34,7 @@
               })
               
               .filter(function(item) {
-                return item.properties.EventType == params2.eventType && item.properties.BusinessType == params2.businessType && item.properties.CustomerType == "Advisory"
+                return item.properties.EventType == params2.eventType2 && item.properties.BusinessType == params2.businessType2 && item.properties.CustomerType == "Advisory"
               }
                 )
                 
@@ -44,7 +43,7 @@
               console.log(results[0].key);
             });
           } else {
-            
+            alert(params2["eventType2"]);
             MP.api.jql(function main() {
               alert(5);
             return Events ({
@@ -54,7 +53,7 @@
               })
               
               .filter(function(item) {
-                return item.properties.EventType == params2.eventType && item.properties.BusinessType == params2.businessType && item.properties.CustomerType != "Advisory"
+                return item.properties.EventType == params2["eventType2"] && item.properties.BusinessType == params2["businessType2"] && item.properties.CustomerType != "Advisory"
               }
                 )
                 
