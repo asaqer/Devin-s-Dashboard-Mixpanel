@@ -926,19 +926,50 @@
                 var canvas = td.children[0];
 
                 // working here
-                let barChart = new Chart(canvas, {
+                // let barChart = new Chart(canvas, {
+                // 		type: "bar",
+                		
+                //     data: {
+                //     	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
+                //       datasets: [{
+                          
+                //       		label: "Quarter " + quarter + " Total Logins",
+                //           data: [
+                //           		enernoc,
+                //               supplier,
+                //               partner,
+                //               customer
+                //           ],
+                //           backgroundColor: "#0080ff"
+                //       }]
+                //     },
+                //     options: {
+                //       scales: {
+                //         yAxes: [{
+                //           ticks: {
+                //             min: 0,
+                //             max: 300,
+                //             stepSize: 20
+                //           }
+                //         }]
+                //       }
+                //     }
+                    
+                // });
+                
+                let barChart = new Chart(chart, {
                 		type: "bar",
                 		
                     data: {
-                    	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
+                    	labels: ["EnerNOC User", "Supplier", "Partner", "Customer"],
                       datasets: [{
                           
-                      		label: "Quarter " + quarter + " Total Logins",
+                      		label: "Quarter Total Logins",
                           data: [
-                          		enernoc,
-                              supplier,
-                              partner,
-                              customer
+                          		118,
+                              218,
+                              56,
+                              45
                           ],
                           backgroundColor: "#0080ff"
                       }]
