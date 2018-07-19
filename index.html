@@ -812,7 +812,7 @@
         
         
         // makes a quarterly login chart
-        var makeQuarterLoginChart = function(from,to,year,quarter) {
+        var makeQuarterLoginChart = function(from,to,year,quarter,max,stepSize) {
           var params = {
             from: year + from,
             to: year + to
@@ -878,7 +878,17 @@
                           backgroundColor: "#0080ff"
                       }]
                     },
-                    options: {}
+                    options: {
+                      scales: {
+                        yAxes: [{
+                          ticks: {
+                            min: 0,
+                            max: max,
+                            stepSize: stepSize
+                          }
+                        }]
+                      }
+                    }
                 });
           });
           } else if (loginType == "total") { // total logins
@@ -909,7 +919,6 @@
                   }
                 }
                 
-                
                 var quarterIndex = quarter - 1;
                 var table = document.getElementById("quarterGraph");
                 var tbody = table.children[1];
@@ -926,50 +935,19 @@
                 var canvas = td.children[0];
 
                 // working here
-                // let barChart = new Chart(canvas, {
-                // 		type: "bar",
-                		
-                //     data: {
-                //     	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
-                //       datasets: [{
-                          
-                //       		label: "Quarter " + quarter + " Total Logins",
-                //           data: [
-                //           		enernoc,
-                //               supplier,
-                //               partner,
-                //               customer
-                //           ],
-                //           backgroundColor: "#0080ff"
-                //       }]
-                //     },
-                //     options: {
-                //       scales: {
-                //         yAxes: [{
-                //           ticks: {
-                //             min: 0,
-                //             max: 300,
-                //             stepSize: 20
-                //           }
-                //         }]
-                //       }
-                //     }
-                    
-                // });
-                
-                let barChart = new Chart(chart, {
+                let barChart = new Chart(canvas, {
                 		type: "bar",
                 		
                     data: {
-                    	labels: ["EnerNOC User", "Supplier", "Partner", "Customer"],
+                    	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
                       datasets: [{
                           
-                      		label: "Quarter Total Logins",
+                      		label: "Quarter " + quarter + " Total Logins",
                           data: [
-                          		118,
-                              218,
-                              56,
-                              45
+                          		enernoc,
+                              supplier,
+                              partner,
+                              customer
                           ],
                           backgroundColor: "#0080ff"
                       }]
@@ -979,8 +957,8 @@
                         yAxes: [{
                           ticks: {
                             min: 0,
-                            max: 300,
-                            stepSize: 100
+                            max: max,
+                            stepSize: stepSize
                           }
                         }]
                       }
@@ -988,20 +966,131 @@
                     
                 });
 
+
             });
           }
+        }
+        
+        var maxValueInQuarter = function(from,to,year) {
+          var params = {
+          from: year + from,
+          to: year + to
+          };
           
+          var loginType = document.getElementById("userRoleGraphSelect").value;
+          if (loginType == "unique") {
+            MP.api.jql(function main() {
+            return Events({
+              from_date: params.from,
+              to_date: params.to,
+              event_selectors:[{event: "Login"}]
+            })
+              .groupBy(["distinct_id"], mixpanel.reducer.any())
+              .groupBy(["value.properties.UserRole"], mixpanel.reducer.count()) 
+          },params).done(function(results){
+              var enernoc = 0;
+              var supplier = 0;
+              var partner = 0;
+              var customer = 0;
+              
+
+              for (let i = 0; i < results.length; i++) {
+                var result = results[i].value;
+                if (results[i].key[0] == "Employee") {
+                  enernoc = result;
+                } else if (results[i].key[0] == "Bidder") {
+                  supplier = result;
+                } else if (results[i].key[0] == "Partner") {
+                  partner = result;
+                } else if (results[i].key[0] == "Customer") {
+                  customer = result;
+                }
+              }
+              
+              // gets the highest user role value
+              var userRoles = [enernoc,supplier,partner,customer];
+              
+              var max = userRoles[0];
+              for (let i = 1; i < userRoles.length; i++) {
+                if (userRoles[i] > max) {
+                  max = userRoles[i];
+                }
+              }
+              
+              return max;
+              
+            
+          });
+          } else if (loginType == "total") {
+            MP.api.jql(function main() {
+              return Events({
+                from_date: params.from,
+                to_date: params.to,
+                event_selectors:[{event: "Login"}]
+              })
+                .groupBy(["properties.UserRole"], mixpanel.reducer.count())
+            },params).done(function(results){
+                var enernoc = 0;
+                var supplier = 0;
+                var partner = 0;
+                var customer = 0;
+                
+                // gets the values for each of the 4 user roles
+                for (let i = 0; i < results.length; i++) {
+                  var total = results[i].value;
+                  if (results[i].key[0] == "Employee") {
+                    enernoc = total;
+                  } else if (results[i].key[0] == "Bidder") {
+                    supplier = total;
+                  } else if (results[i].key[0] == "Partner") {
+                    partner = total;
+                  } else if (results[i].key[0] == "Customer") {
+                    customer = total;
+                  }
+                }
+                
+                // gets the highest user role value
+                var userRoles = [enernoc,supplier,partner,customer];
+                
+                var max = userRoles[0];
+                for (let i = 1; i < userRoles.length; i++) {
+                  if (userRoles[i] > max) {
+                    max = userRoles[i];
+                  }
+                }
+                
+                return max;
+                
+            });
+          }
         }
         // creates all the quarterly login charts
         var makeAllLoginCharts = function() {
-          
           var year = document.getElementById("userRoleGraphYear").value;
-          makeQuarterLoginChart("-01-01","-03-31",year,1);
-          makeQuarterLoginChart("-04-01","-06-30",year,2);
-          makeQuarterLoginChart("-07-01","-9-30",year,3);
-          makeQuarterLoginChart("-10-01","-12-31",year,4);
+          // calculates max of all values in all quarters
+          var q1Max = maxValueInQuarter("-01-01","-03-31",year);
+          var q2Max = maxValueInQuarter("-04-01","-06-30",year);
+          var q3Max = maxValueInQuarter("-07-01","-9-30",year);
+          var q4Max = maxValueInQuarter("-10-01","-12-31",year);
+          var maxes = [q1Max,q2Max,q3Max,q4Max]
+          var max = q1Max;
+          for (let i = 1; i < maxes.length; i++) {
+            if (maxes[i] > q1Max) {
+              max = maxes[i];
+            }
+          }
+          
+          // calculates step size
+          var stepSize = Math.ceil(max / 9);
+          
+          makeQuarterLoginChart("-01-01","-03-31",year,1,max,stepSize);
+          makeQuarterLoginChart("-04-01","-06-30",year,2,max,stepSize);
+          makeQuarterLoginChart("-07-01","-9-30",year,3,max,stepSize);
+          makeQuarterLoginChart("-10-01","-12-31",year,4,max,stepSize);
           document.getElementById("loader3").style.display = "none";
         }
+        
+        
         
         window.onload = function () {
           // displays the loader
