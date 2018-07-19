@@ -819,7 +819,6 @@
           };
           
           var loginType = document.getElementById("userRoleGraphSelect").value;
-          console.log(loginType);
           if (loginType == "unique") { // unique logins
             MP.api.jql(function main() {
             return Events({
@@ -926,12 +925,14 @@
                 // chooses the correct canvas in the table
                 var canvas = td.children[0];
 
-                
+                // working here
                 let barChart = new Chart(canvas, {
                 		type: "bar",
+                		
                     data: {
                     	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
                       datasets: [{
+                          
                       		label: "Quarter " + quarter + " Total Logins",
                           data: [
                           		enernoc,
@@ -942,7 +943,18 @@
                           backgroundColor: "#0080ff"
                       }]
                     },
-                    options: {}
+                    options: {
+                      scales: {
+                        yAxes: [{
+                          ticks: {
+                            min: 0,
+                            max: 300,
+                            stepSize: 100
+                          }
+                        }]
+                      }
+                    }
+                    
                 });
 
             });
