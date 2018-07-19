@@ -5,70 +5,1065 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    
+    
+    
+    <style>
+      /* above login chart*/
+      .date {
+        font-size: 14px;
+        font-weight: bold;
+      }
+      
+      input[type="date"] {
+        border-radius:8px;
+      }
+      
+      .submit {
+        padding: 2.5px;
+        border-radius: 4px;
+        background-color: #gray;
+        border: 1px solid gray;
+        cursor: pointer;
+      }
+    
+      /* login chart*/
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+          text-align: center;
+          margin-bottom: 25px;
+      }
+      
+      th {
+        background-color: #D3D3D3;
+        font-size: 18px;
+        padding: 8px;
+        border-right: 1px solid gray;
+      }
+      
+      th:last-child {
+        border-right: none;
+      }
+      
+      td {
+        background-color: #FAFAFA;
+        font-size: 16px;
+        padding: 10px;
+        height: 45px;
+        border-bottom: 0.5px solid gray;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+      
+      tr:last-child td:first-child {
+        border-radius: 0 0 0 15px;
+      }
+      
+      tr:last-child td:last-child {
+        border-radius: 0 0 15px 0;
+      }
+      
+      tr:first-child th:first-child { 
+        border-radius: 15px 0 0 0; 
+      } 
+      
+      tr:first-child th:last-child { 
+        border-radius: 0 15px 0 0; 
+      }
+      
+      /* Center the loader */
+      #loader {
+        position: absolute;
+        left: 50%;
+        top: 400px;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 25px;
+        height: 25px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* above user role table*/
+      /* Select which quarter (1-4) */
+      #userRoleTableQuarter {
+        border-radius:5px;
+      }
+      
+      /* Choose the Year */
+      .userRoleYear {
+        width: 50px;
+      }
+      
+      /* user role table*/
+      #userRoleTable tr {
+        border-bottom: 0.5px solid gray;
+      }
+      
+      #userRoleTable tr:last-child {
+        border-bottom: none;
+      }
+      
+      #loader2 {
+        position: absolute;
+        left: 50%;
+        top: 880px;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 25px;
+        height: 25px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      
+      #quarterGraph td {
+        width: calc(100%/2);
+        /*background: none;*/
+      }
+      
+      #quarterGraph caption {
+        font-weight: bold;
+        font-size: 24px;
+      }
+      
+      #quarterGraph tr:first-child td:first-child {
+        border-radius: 15px 0 0 0;
+      }
+      
+      #quarterGraph tr:first-child td:last-child {
+        border-radius: 0 15px 0 0;
+      }
+      
+      #loader3 {
+        position: absolute;
+        left: 55%;
+        top: 1360px;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 25px;
+        height: 25px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      
+      
+    </style>
+    
+
   </head>
   <body class="mixpanel-platform-body">
-    <h1 id="here">Hello, World!</h1>
-    <script>
-      // Run queries and display results here
-      var showCompanies = function (eventType,businessType,customerType) {
-          
-          var from = "2018-05-01";
-          var to = "2018-05-31";
+    
+    <!-- above login chart table-->
+    <label class=date>From:&nbsp;</label>
+    <input type="date" name=from value="2018-06-01" id="from">&nbsp;
 
+    <label class=date>To:&nbsp;</label>
+    <input type="date" name=to value="2018-06-30" id="to">&nbsp;
+    
+    
+    <input type="submit" value="Submit" id="submit" class="submit">
+    
+    <hr>
+    
+    <span id="error"></span>
+    <br>
+    
+    <!-- login chart table-->
+    <table id="loginChart">
+      <tr>
+        <th>CustomerType</th>
+        <th>Customer Classification</th>
+        <th>Number Of Customers</th>
+        <th>Number Of Customers With A Login</th>
+        <th>% of Customers Who Logged In</th>
+      </tr>
+      <tr>
+        <td>Non-Advisory</td>
+        <td>Retail Auction Only</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Non-Advisory</td>
+        <td>Retail Direct Sourcing Only</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Non-Advisory</td>
+        <td>Retail Auction & Direct Sourcing</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Non-Advisory</td>
+        <td>Wholesale</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Advisory</td>
+        <td>Retail Auction Only</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Advisory</td>
+        <td>Retail Direct Sourcing Only</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Advisory</td>
+        <td>Retail Auction & Direct Sourcing</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>Retail Auction Totals</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    
+    <div id="loader"></div>
+    
+    <!-- above user role table -->
+    <label class=date>From:&nbsp;</label>
+    <input type="date" value="2018-06-01" id="fromLogins">&nbsp;
+    <label class=date>From:&nbsp;</label>
+    <input type="date" value="2018-06-30" id="toLogins">&nbsp;
+    
+    <!-- quarter input-->
+    <select id="userRoleTableQuarter">
+      <option value=0>Quarter 1</option>
+      <option value=1 selected>Quarter 2</option>
+      <option value=2>Quarter 3</option>
+      <option value=3>Quarter 4</option>
+    </select>
+    
+    <label class="date">Year:</label>
+    <input type="number" id="userRoleTableYear" class="userRoleYear">
+    
+    <input type="submit" value="Submit" id="userRoleTableSubmit" class="submit">
+    
+    <hr>
+    
+    <!-- user role table-->
+    <table id="userRoleTable">
+      <tr>
+        <th></th>
+        <th>EnerNOC User</th>
+        <th>Supplier</th>
+        <th>Partner</th>
+        <th>Customer</th>
+      </tr>
+      <tr>
+        <td>Unique User Logins</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Total Logins</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Logins Per User</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      
+    </table>
+    
+    <div id="loader2"></div>
+    
+    <!-- above user role graph-->
+    <label class="date">Login:</label>
+    <select id="userRoleGraphSelect">
+      <option value="unique">Unique</option>
+      <option value="total">Total</option>
+    </select>
+    
+    <label class="date">Year:</label>
+    <input type="number" id="userRoleGraphYear" class="userRoleYear">
+    
+    <input type="submit" value="Submit" id="userRoleGraphSubmit" class="submit">
+    
+    <hr>
+    
+    <!-- user role graph-->
+    <table id="quarterGraph">
+      <caption></caption>
+      <tr>
+        <td><canvas></canvas></td>
+        <td><canvas></canvas></td>
+      </tr>
+      <tr>
+        <td><canvas></canvas></td>
+        <td><canvas></canvas></td>
+      </tr>
+    </table>
+    
+    <div id="loader3"></div>
+    
+    
+    <script>
+        
+        var runQuery = function() {
+            var error = document.getElementById("error");
+            var errorMessage = "";
+            
+            var from = document.getElementById("from");
+            var to = document.getElementById("to");
+            
+            if (from.value === "" || to.value === "") {
+              errorMessage += "Please Choose a Valid Date for From and To.\n";
+            } else {
+              f = Date.parse(from.value);
+              t = Date.parse(to.value);
+              if (f > t) {
+                errorMessage += "The From Date Should Not Be After The To Date.\n"
+              }
+            }
+            
+            if (errorMessage != "") {
+              error.innerHTML = errorMessage;
+              error.style.color = "red";
+              
+              if (from.value === "") {
+                from.style.background = "red";
+              }
+              
+              if (to.value === "") {
+                to.style.background = "red";
+              }
+            } else {
+              // shows the loader 
+              document.getElementById("loader").style.display = "block";
+              
+              // no error, so set the backgrounds of the dates to white
+              from.style.background = "white";
+              to.style.background = "white";
+              
+              // remove errorMessage
+              error.innerHTML = "";
+              
+              var params = {
+                fromDate: from.value,
+                toDate: to.value
+              };
+            
+              MP.api.jql(function main() {
+               return Events ({
+                    // from_date: "2018-05-01",
+                    // to_date: "2018-05-31",
+                    from_date: params.fromDate,
+                    to_date: params.toDate,
+                  event_selectors:[{event: "Login"}]
+                  })
+                  
+                  .groupBy(
+                    mixpanel.multiple_keys(["properties.EventType","properties.BusinessType", "properties.CustomerType", "properties.CompanyName"]),
+                    //Take a count of the Companies in Event Type and Business Type categories 
+                    mixpanel.reducer.any()
+                  )
+                  
+                  // we don't want to count EnerNOC logins
+                  .filter(
+                    function(e) {return e.value.properties.CompanyName != "EnerNOC" 
+                    && e.value.properties.BusinessType != null && e.value.properties.EventType != null
+                    }
+                    )
+                  
+              }, params).done(function(results) {
+                
+                // total number of companies
+                var NA_Wholesale_Total = new Set();
+                var NA_Auction_Total = new Set();
+                var NA_DS_Total = new Set();
+                var NA_Both_Total = new Set();
+               
+                var A_Auction_Total = new Set();
+                var A_DS_Total = new Set();
+                var A_Both_Total = new Set();
+                
+                var Retail_Auction_Total = new Set();
+                
+                var totalCompanies = [];
+                
+                
+                for (var i = 0; i < results.length; i++) {
+                  // if (results[i].value.properties.CompanyName.toUpperCase() == ("Alkermes, Inc.").toUpperCase()) {
+                  //   console.log(results[i]);
+                  // } else {
+                  //   console.log("not found");
+                  // }
+                  
+                  var result = results[i].value.properties;
+                  var activeContract = result.FlowingContractCount;
+                  var activeUser = result.ActiveUsersAtCustomerCount;
+                  if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
+                    if (result.BusinessType != null) {
+                      if (result.BusinessType == "Wholesale") { // NA-Wholesale
+                          NA_Wholesale_Total.add(result.CompanyName);
+                        } else {
+                          var auction = false;
+                          var ds = false;
+                          if (result.EventType != null) {
+                            auction = result.EventType.includes("Auction");
+                            ds = result.EventType.includes("Direct Sourcing");
+                          }
+                          if (auction && ds) { // both
+                              NA_Both_Total.add(result.CompanyName);
+                          } else if (auction) { // auction-only
+                              NA_Auction_Total.add(result.CompanyName);
+                          } else if (ds) { // direct sourcing only
+                              NA_DS_Total.add(result.CompanyName);
+                          }
+                        }
+                      } else { // With Advisory (A)
+                          var auction = false;
+                          var ds = false;
+                          if (result.EventType != null) {
+                            auction = result.EventType.includes("Auction");
+                            ds = result.EventType.includes("Direct Sourcing");
+                          }
+                          if (auction && ds) { // both
+                              A_Both_Total.add(result.CompanyName);
+                          } else if (auction) { // auction-only
+                              A_Auction_Total.add(result.CompanyName);
+                          } else if (ds) { // direct sourcing only
+                             A_DS_Total.add(result.CompanyName);
+                          }
+                      }
+                  }
+                }
+                Retail_Auction_Total = new Set([...NA_Auction_Total,...NA_Both_Total,...A_Auction_Total,...A_Both_Total]);
+                
+                totalCompanies.push(NA_Auction_Total);
+                totalCompanies.push(NA_DS_Total);
+                totalCompanies.push(NA_Both_Total);
+                totalCompanies.push(NA_Wholesale_Total);
+                totalCompanies.push(A_Auction_Total);
+                totalCompanies.push(A_DS_Total);
+                totalCompanies.push(A_Both_Total);
+                totalCompanies.push(Retail_Auction_Total);
+                
+                
+                // console.log("Total Number Of Companies");
+                // console.log(NA_Auction_Total);
+                // console.log(NA_DS_Total);
+                // console.log(NA_Both_Total);
+                // console.log(NA_Wholesale_Total);
+                // console.log(A_Auction_Total);
+                // console.log(A_DS_Total);
+                // console.log(A_Both_Total);
+                // console.log(Retail_Auction_Total);
+                
+                var table = document.getElementById("loginChart");
+                var rows = table.children[0].children;
+                
+                // fills in the columns of the table
+                // rows[i+1] chooses the row
+                // .children[4] chooses the column
+                // totalCompanies is an array of sets
+                var customerColumn = 2;
+                var totalColumn = 3;
+                var percentageColumn = 4;
+                for (var i = 0; i < totalCompanies.length; i++) {
+                  // number of companies with at least one contract and at least one active user column
+                  var CUSize = parseInt(rows[i+1].children[customerColumn].textContent);
+                  
+                  // gets total number of companies
+                  var total = totalCompanies[i].size; 
+                  // fills out the total companies column
+                  rows[i+1].children[totalColumn].innerHTML = total;
+                  
+                  // Total/CU * 100% Percentage column
+                  var perc = (total/CUSize * 100).toFixed(2);
+                  if (isNaN(perc) || !isFinite(perc)) {
+                    rows[i+1].children[percentageColumn].innerHTML = "0.00%";
+                  } else {
+                    rows[i+1].children[percentageColumn].innerHTML = perc + "%";
+                  }
+                }
+                
+                // hides the loader
+                document.getElementById("loader").style.display = "none";
+              });
+            }
+        }
+        var runPeopleQuery = function() {
+          MP.api.jql(function main() {
+            return People()
+            .filter(function(p) {
+              return p.properties.FlowingContractsCount > 0 && p.properties.ActiveUsersCount > 0
+            })
+          }).done(function(results) {
+            // companies with at least one active contract and user
+            var NA_Wholesale_CU = new Set();
+            var NA_Auction_CU = new Set();
+            var NA_DS_CU = new Set();
+            var NA_Both_CU = new Set();
+           
+            var A_Auction_CU = new Set();
+            var A_DS_CU = new Set();
+            var A_Both_CU = new Set();
+            
+            var Retail_Auction_CU = new Set();
+            
+            var companiesCU = [];
+
+            
+            // gets the login chart table
+            var loginChart = document.getElementById("loginChart");
+            var rows = loginChart.children[0].children;
+            
+            for (var i = 0; i < results.length; i++) {
+                // if (results[i].properties.CompanyName.toUpperCase() == ("Leidos, Inc.").toUpperCase()) {
+                //   console.log(results[i]);
+                // } else {
+                //   console.log("not found");
+                // }
+                
+                var result = results[i].properties;
+                if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
+                  if (result.BusinessTypes != null) {
+                      if (result.BusinessTypes == "Wholesale") { // NA-Wholesale
+                      NA_Wholesale_CU.add(result.CompanyName);
+                    } else {
+                      var auction = false;
+                      var ds = false;
+                      if (result.EventTypes != null) {
+                        auction = result.EventTypes.includes("Auction");
+                        ds = result.EventTypes.includes("Direct Sourcing");
+                      }
+                      if (auction && ds) { // both
+                        NA_Both_CU.add(result.CompanyName);
+                      } else if (auction) { // auction-only
+                        NA_Auction_CU.add(result.CompanyName);
+                      } else if (ds) { // direct sourcing only
+                        NA_DS_CU.add(result.CompanyName);
+                      }
+                    }
+                  } else { // With Advisory (A)
+                      var auction = false;
+                      var ds = false;
+                      if (result.EventTypes != null) {
+                        auction = result.EventTypes.includes("Auction");
+                        ds = result.EventTypes.includes("Direct Sourcing");
+                      }
+                      if (auction && ds) { // both
+                        A_Both_CU.add(result.CompanyName);
+                      } else if (auction) { // auction-only
+                        A_Auction_CU.add(result.CompanyName);
+                      } else if (ds) { // direct sourcing only
+                        A_DS_CU.add(result.CompanyName);
+                      }
+                   }
+                }
+              }
+              
+              Retail_Auction_CU = new Set(...[NA_Auction_CU,...NA_Both_CU,...A_Auction_CU,...A_Both_CU]);
+              
+                          
+              companiesCU.push(NA_Auction_CU);
+              companiesCU.push(NA_DS_CU);
+              companiesCU.push(NA_Both_CU);
+              companiesCU.push(NA_Wholesale_CU);
+              companiesCU.push(A_Auction_CU);
+              companiesCU.push(A_DS_CU);
+              companiesCU.push(A_Both_CU);
+              companiesCU.push(Retail_Auction_CU);
+              
+              // console.log("Companies With At Least 1 Active Contract and Active User Account");
+              // console.log(NA_Auction_CU);
+              // console.log(NA_DS_CU);
+              // console.log(NA_Wholesale_CU);
+              // console.log(NA_Both_CU);
+              // console.log(A_Auction_CU);
+              // console.log(A_DS_CU);
+              // console.log(A_Both_CU);
+              // console.log(Retail_Auction_CU);
+              
+              var CUColumn = 2;
+              // fills out the at least 1 active contract and active user column
+              for (let i = 1; i <= companiesCU.length; i++) {
+                rows[i].children[CUColumn].innerHTML = companiesCU[i-1].size;
+              }
+              runQuery();
+          });
+        }
+        
+        var setUserRoleTableName = function() {
+          var quarter = document.getElementById("userRoleTableQuarter").value;
+          var quarterNames = ["Q1", "Q2", "Q3", "Q4"];
+          var year = document.getElementById("userRoleTableYear").value;
+          var title = "";
+          title += quarterNames[quarter];
+          title += " ";
+          title += year;
+          
+          var userRoleTable = document.getElementById("userRoleTable");
+          var firstRow = userRoleTable.children[0].children[0];
+          firstRow.children[0].textContent = title;
+        }
+        var uniqueUserLoginsQuery = function() {
+          var fromLogins = document.getElementById("fromLogins");
+          var toLogins = document.getElementById("toLogins");
+          
           var params = {
-            from: from,
-            to: to,
-            eventType: eventType,
-            businessType: businessType,
-            customerType: customerType
+            from: fromLogins.value,
+            to: toLogins.value
+          };
+
+         MP.api.jql(function main() {
+            return Events({
+              from_date: params.from,
+              to_date: params.to,
+              event_selectors:[{event: "Login"}]
+            })
+              .groupBy(["distinct_id"], mixpanel.reducer.any())
+              .groupBy(["value.properties.UserRole"], mixpanel.reducer.count()) 
+          },params).done(function(results){
+              var enernoc = 0;
+              var supplier = 0;
+              var partner = 0;
+              var customer = 0;
+              
+
+              for (let i = 0; i < results.length; i++) {
+                var result = results[i].value;
+                if (results[i].key[0] == "Employee") {
+                  enernoc = result;
+                } else if (results[i].key[0] == "Bidder") {
+                  supplier = result;
+                } else if (results[i].key[0] == "Partner") {
+                  partner = result;
+                } else if (results[i].key[0] == "Customer") {
+                  customer = result;
+                }
+              }
+
+              var uniqueLogins = [enernoc, supplier, partner, customer];
+              
+              var userRoleTable = document.getElementById("userRoleTable");
+              var firstRow = userRoleTable.children[0].children[1];
+              for (let i = 1; i < firstRow.children.length; i++) {
+                firstRow.children[i].textContent = uniqueLogins[i-1];
+              }
+              totalUserLoginsQuery();
+          })
+            
+        }
+        var totalUserLoginsQuery = function() {
+          var fromLogins = document.getElementById("fromLogins");
+          var toLogins = document.getElementById("toLogins");
+          
+          var params = {
+            from: fromLogins.value,
+            to: toLogins.value
           };
           
+           MP.api.jql(function main() {
+              return Events({
+                from_date: params.from,
+                to_date: params.to,
+                event_selectors:[{event: "Login"}]
+              })
+                .groupBy(["properties.UserRole"], mixpanel.reducer.count())
+            },params).done(function(results){
+              
+              
+                var enernoc = 0;
+                var supplier = 0;
+                var partner = 0;
+                var customer = 0;
+                
+               
+                for (let i = 0; i < results.length; i++) {
+                  var total = results[i].value;
+                  if (results[i].key[0] == "Employee") {
+                    enernoc = total;
+                  } else if (results[i].key[0] == "Bidder") {
+                    supplier = total;
+                  } else if (results[i].key[0] == "Partner") {
+                    partner = total;
+                  } else if (results[i].key[0] == "Customer") {
+                    customer = total;
+                  }
+                }
+                
+                var totalLogins = [enernoc, supplier, partner, customer];
+                
+                var userRoleTable = document.getElementById("userRoleTable");
+                var firstRow = userRoleTable.children[0].children[2];
+                for (let i = 1; i < firstRow.children.length; i++) {
+                  firstRow.children[i].textContent = totalLogins[i-1];
+                }
+                
+                calculateLoginPerUser();
+            })
+        }
+        var calculateLoginPerUser = function() {
+          var userRoleTable = document.getElementById("userRoleTable");
+          var uniqueLoginsRow = userRoleTable.children[0].children[1];
+          var totalLoginsRow = userRoleTable.children[0].children[2];
+          var loginPerUserRow = userRoleTable.children[0].children[3];
+          for (let i = 1; i < loginPerUserRow.children.length; i++) {
+            var uniqueLoginsValue = parseInt(uniqueLoginsRow.children[i].textContent);
+            var totalLoginsValue = parseInt(totalLoginsRow.children[i].textContent);
+            var loginPerUserValue = (totalLoginsValue/uniqueLoginsValue).toFixed(1);
+            if (isNaN(loginPerUserValue) || !isFinite(loginPerUserValue)) {
+              loginPerUserRow.children[i].textContent = "0.0";
+            } else {
+              loginPerUserRow.children[i].textContent = loginPerUserValue;
+            }
+          }
+          document.getElementById("loader2").style.display = "none";
+        }
+        // updates from and to dates based on which quarter is chosen
+        var updateUserRoleTableQuarter = function() {
+          var quarter = document.getElementById("userRoleTableQuarter").value;
+          var year = document.getElementById("userRoleTableYear").value;
+          var quarterDates = [["-01-01","-03-31"],["-04-01","-06-30"],["-07-01","-09-30"],["-10-01","-12-31"]];
           
-          if (customerType) {
+          fromLogins.value = year + quarterDates[quarter][0];
+          toLogins.value = year + quarterDates[quarter][1];
+        }
+        // runs all the functions to make the user role table
+        var userRoleTableQuery = function() {
+          document.getElementById("loader2").style.display = "block";
+          setUserRoleTableName();
+          uniqueUserLoginsQuery();
+        }
+        
+        
+        
+        
+        
+        // makes a quarterly login chart
+        var makeQuarterLoginChart = function(from,to,year,quarter) {
+          var params = {
+            from: year + from,
+            to: year + to
+          };
+          
+          var loginType = document.getElementById("userRoleGraphSelect").value;
+          console.log(loginType);
+          if (loginType == "unique") { // unique logins
             MP.api.jql(function main() {
-            return Events ({
+            return Events({
+              from_date: params.from,
+              to_date: params.to,
+              event_selectors:[{event: "Login"}]
+            })
+              .groupBy(["distinct_id"], mixpanel.reducer.any())
+              .groupBy(["value.properties.UserRole"], mixpanel.reducer.count()) 
+          },params).done(function(results){
+              var enernoc = 0;
+              var supplier = 0;
+              var partner = 0;
+              var customer = 0;
+              
+
+              for (let i = 0; i < results.length; i++) {
+                var result = results[i].value;
+                if (results[i].key[0] == "Employee") {
+                  enernoc = result;
+                } else if (results[i].key[0] == "Bidder") {
+                  supplier = result;
+                } else if (results[i].key[0] == "Partner") {
+                  partner = result;
+                } else if (results[i].key[0] == "Customer") {
+                  customer = result;
+                }
+              }
+
+              var quarterIndex = quarter - 1;
+                var table = document.getElementById("quarterGraph");
+                var tbody = table.children[1];
+                if (quarterIndex == 0 || quarterIndex == 1) { // chooses the correct tr
+                  var tr = tbody.children[0];
+                } else if (quarterIndex == 2 || quarterIndex == 3) {
+                  var tr = tbody.children[1];
+                }
+                
+                var td = tr.children[quarterIndex % 2];
+                td.innerHTML = "<canvas></canvas>"
+                
+                // chooses the correct canvas in the table
+                var canvas = td.children[0];
+
+                let barChart = new Chart(canvas, {
+                		type: "bar",
+                    data: {
+                    	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
+                      datasets: [{
+                      		label: "Quarter " + quarter + " Unique Logins",
+                          data: [
+                          		enernoc,
+                              supplier,
+                              partner,
+                              customer
+                          ],
+                          backgroundColor: "#0080ff"
+                      }]
+                    },
+                    options: {}
+                });
+          });
+          } else if (loginType == "total") { // total logins
+            MP.api.jql(function main() {
+              return Events({
                 from_date: params.from,
                 to_date: params.to,
-              event_selectors:[{event: "Login"}]
+                event_selectors:[{event: "Login"}]
               })
-              
-              .filter(function(item) {
-                return item.properties.EventType == params.eventType && item.properties.BusinessType == params.businessType && item.properties.CustomerType == "Advisory"
-              }
-                )
+                .groupBy(["properties.UserRole"], mixpanel.reducer.count())
+            },params).done(function(results){
+                var enernoc = 0;
+                var supplier = 0;
+                var partner = 0;
+                var customer = 0;
                 
-                .groupBy(["properties.CompanyName"], mixpanel.reducer.count());
-            }, params).done(function(results) {
-              console.log(results[0].key);
+                // gets the values for each of the 4 user roles
+                for (let i = 0; i < results.length; i++) {
+                  var total = results[i].value;
+                  if (results[i].key[0] == "Employee") {
+                    enernoc = total;
+                  } else if (results[i].key[0] == "Bidder") {
+                    supplier = total;
+                  } else if (results[i].key[0] == "Partner") {
+                    partner = total;
+                  } else if (results[i].key[0] == "Customer") {
+                    customer = total;
+                  }
+                }
+                
+                
+                var quarterIndex = quarter - 1;
+                var table = document.getElementById("quarterGraph");
+                var tbody = table.children[1];
+                if (quarterIndex == 0 || quarterIndex == 1) { // chooses the correct tr
+                  var tr = tbody.children[0];
+                } else if (quarterIndex == 2 || quarterIndex == 3) {
+                  var tr = tbody.children[1];
+                }
+                
+                var td = tr.children[quarterIndex % 2];
+                td.innerHTML = "<canvas></canvas>"
+                
+                // chooses the correct canvas in the table
+                var canvas = td.children[0];
+
+                
+                let barChart = new Chart(canvas, {
+                		type: "bar",
+                    data: {
+                    	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
+                      datasets: [{
+                      		label: "Quarter " + quarter + " Total Logins",
+                          data: [
+                          		enernoc,
+                              supplier,
+                              partner,
+                              customer
+                          ],
+                          backgroundColor: "#0080ff"
+                      }]
+                    },
+                    options: {}
+                });
+
             });
-          } else {
-            MP.api.jql(function main() {
-            return Events ({
-                from_date: params.from,
-                to_date: params.to,
-              event_selectors:[{event: "Login"}]
-              })
-              
-              .filter(function(item) {
-                return item.properties.EventType == params.eventType && item.properties.BusinessType == params.businessType && item.properties.CustomerType != "Advisory"
-              }
-                )
-                
-                .groupBy(["properties.CompanyName"], mixpanel.reducer.count());
-              }, params).done(function(results) {
-                var here = document.getElementById("here"); 
-                here.innerHTML = results[0].key;
-              });
+          }
+          
+        }
+        // creates all the quarterly login charts
+        var makeAllLoginCharts = function() {
+          
+          var year = document.getElementById("userRoleGraphYear").value;
+          makeQuarterLoginChart("-01-01","-03-31",year,1);
+          makeQuarterLoginChart("-04-01","-06-30",year,2);
+          makeQuarterLoginChart("-07-01","-9-30",year,3);
+          makeQuarterLoginChart("-10-01","-12-31",year,4);
+          document.getElementById("loader3").style.display = "none";
+        }
+        
+        window.onload = function () {
+          // displays the loader
+          document.getElementById("loader2").style.display = "block";
+          
+          // sets the year for user role table and graph
+          var d = new Date();
+          var thisYear = d.getFullYear();
+          document.getElementById("userRoleTableYear").value = thisYear;
+          document.getElementById("userRoleGraphYear").value = thisYear;
+          var caption = document.getElementById("quarterGraph").getElementsByTagName("caption")[0];
+          var loginType = document.getElementById("userRoleGraphSelect").value;
+          if (loginType == "unique") {
+            caption.textContent = thisYear + " Quarterly Unique Logins";
+          } else if (loginType == "total") {
+            caption.textContent = thisYear + " Quarterly Total Logins";
           }
           
           
+          // sets the from and to date for the user role table (need to set up year before doing this)
+          //updateUserRoleTableQuarter(); // uncomment this once we hide from and to dates for user role table
+          
+          
+          
+          // first table
+          var year = document.getElementById("userRoleGraphYear").value;
+          runPeopleQuery(); //runQuery()
+          
+          // second table
+          userRoleTableQuery();
+          // setUserRoleTableName()
+          // uniqueUserLoginsQuery() // totalUserLoginsQuery() // calculateLoginPerUser() // makeQuarterLoginChart x 4
+          
+          
+          // chart
+          makeAllLoginCharts(); // year depends on the value in the input
+          
+          // set user role graph table
+          var setUserRoleGraph = function() {
+            document.getElementById("loader3").style.display = "block";
+              makeAllLoginCharts();
+              
+              // changes the caption of the table
+              var year = document.getElementById("userRoleGraphYear").value;
+              var caption = document.getElementById("quarterGraph").getElementsByTagName("caption")[0];
+              var loginType = document.getElementById("userRoleGraphSelect").value;
+              if (loginType == "unique") {
+                caption.textContent = year + " Quarterly Unique Logins";
+              } else if (loginType == "total") {
+                caption.textContent = year + " Quarterly Total Logins";
+              }
+          }
+          
+          
+          // Event Listeners
+          
+          // LOGIN CHART
+          // changing the from date above the login chart
+          document.getElementById("from").addEventListener("change", function(){
+            var from = document.getElementById("from");
+            if (from.value != "") {
+              from.style.background = "white";
+            } else {
+              from.style.background = "red";
+            }
+          });
+          // changing the to date above the login chart
+          document.getElementById("to").addEventListener("change", function(){
+            var to = document.getElementById("to");
+            if (to.value != "") {
+              to.style.background = "white";
+            } else {
+              to.style.background = "red";
+            }
+          });
+          // submit button above the login chart
+          document.getElementById("submit").addEventListener("click", runQuery);
+          
+          
+          // USER ROLE TABLE
+          // quarter input for user role table
+          document.getElementById("userRoleTableQuarter").addEventListener("change", function() {
+              updateUserRoleTableQuarter();
+              userRoleTableQuery();
+          });
+          // year for user role table
+          document.getElementById("userRoleTableYear").addEventListener("change", function() {
+            // var userRoleTableYear = document.getElementById("userRoleTableYear");
+            //   userRoleTableYear.readOnly = true;
+              updateUserRoleTableQuarter();
+              userRoleTableQuery();
+              //userRoleTableYear.readOnly = false;
+          });
+          // submit button above the user role table
+          document.getElementById("userRoleTableSubmit").addEventListener("click", userRoleTableQuery);
+          
+          
+          // USER ROLE GRAPH
+          // user role graph login select
+          document.getElementById("userRoleGraphSelect").addEventListener("change", setUserRoleGraph);
+          // user role graph year 
+          document.getElementById("userRoleGraphYear").addEventListener("change", setUserRoleGraph)
+          // submit button for user role graph
+          document.getElementById("userRoleGraphSubmit").addEventListener("click", setUserRoleGraph);
         }
-        showCompanies("Auction","Wholesale",0);
     </script>
   </body>
 </html>
-
-
-
-
-
