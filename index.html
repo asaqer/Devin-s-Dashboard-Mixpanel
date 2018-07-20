@@ -153,21 +153,21 @@
       }
 
       
-      #quarterGraph td {
+      #userRoleGraph td {
         width: calc(100%/2);
         /*background: none;*/
       }
       
-      #quarterGraph caption {
+      #userRoleGraph caption {
         font-weight: bold;
         font-size: 24px;
       }
       
-      #quarterGraph tr:first-child td:first-child {
+      #userRoleGraph tr:first-child td:first-child {
         border-radius: 15px 0 0 0;
       }
       
-      #quarterGraph tr:first-child td:last-child {
+      #userRoleGraph tr:first-child td:last-child {
         border-radius: 0 15px 0 0;
       }
       
@@ -361,7 +361,7 @@
     <hr>
     
     <!-- user role graph-->
-    <table id="quarterGraph">
+    <table id="userRoleGraph">
       <caption></caption>
       <tr>
         <td><canvas></canvas></td>
@@ -372,6 +372,10 @@
         <td><canvas></canvas></td>
       </tr>
     </table>
+    
+    <select id="userRoleGraphCompanies">
+      
+    </select>
     
     <div id="loader3"></div>
     
@@ -445,7 +449,7 @@
                     )
                   
               }, params).done(function(results) {
-                
+                console.log(results);
                 // total number of companies
                 var NA_Wholesale_Total = new Set();
                 var NA_Auction_Total = new Set();
@@ -849,7 +853,7 @@
               }
 
               var quarterIndex = quarter - 1;
-                var table = document.getElementById("quarterGraph");
+                var table = document.getElementById("userRoleGraph");
                 var tbody = table.children[1];
                 if (quarterIndex == 0 || quarterIndex == 1) { // chooses the correct tr
                   var tr = tbody.children[0];
@@ -961,7 +965,7 @@
                 }
                 
                 var quarterIndex = quarter - 1;
-                var table = document.getElementById("quarterGraph");
+                var table = document.getElementById("userRoleGraph");
                 var tbody = table.children[1];
                 if (quarterIndex == 0 || quarterIndex == 1) { // chooses the correct tr
                   var tr = tbody.children[0];
@@ -1183,7 +1187,7 @@
           var thisYear = d.getFullYear();
           document.getElementById("userRoleTableYear").value = thisYear;
           document.getElementById("userRoleGraphYear").value = thisYear;
-          var caption = document.getElementById("quarterGraph").getElementsByTagName("caption")[0];
+          var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
           var loginType = document.getElementById("userRoleGraphSelect").value;
           if (loginType == "unique") {
             caption.textContent = thisYear + " Quarterly Unique Logins";
@@ -1217,7 +1221,7 @@
               
               // changes the caption of the table
               var year = document.getElementById("userRoleGraphYear").value;
-              var caption = document.getElementById("quarterGraph").getElementsByTagName("caption")[0];
+              var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
               var loginType = document.getElementById("userRoleGraphSelect").value;
               if (loginType == "unique") {
                 caption.textContent = year + " Quarterly Unique Logins";
