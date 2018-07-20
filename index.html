@@ -171,6 +171,15 @@
         border-radius: 0 15px 0 0;
       }
       
+      #userRoleGraphCompanies {
+        width: 531px;
+      }
+      
+      #userRoleGraphLabel {
+        display: inline-block;
+        font-weight: bold;
+      }
+      
       #loader3 {
         position: absolute;
         left: 55%;
@@ -228,11 +237,13 @@
         <th>Customer Classification</th>
         <th>Number Of Customers</th>
         <th>Number Of Customers With A Login</th>
+        <th>PortalViewer Customers With a Login</th>
         <th>% of Customers Who Logged In</th>
       </tr>
       <tr>
         <td>Non-Advisory</td>
         <td>Retail Auction Only</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -243,10 +254,12 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
       <tr>
         <td>Non-Advisory</td>
         <td>Retail Auction & Direct Sourcing</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -257,10 +270,12 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
       <tr>
         <td>Advisory</td>
         <td>Retail Auction Only</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -271,6 +286,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
       <tr>
         <td>Advisory</td>
@@ -278,10 +294,12 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
       <tr>
         <td></td>
         <td>Retail Auction Totals</td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
@@ -372,10 +390,13 @@
         <td><canvas></canvas></td>
       </tr>
     </table>
-    
+
+
+    <h2 style="display:inline-block;">Company Names:&nbsp;</h2><span id="userRoleGraphLabel"></span><br>
     <select id="userRoleGraphCompanies">
-      
     </select>
+
+    
     
     <div id="loader3"></div>
     
@@ -464,6 +485,20 @@
                 
                 var totalCompanies = [];
                 
+                // portal companies
+                var NA_Wholesale_Portal = new Set();
+                var NA_Auction_Portal = new Set();
+                var NA_DS_Portal = new Set();
+                var NA_Both_Portal = new Set();
+               
+                var A_Auction_Portal = new Set();
+                var A_DS_Portal = new Set();
+                var A_Both_Portal = new Set();
+                
+                var Retail_Auction_Portal = new Set();
+                
+                var portalCompanies = [];
+                
                 
                 for (var i = 0; i < results.length; i++) {
                   // if (results[i].value.properties.CompanyName.toUpperCase() == ("Alkermes, Inc.").toUpperCase()) {
@@ -475,10 +510,17 @@
                   var result = results[i].value.properties;
                   var activeContract = result.FlowingContractCount;
                   var activeUser = result.ActiveUsersAtCustomerCount;
+                  var isPortalViewer = false;
+                  if (result.RoleAttribute) {
+                    isPortalViewer = result.RoleAttribute.includes("PortalViewer");
+                  }
                   if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
                     if (result.BusinessType != null) {
                       if (result.BusinessType == "Wholesale") { // NA-Wholesale
                           NA_Wholesale_Total.add(result.CompanyName);
+                          if (isPortalViewer) {
+                            NA_Wholesale_Portal.add(result.CompanyName);
+                          }
                         } else {
                           var auction = false;
                           var ds = false;
@@ -488,10 +530,19 @@
                           }
                           if (auction && ds) { // both
                               NA_Both_Total.add(result.CompanyName);
+                              if (isPortalViewer) {
+                                 NA_Both_Portal.add(result.CompanyName);
+                              }
                           } else if (auction) { // auction-only
                               NA_Auction_Total.add(result.CompanyName);
+                              if (isPortalViewer) {
+                                 NA_Auction_Portal.add(result.CompanyName);
+                              }
                           } else if (ds) { // direct sourcing only
                               NA_DS_Total.add(result.CompanyName);
+                              if (isPortalViewer) {
+                                 NA_DS_Portal.add(result.CompanyName);
+                              }
                           }
                         }
                       } else { // With Advisory (A)
@@ -503,15 +554,25 @@
                           }
                           if (auction && ds) { // both
                               A_Both_Total.add(result.CompanyName);
+                              if (isPortalViewer) {
+                                A_Both_Portal.add(result.CompanyName);
+                            }
                           } else if (auction) { // auction-only
                               A_Auction_Total.add(result.CompanyName);
+                              if (isPortalViewer) {
+                                A_Auction_Portal.add(result.CompanyName);
+                              }
                           } else if (ds) { // direct sourcing only
                              A_DS_Total.add(result.CompanyName);
+                             if (isPortalViewer) {
+                                A_DS_Portal.add(result.CompanyName);
+                            }
                           }
                       }
                   }
                 }
                 Retail_Auction_Total = new Set([...NA_Auction_Total,...NA_Both_Total,...A_Auction_Total,...A_Both_Total]);
+                Retail_Auction_Portal = new Set([...NA_Auction_Portal,...NA_Both_Portal,...A_Auction_Portal,...A_Both_Portal]);
                 
                 totalCompanies.push(NA_Auction_Total);
                 totalCompanies.push(NA_DS_Total);
@@ -521,6 +582,15 @@
                 totalCompanies.push(A_DS_Total);
                 totalCompanies.push(A_Both_Total);
                 totalCompanies.push(Retail_Auction_Total);
+                
+                portalCompanies.push(NA_Auction_Portal);
+                portalCompanies.push(NA_DS_Portal);
+                portalCompanies.push(NA_Both_Portal);
+                portalCompanies.push(NA_Wholesale_Portal);
+                portalCompanies.push(A_Auction_Portal);
+                portalCompanies.push(A_DS_Portal);
+                portalCompanies.push(A_Both_Portal);
+                portalCompanies.push(Retail_Auction_Portal);
                 
                 
                 // console.log("Total Number Of Companies");
@@ -542,17 +612,23 @@
                 // totalCompanies is an array of sets
                 var customerColumn = 2;
                 var totalColumn = 3;
-                var percentageColumn = 4;
+                var portalViewerColumn = 4;
+                var percentageColumn = 5;
                 for (var i = 0; i < totalCompanies.length; i++) {
-                  // number of companies with at least one contract and at least one active user column
+                  // number of companies with at least one contract and at least one active user column (2)
                   var CUSize = parseInt(rows[i+1].children[customerColumn].textContent);
                   
-                  // gets total number of companies
+                  // gets total number of companies (3)
                   var total = totalCompanies[i].size; 
-                  // fills out the total companies column
+                  // fills out the total companies column (3)
                   rows[i+1].children[totalColumn].innerHTML = total;
                   
-                  // Total/CU * 100% Percentage column
+                  // fills out the portal companies column (4)
+                  var portal = portalCompanies[i].size; 
+                  // fills out the total companies column (4)
+                  rows[i+1].children[portalViewerColumn].innerHTML = portal;
+                  
+                  // Total/CU * 100% Percentage column (5)
                   var perc = (total/CUSize * 100).toFixed(2);
                   if (isNaN(perc) || !isFinite(perc)) {
                     rows[i+1].children[percentageColumn].innerHTML = "0.00%";
@@ -895,13 +971,14 @@
                     }
                 });
                 
-              // working here
+              
               canvas.onclick = function(e) {
                 var activeBars = barChart.getElementAtEvent(e)[0];
                 if (activeBars) {
                 	var year = document.getElementById("userRoleGraphYear").value;
                 	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                 	var userRole = activeBars._model.label.split(" ")[0];
+                	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " Companies";
                 	if (userRole == "EnerNOC") {
                 	  var paramsUserRole = "Employee";
                 	} else if (userRole == "Supplier") {
@@ -931,7 +1008,15 @@
                     .groupBy(["distinct_id"], mixpanel.reducer.any())
                     .groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                   },params).done(function(results) {
-                	  console.log(results);
+                    var userRoleGraphCompanies = document.getElementById("userRoleGraphCompanies");
+                    userRoleGraphCompanies.innerHTML = "";
+                    for (let i = 0; i < results.length; i++) {
+                      var option = document.createElement("option");
+                      var companyName = results[i].key;
+                      var optionText = document.createTextNode(companyName);
+                      option.appendChild(optionText);
+                      userRoleGraphCompanies.appendChild(option);
+                    }
                 	});
                 }
               }
@@ -998,25 +1083,26 @@
                       }]
                     },
                     options: {
-                      scales: {
-                        yAxes: [{
-                          ticks: {
-                            min: 0,
-                            max: max,
-                            stepSize: stepSize
-                          }
-                        }]
-                      }
+                      // scales: {
+                      //   yAxes: [{
+                      //     ticks: {
+                      //       min: 0,
+                      //       max: max,
+                      //       stepSize: stepSize
+                      //     }
+                      //   }]
+                      // }
                     }
                     
                 });
-                
+                // working here
                 canvas.onclick = function(e) {
                   var activeBars = barChart.getElementAtEvent(e)[0];
                   if (activeBars) {
                   	var year = document.getElementById("userRoleGraphYear").value;
                   	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                   	var userRole = activeBars._model.label.split(" ")[0];
+                  	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " Companies";
                   	if (userRole == "EnerNOC") {
                   	  var paramsUserRole = "Employee";
                   	} else if (userRole == "Supplier") {
@@ -1046,7 +1132,15 @@
                       .groupBy(["distinct_id"], mixpanel.reducer.any())
                       .groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                     },params).done(function(results) {
-                  	  console.log(results);
+                  	  var userRoleGraphCompanies = document.getElementById("userRoleGraphCompanies");
+                      userRoleGraphCompanies.innerHTML = "";
+                      for (let i = 0; i < results.length; i++) {
+                        var option = document.createElement("option");
+                        var companyName = results[i].key;
+                        var optionText = document.createTextNode(companyName);
+                        option.appendChild(optionText);
+                        userRoleGraphCompanies.appendChild(option);
+                      }
                   	});
                   }
                 }
@@ -1103,7 +1197,7 @@
                 }
               }
               
-              return max;
+              // return max;
               
             
           });
@@ -1145,7 +1239,7 @@
                   }
                 }
                 
-                return max;
+                // return max;
                 
             });
           }
