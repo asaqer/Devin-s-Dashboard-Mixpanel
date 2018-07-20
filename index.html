@@ -215,166 +215,172 @@
   </head>
   <body class="mixpanel-platform-body">
     
-    <!-- above login chart table-->
-    <label class=date>From:&nbsp;</label>
-    <input type="date" name=from value="2018-06-01" id="from">&nbsp;
-
-    <label class=date>To:&nbsp;</label>
-    <input type="date" name=to value="2018-06-30" id="to">&nbsp;
-    
-    
-    <input type="submit" value="Submit" id="submit" class="submit">
-    
-    <hr>
-    
-    <span id="error"></span>
-    <br>
-    
-    <!-- login chart table-->
-    <table id="loginChart">
-      <tr>
-        <th>CustomerType</th>
-        <th>Customer Classification</th>
-        <th>Number Of Customers</th>
-        <th>Number Of Customers With A Login</th>
-        <th>PortalViewer Customers With a Login</th>
-        <th>% of Customers Who Logged In</th>
-      </tr>
-      <tr>
-        <td>Non-Advisory</td>
-        <td>Retail Auction Only</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Non-Advisory</td>
-        <td>Retail Direct Sourcing Only</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Non-Advisory</td>
-        <td>Retail Auction & Direct Sourcing</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Non-Advisory</td>
-        <td>Wholesale</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Advisory</td>
-        <td>Retail Auction Only</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Advisory</td>
-        <td>Retail Direct Sourcing Only</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Advisory</td>
-        <td>Retail Auction & Direct Sourcing</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>Retail Auction Totals</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
-    
-    <div id="loader"></div>
-    
-    <!-- above user role table -->
-    <label class=date>From:&nbsp;</label>
-    <input type="date" value="2018-06-01" id="fromLogins">&nbsp;
-    <label class=date>From:&nbsp;</label>
-    <input type="date" value="2018-06-30" id="toLogins">&nbsp;
-    
-    <!-- quarter input-->
-    <select id="userRoleTableQuarter">
-      <option value=0>Quarter 1</option>
-      <option value=1 selected>Quarter 2</option>
-      <option value=2>Quarter 3</option>
-      <option value=3>Quarter 4</option>
-    </select>
-    
-    <label class="date">Year:</label>
-    <input type="number" id="userRoleTableYear" class="userRoleYear">
-    
-    <input type="submit" value="Submit" id="userRoleTableSubmit" class="submit">
-    
-    <hr>
-    
-    <!-- user role table-->
-    <table id="userRoleTable">
-      <tr>
-        <th></th>
-        <th>EnerNOC User</th>
-        <th>Supplier</th>
-        <th>Partner</th>
-        <th>Customer</th>
-      </tr>
-      <tr>
-        <td>Unique User Logins</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Total Logins</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Logins Per User</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+    <!-- LOGIN CHART TABLE-->
+    <div>
+      <!-- above login chart table-->
+      <label class=date>From:&nbsp;</label>
+      <input type="date" name=from value="2018-06-01" id="from">&nbsp;
+  
+      <label class=date>To:&nbsp;</label>
+      <input type="date" name=to value="2018-06-30" id="to">&nbsp;
       
-    </table>
-    
-    <div id="loader2"></div>
-    
-    <!-- above user role graph-->
-    <label class="date">Login:</label>
-    <select id="userRoleGraphSelect">
-      <option value="unique">Unique</option>
-      <option value="total">Total</option>
-    </select>
-    
-    <label class="date">Year:</label>
-    <input type="number" id="userRoleGraphYear" class="userRoleYear">
-    
-    <input type="submit" value="Submit" id="userRoleGraphSubmit" class="submit">
+      
+      <input type="submit" value="Submit" id="submit" class="submit">
+      
+      <hr>
+      
+      <span id="error"></span>
+      <br>
+      
+      <!-- login chart table-->
+      <table id="loginChart">
+        <tr>
+          <th>CustomerType</th>
+          <th>Customer Classification</th>
+          <th>Number Of Customers</th>
+          <th>Number Of Customers With A Login</th>
+          <th>PortalViewer Customers With a Login</th>
+          <th>% of Customers Who Logged In</th>
+        </tr>
+        <tr>
+          <td>Non-Advisory</td>
+          <td>Retail Auction Only</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Non-Advisory</td>
+          <td>Retail Direct Sourcing Only</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Non-Advisory</td>
+          <td>Retail Auction & Direct Sourcing</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Non-Advisory</td>
+          <td>Wholesale</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Advisory</td>
+          <td>Retail Auction Only</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Advisory</td>
+          <td>Retail Direct Sourcing Only</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Advisory</td>
+          <td>Retail Auction & Direct Sourcing</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Retail Auction Totals</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+      
+      <div id="loader"></div>
+    </div>
+    <!-- USER ROLE TABLE -->
+    <div>
+      <!-- above user role table -->
+      <label class=date>From:&nbsp;</label>
+      <input type="date" value="2018-06-01" id="fromLogins">&nbsp;
+      <label class=date>From:&nbsp;</label>
+      <input type="date" value="2018-06-30" id="toLogins">&nbsp;
+      
+      <!-- quarter input-->
+      <select id="userRoleTableQuarter">
+        <option value=0>Quarter 1</option>
+        <option value=1 selected>Quarter 2</option>
+        <option value=2>Quarter 3</option>
+        <option value=3>Quarter 4</option>
+      </select>
+      
+      <label class="date">Year:</label>
+      <input type="number" id="userRoleTableYear" class="userRoleYear">
+      
+      <input type="submit" value="Submit" id="userRoleTableSubmit" class="submit">
+      
+      <hr>
+      
+      <!-- user role table-->
+      <table id="userRoleTable">
+        <tr>
+          <th></th>
+          <th>EnerNOC User</th>
+          <th>Supplier</th>
+          <th>Partner</th>
+          <th>Customer</th>
+        </tr>
+        <tr>
+          <td>Unique User Logins</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Total Logins</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Logins Per User</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        
+      </table>
+      
+      <div id="loader2"></div>
+    </div>
+    <!-- USER ROLE GRAPH-->
+    <div>
+      <!-- above user role graph-->
+      <label class="date">Login:</label>
+      <select id="userRoleGraphSelect">
+        <option value="unique">Unique</option>
+        <option value="total">Total</option>
+      </select>
+      
+      <label class="date">Year:</label>
+      <input type="number" id="userRoleGraphYear" class="userRoleYear">
+      
+      <input type="submit" value="Submit" id="userRoleGraphSubmit" class="submit">
     
     <hr>
     
@@ -399,7 +405,7 @@
     
     
     <div id="loader3"></div>
-    
+    </div>
     
     <script>
         
@@ -968,10 +974,20 @@
                       //     }
                       //   }]
                       // }
+                      onHover: function(e) {
+                        var activeBars = barChart.getElementAtEvent(e)[0];
+                        if (activeBars) {
+                          document.body.style.cursor = "pointer";  
+                        } else {
+                          document.body.style.cursor = "default";
+                        }
+                        
+                      }
                     }
                 });
                 
-              
+              // working here
+
               canvas.onclick = function(e) {
                 var activeBars = barChart.getElementAtEvent(e)[0];
                 if (activeBars) {
@@ -1095,7 +1111,7 @@
                     }
                     
                 });
-                // working here
+                
                 canvas.onclick = function(e) {
                   var activeBars = barChart.getElementAtEvent(e)[0];
                   if (activeBars) {
