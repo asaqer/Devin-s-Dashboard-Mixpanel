@@ -812,7 +812,7 @@
         
         
         // makes a quarterly login chart
-        var makeQuarterLoginChart = function(from,to,year,quarter,max,stepSize) {
+        var makeQuarterLoginChart = function(from,to,year,quarter) {
           var params = {
             from: year + from,
             to: year + to
@@ -861,7 +861,7 @@
                 td.innerHTML = "<canvas></canvas>"
                 
                 // chooses the correct canvas in the table
-                var canvas = td.children[0];
+                let canvas = td.children[0];
 
                 let barChart = new Chart(canvas, {
                 		type: "bar",
@@ -879,17 +879,60 @@
                       }]
                     },
                     options: {
-                      scales: {
-                        yAxes: [{
-                          ticks: {
-                            min: 0,
-                            max: max,
-                            stepSize: stepSize
-                          }
-                        }]
-                      }
+                      // scales: {
+                      //   yAxes: [{
+                      //     ticks: {
+                      //       min: 0,
+                      //       max: max,
+                      //       stepSize: stepSize
+                      //     }
+                      //   }]
+                      // }
                     }
                 });
+                
+              // working here
+              canvas.onclick = function(e) {
+                var activeBars = barChart.getElementAtEvent(e)[0];
+                if (activeBars) {
+                	var year = document.getElementById("userRoleGraphYear").value;
+                	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
+                	var userRole = activeBars._model.label.split(" ")[0];
+                	if (userRole == "EnerNOC") {
+                	  var paramsUserRole = "Employee";
+                	} else if (userRole == "Supplier") {
+                	  var paramsUserRole = "Bidder";
+                	} else if (userRole == "Partner") {
+                	  var paramsUserRole = "Parter";
+                	} else if (userRole == "Customer") {
+                	  var paramsUserRole = "Customer";
+                	}
+                	var quarterIndex = quarter - 1;
+                	var quarters = [["-01-01","-03-31"],["-04-01","-06-30"],["-07-01","-09-30"],["-10-01","-12-31"]];
+                	var params = {
+                	  from: year + quarters[quarterIndex][0],
+                	  to: year + quarters[quarterIndex][1],
+                	  userRole: paramsUserRole
+                	};
+                	console.log(params.from);
+                	console.log(params.to);
+                	console.log(params.userRole);
+                	MP.api.jql(function main() {
+                    return Events({
+                      from_date: params.from,
+                      to_date:   params.to,
+                      event_selectors:[{event: "Login"}]
+                    })
+                    .filter(function(e){
+                      return e.properties.UserRole == params.userRole
+                    })
+                    .groupBy(["distinct_id"], mixpanel.reducer.any())
+                    .groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
+                  },params).done(function(resultsh) {
+                	  console.log(resultsh);
+                	});
+                }
+              }
           });
           } else if (loginType == "total") { // total logins
             MP.api.jql(function main() {
@@ -932,9 +975,9 @@
                 td.innerHTML = "<canvas></canvas>"
                 
                 // chooses the correct canvas in the table
-                var canvas = td.children[0];
+                let canvas = td.children[0];
 
-                // working here
+                
                 let barChart = new Chart(canvas, {
                 		type: "bar",
                 		
@@ -965,6 +1008,15 @@
                     }
                     
                 });
+                
+                canvas.onclick = function(e) {
+                  var activeBars = barChart.getElementAtEvent(e)[0];
+                  if (activeBars) {
+                  	console.log(activeBars._model.datasetLabel);
+                  	console.log(activeBars._model.label);
+                  }
+                }
+                
 
 
             });
