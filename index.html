@@ -1036,12 +1036,22 @@
                                         <th>UserID</th>
                                       </tr>`;
                     for (let i = 0; i < results.length; i++) {
-                      var tr = document.createElement("tr");
-                      var userID = results[i].value.properties.UserID;
+                      // gets company name and userID
                       var companyName = results[i].value.properties.CompanyName;
-                    //   var optionText = document.createTextNode(companyName);
-                    //   option.appendChild(optionText);
-                    //   userRoleGraphCompanies.appendChild(option);
+                      var userID = results[i].value.properties.UserID;  
+                      // creates the tr
+                      var tr = document.createElement("tr");
+                      // creates the tds and text nodes
+                      var tdCompanyName = document.createElement("td");
+                      var tdUserID = document.createElement("td");
+                      var companyNameTxt = document.createTextNode(companyName);
+                      var userIDTxt = document.createTextNode(userID);
+                      // appends to (td and tr and tbody)
+                      tdCompanyName.appendChild(companyNameTxt);
+                      tdUserID.appendChild(userIDTxt);
+                      tr.appendChild(tdCompanyName);
+                      tr.appendChild(tdUserID);
+                      tbody.appendChild(tr);
                      }
                 	});
                 }
