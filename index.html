@@ -1118,6 +1118,15 @@
                       //     }
                       //   }]
                       // }
+                      onHover: function(e) {
+                        var activeBars = barChart.getElementAtEvent(e)[0];
+                        if (activeBars) {
+                          document.body.style.cursor = "pointer";  
+                        } else {
+                          document.body.style.cursor = "default";
+                        }
+                        
+                      }
                     }
                     
                 });
