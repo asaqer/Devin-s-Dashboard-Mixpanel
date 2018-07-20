@@ -77,6 +77,10 @@
         border-radius: 0 15px 0 0; 
       }
       
+      #loginTableWrapper {
+        position:relative;
+      }
+      
       /* Center the loader */
       #loader {
         position: absolute;
@@ -125,10 +129,14 @@
         border-bottom: none;
       }
       
+      #userRoleTableWrapper {
+        position: relative;
+      }
+      
       #loader2 {
         position: absolute;
         left: 50%;
-        top: 880px;
+        top: 70%;
         z-index: 1;
         width: 150px;
         height: 150px;
@@ -180,6 +188,10 @@
         font-weight: bold;
       }
       
+      #userRoleGraphWrapper {
+        position: relative;
+      }
+      
       #loader3 {
         position: absolute;
         left: 55%;
@@ -227,7 +239,7 @@
   <body class="mixpanel-platform-body">
     
     <!-- LOGIN CHART TABLE-->
-    <div>
+    <div id="loginTableWrapper">
       <!-- above login chart table-->
       <label class=date>From:&nbsp;</label>
       <input type="date" name=from value="2018-06-01" id="from">&nbsp;
@@ -322,7 +334,7 @@
       <div id="loader"></div>
     </div>
     <!-- USER ROLE TABLE -->
-    <div>
+    <div id="userRoleTableWrapper">
       <!-- above user role table -->
       <label class=date>From:&nbsp;</label>
       <input type="date" value="2018-06-01" id="fromLogins">&nbsp;
@@ -380,7 +392,7 @@
       <div id="loader2"></div>
     </div>
     <!-- USER ROLE GRAPH-->
-    <div>
+    <div id="userRoleGraphWrapper">
       <!-- above user role graph-->
       <label class="date">Login:</label>
       <select id="userRoleGraphSelect">
@@ -418,12 +430,6 @@
         <th>UserID</th>
       </tr>
     </table>
-
-    <!--<span id="userRoleGraphLabel"></span><h2 style="display:inline-block;">&nbsp;Company Names:</h2><br>-->
-    <!--<select id="userRoleGraphCompanies">-->
-    <!--</select>-->
-
-    
     
     <div id="loader3"></div>
     </div>
