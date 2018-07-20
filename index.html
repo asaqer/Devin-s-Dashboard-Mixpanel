@@ -392,7 +392,7 @@
     </table>
 
 
-    <h2 style="display:inline-block;">Company Names:&nbsp;</h2><span id="userRoleGraphLabel"></span><br>
+    <span id="userRoleGraphLabel"></span><h2 style="display:inline-block;">&nbsp;Company Names:</h2><br>
     <select id="userRoleGraphCompanies">
     </select>
 
@@ -978,7 +978,7 @@
                 	var year = document.getElementById("userRoleGraphYear").value;
                 	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                 	var userRole = activeBars._model.label.split(" ")[0];
-                	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " Companies";
+                	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " ";
                 	if (userRole == "EnerNOC") {
                 	  var paramsUserRole = "Employee";
                 	} else if (userRole == "Supplier") {
@@ -1102,7 +1102,7 @@
                   	var year = document.getElementById("userRoleGraphYear").value;
                   	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                   	var userRole = activeBars._model.label.split(" ")[0];
-                  	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " Companies";
+                  	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " ";
                   	if (userRole == "EnerNOC") {
                   	  var paramsUserRole = "Employee";
                   	} else if (userRole == "Supplier") {
@@ -1310,7 +1310,7 @@
           
           // set user role graph table
           var setUserRoleGraph = function() {
-            document.getElementById("loader3").style.display = "block";
+              document.getElementById("loader3").style.display = "block";
               makeAllLoginCharts();
               
               // changes the caption of the table
