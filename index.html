@@ -207,7 +207,18 @@
         100% { transform: rotate(360deg); }
       }
       
+      #userRoleCompaniesTable th:nth-child(2n+1) {
+        border-right: none;
+      }
       
+      #userRoleCompaniesTable tr td:nth-child(2n) {
+        border-right: 0.5px gray solid;
+      }
+      
+      #userRoleCompaniesTable tr td {
+        height: 0px;
+        padding: 8px;
+      }
       
     </style>
     
@@ -401,12 +412,16 @@
       <tr>
         <th>Company Name</th>
         <th>UserID</th>
+        <th>Company Name</th>
+        <th>UserID</th>
+        <th>Company Name</th>
+        <th>UserID</th>
       </tr>
     </table>
 
-    <span id="userRoleGraphLabel"></span><h2 style="display:inline-block;">&nbsp;Company Names:</h2><br>
-    <select id="userRoleGraphCompanies">
-    </select>
+    <!--<span id="userRoleGraphLabel"></span><h2 style="display:inline-block;">&nbsp;Company Names:</h2><br>-->
+    <!--<select id="userRoleGraphCompanies">-->
+    <!--</select>-->
 
     
     
@@ -909,6 +924,7 @@
           };
           
           var loginType = document.getElementById("userRoleGraphSelect").value;
+          
           if (loginType == "unique") { // unique logins
             MP.api.jql(function main() {
             return Events({
@@ -990,7 +1006,6 @@
                     }
                 });
                 
-              // working here
 
               canvas.onclick = function(e) {
                 var activeBars = barChart.getElementAtEvent(e)[0];
@@ -998,7 +1013,6 @@
                 	var year = document.getElementById("userRoleGraphYear").value;
                 	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                 	var userRole = activeBars._model.label.split(" ")[0];
-                	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " ";
                 	if (userRole == "EnerNOC") {
                 	  var paramsUserRole = "Employee";
                 	} else if (userRole == "Supplier") {
@@ -1025,7 +1039,7 @@
                     .filter(function(e){
                       return e.properties.UserRole == params.userRole
                     })
-                    .groupBy(["distinct_id"], mixpanel.reducer.any())
+                    .groupBy(["properties.CompanyName","distinct_id"], mixpanel.reducer.any())
                     //.groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                   },params).done(function(results) {
                     console.log(results);
@@ -1034,25 +1048,34 @@
                     tbody.innerHTML = `<tr>
                                         <th>Company Name</th>
                                         <th>UserID</th>
+                                        <th>Company Name</th>
+                                        <th>UserID</th>
+                                        <th>Company Name</th>
+                                        <th>UserID</th>
                                       </tr>`;
-                    for (let i = 0; i < results.length; i++) {
-                      // gets company name and userID
-                      var companyName = results[i].value.properties.CompanyName;
-                      var userID = results[i].value.properties.UserID;  
+                    var numOfResults = results.length;
+                    var numTr = Math.floor(numOfResults/3) + 1;
+                    var mod3 = numOfResults % 3;
+                    for (let i = 0; i < numTr; i++) {
                       // creates the tr
                       var tr = document.createElement("tr");
-                      // creates the tds and text nodes
-                      var tdCompanyName = document.createElement("td");
-                      var tdUserID = document.createElement("td");
-                      var companyNameTxt = document.createTextNode(companyName);
-                      var userIDTxt = document.createTextNode(userID);
-                      // appends to (td and tr and tbody)
-                      tdCompanyName.appendChild(companyNameTxt);
-                      tdUserID.appendChild(userIDTxt);
-                      tr.appendChild(tdCompanyName);
-                      tr.appendChild(tdUserID);
-                      tbody.appendChild(tr);
-                     }
+                      if (i == numTr - 1 && mod3) { // last row - only applies to mod3 == 1 || mod3 == 2 OR second to last row - only applies to mod3 == 1
+                        for (let j = 0; j < 2; j++) {
+                          var companyName = results[i+numTr*j].key[0];
+                          var userID = results[i+numTr*j].key[1];
+                          makeRowInThreeColumnTable(tbody,tr,companyName,userID);
+                        }
+                        makeRowInThreeColumnTable(tbody,tr,"","");
+                      } else { // every other situation/row is made the same
+                        for (let j = 0; j < 3; j++) {
+                          // gets company name and userID
+                          var companyName = results[i+numTr*j].value.properties.CompanyName;
+                          var userID = results[i+numTr*j].value.properties.UserID;
+                          makeRowInThreeColumnTable(tbody,tr,companyName,userID);
+                        }
+                      }
+                      tbody.appendChild(tr); // last line in for loop
+                    }
                 	});
                 }
               }
@@ -1147,7 +1170,6 @@
                   	var year = document.getElementById("userRoleGraphYear").value;
                   	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                   	var userRole = activeBars._model.label.split(" ")[0];
-                  	var userRoleGraphLabel = document.getElementById("userRoleGraphLabel").innerHTML = year + " Q" + quarter + " " + userRole + " ";
                   	if (userRole == "EnerNOC") {
                   	  var paramsUserRole = "Employee";
                   	} else if (userRole == "Supplier") {
@@ -1177,15 +1199,7 @@
                       .groupBy(["distinct_id"], mixpanel.reducer.any())
                       .groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                     },params).done(function(results) {
-                  	  var userRoleGraphCompanies = document.getElementById("userRoleGraphCompanies");
-                      userRoleGraphCompanies.innerHTML = "";
-                      for (let i = 0; i < results.length; i++) {
-                        var option = document.createElement("option");
-                        var companyName = results[i].key;
-                        var optionText = document.createTextNode(companyName);
-                        option.appendChild(optionText);
-                        userRoleGraphCompanies.appendChild(option);
-                      }
+
                   	});
                   }
                 }
@@ -1194,6 +1208,18 @@
 
             });
           }
+        }
+        // given a tr, this adds 2 tds to the tr
+        var makeRowInThreeColumnTable = function(tbody,tr,companyName,userID) {
+          // creates the tds and text nodes
+          var tdCompanyName = document.createElement("td");
+          var tdUserID = document.createElement("td");
+          var companyNameTxt = document.createTextNode(companyName);
+          var userIDTxt = document.createTextNode(userID);
+          tdCompanyName.appendChild(companyNameTxt);
+          tdUserID.appendChild(userIDTxt);
+          tr.appendChild(tdCompanyName);
+          tr.appendChild(tdUserID);
         }
         
         var maxValueInQuarter = function(from,to,year) {
