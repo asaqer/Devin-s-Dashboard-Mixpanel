@@ -396,6 +396,13 @@
         <td><canvas></canvas></td>
       </tr>
     </table>
+    
+    <table id="userRoleCompaniesTable">
+      <tr>
+        <th>Company Name</th>
+        <th>UserID</th>
+      </tr>
+    </table>
 
     <span id="userRoleGraphLabel"></span><h2 style="display:inline-block;">&nbsp;Company Names:</h2><br>
     <select id="userRoleGraphCompanies">
@@ -407,7 +414,7 @@
     </div>
     
     <script>
-        
+        // LOGIN CHART TABLE
         var runQuery = function() {
             var error = document.getElementById("error");
             var errorMessage = "";
@@ -749,6 +756,7 @@
           });
         }
         
+        // USER ROLE TABLE
         var setUserRoleTableName = function() {
           var quarter = document.getElementById("userRoleTableQuarter").value;
           var quarterNames = ["Q1", "Q2", "Q3", "Q4"];
@@ -892,10 +900,7 @@
           uniqueUserLoginsQuery();
         }
         
-        
-        
-        
-        
+        // USER ROLE GRAPH
         // makes a quarterly login chart
         var makeQuarterLoginChart = function(from,to,year,quarter) {
           var params = {
@@ -1021,17 +1026,23 @@
                       return e.properties.UserRole == params.userRole
                     })
                     .groupBy(["distinct_id"], mixpanel.reducer.any())
-                    .groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
+                    //.groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                   },params).done(function(results) {
-                    var userRoleGraphCompanies = document.getElementById("userRoleGraphCompanies");
-                    userRoleGraphCompanies.innerHTML = "";
+                    console.log(results);
+                    var userRoleCompaniesTable = document.getElementById("userRoleCompaniesTable");
+                    var tbody = userRoleCompaniesTable.children[0];
+                    tbody.innerHTML = `<tr>
+                                        <th>Company Name</th>
+                                        <th>UserID</th>
+                                      </tr>`;
                     for (let i = 0; i < results.length; i++) {
-                      var option = document.createElement("option");
-                      var companyName = results[i].key;
-                      var optionText = document.createTextNode(companyName);
-                      option.appendChild(optionText);
-                      userRoleGraphCompanies.appendChild(option);
-                    }
+                      var tr = document.createElement("tr");
+                      var userID = results[i].value.properties.UserID;
+                      var companyName = results[i].value.properties.CompanyName;
+                    //   var optionText = document.createTextNode(companyName);
+                    //   option.appendChild(optionText);
+                    //   userRoleGraphCompanies.appendChild(option);
+                     }
                 	});
                 }
               }
@@ -1286,7 +1297,7 @@
         }
         
         
-        
+        // ON LOAD
         window.onload = function () {
           // displays the loader
           document.getElementById("loader2").style.display = "block";
@@ -1308,8 +1319,7 @@
           // sets the from and to date for the user role table (need to set up year before doing this)
           //updateUserRoleTableQuarter(); // uncomment this once we hide from and to dates for user role table
           
-          
-          
+
           // first table
           var year = document.getElementById("userRoleGraphYear").value;
           runPeopleQuery(); //runQuery()
