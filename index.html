@@ -219,15 +219,20 @@
         100% { transform: rotate(360deg); }
       }
       
-      #userRoleCompaniesTable th:nth-child(2n+1) {
+      #userRoleCompaniesUniqueTable {
+        display:none;
+        /*position: absolute;*/
+      }
+      
+      #userRoleCompaniesUniqueTable th:nth-child(2n+1) {
         border-right: none;
       }
       
-      #userRoleCompaniesTable tr td:nth-child(2n) {
+      #userRoleCompaniesUniqueTable tr td:nth-child(2n) {
         border-right: 0.5px gray solid;
       }
       
-      #userRoleCompaniesTable tr td {
+      #userRoleCompaniesUniqueTable tr td {
         height: 0px;
         padding: 8px;
       }
@@ -420,7 +425,7 @@
       </tr>
     </table>
     
-    <table id="userRoleCompaniesTable">
+    <table id="userRoleCompaniesUniqueTable">
       <tr>
         <th>Company Name</th>
         <th>UserID</th>
@@ -1049,39 +1054,7 @@
                     //.groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                   },params).done(function(results) {
                     console.log(results);
-                    var userRoleCompaniesTable = document.getElementById("userRoleCompaniesTable");
-                    var tbody = userRoleCompaniesTable.children[0];
-                    tbody.innerHTML = `<tr>
-                                        <th>Company Name</th>
-                                        <th>UserID</th>
-                                        <th>Company Name</th>
-                                        <th>UserID</th>
-                                        <th>Company Name</th>
-                                        <th>UserID</th>
-                                      </tr>`;
-                    var numOfResults = results.length;
-                    var numTr = Math.floor(numOfResults/3) + 1;
-                    var mod3 = numOfResults % 3;
-                    for (let i = 0; i < numTr; i++) {
-                      // creates the tr
-                      var tr = document.createElement("tr");
-                      if (i == numTr - 1 && mod3) { // last row - only applies to mod3 == 1 || mod3 == 2 OR second to last row - only applies to mod3 == 1
-                        for (let j = 0; j < 2; j++) {
-                          var companyName = results[i+numTr*j].key[0];
-                          var userID = results[i+numTr*j].key[1];
-                          makeRowInThreeColumnTable(tbody,tr,companyName,userID);
-                        }
-                        makeRowInThreeColumnTable(tbody,tr,"","");
-                      } else { // every other situation/row is made the same
-                        for (let j = 0; j < 3; j++) {
-                          // gets company name and userID
-                          var companyName = results[i+numTr*j].value.properties.CompanyName;
-                          var userID = results[i+numTr*j].value.properties.UserID;
-                          makeRowInThreeColumnTable(tbody,tr,companyName,userID);
-                        }
-                      }
-                      tbody.appendChild(tr); // last line in for loop
-                    }
+                    makeUserRoleCompaniesTable(results);
                 	});
                 }
               }
@@ -1128,15 +1101,12 @@
                 
                 // chooses the correct canvas in the table
                 let canvas = td.children[0];
-
                 
                 let barChart = new Chart(canvas, {
                 		type: "bar",
-                		
                     data: {
                     	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
                       datasets: [{
-                          
                       		label: "Quarter " + quarter + " Total Logins",
                           data: [
                           		enernoc,
@@ -1164,7 +1134,6 @@
                         } else {
                           document.body.style.cursor = "default";
                         }
-                        
                       }
                     }
                     
@@ -1202,10 +1171,9 @@
                       .filter(function(e){
                         return e.properties.UserRole == params.userRole
                       })
-                      .groupBy(["distinct_id"], mixpanel.reducer.any())
-                      .groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
+                      .groupBy(["properties.CompanyName","distinct_id"],mixpanel.reducer.count())
                     },params).done(function(results) {
-
+                      console.log(results);
                   	});
                   }
                 }
@@ -1215,6 +1183,53 @@
             });
           }
         }
+        // makes user role companies table
+        var makeUserRoleCompaniesTable = function(results) {
+          var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
+          var tbody = userRoleCompaniesUniqueTable.children[0];
+          tbody.innerHTML = `<tr>
+                              <th>Company Name</th>
+                              <th>UserID</th>
+                              <th>Company Name</th>
+                              <th>UserID</th>
+                              <th>Company Name</th>
+                              <th>UserID</th>
+                            </tr>`;
+          var numOfResults = results.length;
+          var mod3 = numOfResults % 3;
+          if (mod3) {
+            var numTr = Math.floor(numOfResults/3) + 1;
+          } else {
+            var numTr = Math.floor(numOfResults/3);
+          }
+          
+          for (let i = 0; i < numTr; i++) {
+            // creates the tr
+            var tr = document.createElement("tr");
+            if (i == numTr - 1 && mod3) { // last row - only applies to mod3 == 1 || mod3 == 2 OR second to last row - only applies to mod3 == 1
+              for (let j = 0; j < 2; j++) {
+                var companyName = results[i+numTr*j].key[0];
+                var userID = results[i+numTr*j].key[1];
+                makeRowInThreeColumnTable(tbody,tr,companyName,userID);
+              }
+              makeRowInThreeColumnTable(tbody,tr,"","");
+            } else { // every other situation/row is made the same
+              for (let j = 0; j < 3; j++) {
+                // gets company name and userID
+                console.log("i = " + i);
+                console.log("numTr = " + numTr);
+                console.log("j = " + j);
+                console.log(i+numTr*j);
+                var companyName = results[i+numTr*j].value.properties.CompanyName;
+                var userID = results[i+numTr*j].value.properties.UserID;
+                makeRowInThreeColumnTable(tbody,tr,companyName,userID);
+              }
+            }
+            tbody.appendChild(tr); // last line in for loop
+          }
+          document.getElementById("userRoleCompaniesUniqueTable").style.display = "block";
+        }
+        
         // given a tr, this adds 2 tds to the tr
         var makeRowInThreeColumnTable = function(tbody,tr,companyName,userID) {
           // creates the tds and text nodes
