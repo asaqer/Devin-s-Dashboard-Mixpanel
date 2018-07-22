@@ -241,8 +241,24 @@
         display: none;
       }
       
-      #userRoleCompaniesTotalTable tr td:nth-child(3n){
+      #userRoleCompaniesTotalTable tr td:nth-child(3n+2){
         border-right: 0.5px gray solid;
+      }
+      
+      #userRoleCompaniesTotalTable tr td:nth-child(3n) {
+        border-right: 2.2px black solid;
+      }
+      
+      #userRoleCompaniesTotalTable tr th:nth-child(3n) {
+        border-right: 2.2px black solid;
+      }
+      
+      #userRoleCompaniesTotalTable tr td:last-child {
+        border-right: none;
+      }
+      
+      #userRoleCompaniesTotalTable tr th:last-child {
+        border-right: none;
       }
       
     </style>
@@ -446,6 +462,9 @@
     
     <table id="userRoleCompaniesTotalTable">
       <tr>
+        <th>Company Name</th>
+        <th>UserID</th>
+        <th>Logins</th>
         <th>Company Name</th>
         <th>UserID</th>
         <th>Logins</th>
@@ -1085,9 +1104,11 @@
                     var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
                     var userRoleCompaniesTotalTable = document.getElementById("userRoleCompaniesTotalTable");
                     var tbody = userRoleCompaniesUniqueTable.children[0];
+                    var headerRowHTML = tbody.children[0].innerHTML;
+                    tbody.innerHTML = headerRowHTML;
                     makeNColumnTable(2,3,data,tbody);
                     userRoleCompaniesUniqueTable.style.display = "block";
-                      userRoleCompaniesTableTable.style.display = "none";
+                    userRoleCompaniesTotalTable.style.display = "none";
                     //makeUserRoleCompaniesTable(results);
                 	});
                 }
@@ -1219,7 +1240,10 @@
                       var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
                       var userRoleCompaniesTotalTable = document.getElementById("userRoleCompaniesTotalTable");
                       var tbody = userRoleCompaniesTotalTable.children[0];
-                      makeNColumnTable(3,2,data,tbody);
+                      var headerRowHTML = tbody.children[0].innerHTML;
+                      tbody.innerHTML = headerRowHTML;
+                      
+                      makeNColumnTable(3,3,data,tbody);
                       userRoleCompaniesUniqueTable.style.display = "none";
                       userRoleCompaniesTotalTable.style.display = "block";
                   	});
