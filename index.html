@@ -1054,7 +1054,16 @@
                     //.groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                   },params).done(function(results) {
                     console.log(results);
-                    makeUserRoleCompaniesTable(results);
+                    // working here
+                    var data = [];
+                    for (let i = 0; i < results.length; i++) {
+                      var companyName = results[i].key[0];
+                      var userID = results[i].key[1];
+                      var tuple = [companyName,userID];
+                      data.push(tuple);
+                    }
+                    console.log(data);
+                    //makeUserRoleCompaniesTable(results);
                 	});
                 }
               }
@@ -1183,6 +1192,41 @@
             });
           }
         }
+        // makes an N column table
+        // data should be have n columns
+        var makeNColumnTable = function(columns,repeated,data,tbody) {
+        		var dataLength = data.length;
+            // totalColumns is the actual number of columns
+            if (dataLength % repeated) { // trNum is the number of rows needed to be added to the table
+            	var trNum = Math.floor(dataLength/repeated) + 1;
+            } else {
+            	var trNum = dataLength/repeated;	
+            }
+            for (let i = 0; i < trNum; i++) { // adds in the trs
+            	var tr = document.createElement("tr");
+              // adds in the tds
+              for (let j = 0; j < repeated; j++) { // number of "big/repeated" columns
+                var dataIndex = i+j*trNum;
+                var dataArray = data[dataIndex];
+                console.log(dataIndex);
+                	for (let k = 0; k < columns; k++) { // number of regular column
+                  	// going horizontally, you add the number of rows
+                    var td = document.createElement("td");
+                     if ( dataIndex < dataLength) { // only indices less than the length of the data is put in
+                      var cellData = document.createTextNode(dataArray[k]);
+                    } else {
+                      var cellData = document.createTextNode("");
+                    } 
+                    var cellData = document.createTextNode(dataArray[k]);
+                    td.appendChild(cellData);
+                    tr.appendChild(td);
+                  }
+              }
+              // appends the row to the table
+              tbody.appendChild(tr);
+            }	
+        }
+
         // makes user role companies table
         var makeUserRoleCompaniesTable = function(results) {
           var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
@@ -1230,7 +1274,7 @@
           document.getElementById("userRoleCompaniesUniqueTable").style.display = "block";
         }
         
-        // given a tr, this adds 2 tds to the tr
+        // given a tr, this adds 2 tds to the tr (is in makeUserRoleCompaniesTable)
         var makeRowInThreeColumnTable = function(tbody,tr,companyName,userID) {
           // creates the tds and text nodes
           var tdCompanyName = document.createElement("td");
