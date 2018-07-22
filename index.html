@@ -1053,7 +1053,7 @@
                     .groupBy(["properties.CompanyName","distinct_id"], mixpanel.reducer.any())
                     //.groupBy(["value.properties.CompanyName"], mixpanel.reducer.count())
                   },params).done(function(results) {
-                    console.log(results);
+                    
                     // working here
                     var data = [];
                     for (let i = 0; i < results.length; i++) {
@@ -1062,7 +1062,10 @@
                       var tuple = [companyName,userID];
                       data.push(tuple);
                     }
-                    console.log(data);
+                    var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
+                    var tbody = userRoleCompaniesUniqueTable.children[0];
+                    makeNColumnTable(2,3,data,tbody);
+                    userRoleCompaniesUniqueTable.style.display = "block";
                     //makeUserRoleCompaniesTable(results);
                 	});
                 }
@@ -1208,7 +1211,6 @@
               for (let j = 0; j < repeated; j++) { // number of "big/repeated" columns
                 var dataIndex = i+j*trNum;
                 var dataArray = data[dataIndex];
-                console.log(dataIndex);
                 	for (let k = 0; k < columns; k++) { // number of regular column
                   	// going horizontally, you add the number of rows
                     var td = document.createElement("td");
@@ -1217,7 +1219,6 @@
                     } else {
                       var cellData = document.createTextNode("");
                     } 
-                    var cellData = document.createTextNode(dataArray[k]);
                     td.appendChild(cellData);
                     tr.appendChild(td);
                   }
