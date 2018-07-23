@@ -77,14 +77,14 @@
         border-radius: 0 15px 0 0; 
       }
       
-      #loginChart td .blueU{
+      #loginChart .blueU {
         color: blue;
         text-decoration: underline;
       }
       
-      #loginChart td .black{
-        color: black;
-        text-decoration: none;
+      #loginChart .blueU:hover {
+        cursor: pointer;
+        background: #999;
       }
       
       #loginTableWrapper {
@@ -351,6 +351,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>0</td>
         </tr>
         <tr>
           <td>Non-Advisory</td>
@@ -359,6 +361,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>1</td>
         </tr>
         <tr>
           <td>Non-Advisory</td>
@@ -367,6 +371,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>2</td>
         </tr>
         <tr>
           <td>Non-Advisory</td>
@@ -375,6 +381,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>3</td>
         </tr>
         <tr>
           <td>Advisory</td>
@@ -383,6 +391,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>4</td>
         </tr>
         <tr>
           <td>Advisory</td>
@@ -391,6 +401,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>5</td>
         </tr>
         <tr>
           <td>Advisory</td>
@@ -399,6 +411,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>6</td>
         </tr>
         <tr>
           <td></td>
@@ -407,6 +421,8 @@
           <td></td>
           <td></td>
           <td></td>
+          <!-- fake column-->
+          <td hidden>7</td>
         </tr>
       </table>
       
@@ -747,11 +763,20 @@
                 for (var i = 0; i < totalCompanies.length; i++) {
                   // number of companies with at least one contract and at least one active user column (2)
                   var CUSize = parseInt(rows[i+1].children[customerColumn].textContent);
-                  
+                  // working here
+                  var td = rows[i+1].children[totalColumn];
+                  td.classList.add("blueU");
+                  // adds onclick
+                  td.onclick = function(e) {
+                    console.log(e);
+                  }
                   // gets companies with a login (3)
                   var total = totalCompanies[i].size;
+                  if (total == 0) {
+                    td.classList.remove("blueU");
+                  }
                   // fills out companies with a login column (3)
-                  rows[i+1].children[totalColumn].innerHTML = total;
+                  td.innerHTML = total;
                   
                   // fills out the portal companies column (4)
                   var portal = portalCompanies[i].size; 
