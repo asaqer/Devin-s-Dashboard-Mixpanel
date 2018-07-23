@@ -261,6 +261,34 @@
         border-right: none;
       }
       
+      #loader4 {
+        display: none;
+        position: absolute;
+        left: 55%;
+        top: 25%;
+        z-index: 1;
+        width: 150px;
+        height: 150px;
+        margin: -75px 0 0 -75px;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 25px;
+        height: 25px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 2s linear infinite;
+      }
+
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
     </style>
     
 
@@ -448,33 +476,38 @@
         <td><canvas></canvas></td>
       </tr>
     </table>
-    
-    <table id="userRoleCompaniesUniqueTable">
-      <tr>
-        <th>Company Name</th>
-        <th>UserID</th>
-        <th>Company Name</th>
-        <th>UserID</th>
-        <th>Company Name</th>
-        <th>UserID</th>
-      </tr>
-    </table>
-    
-    <table id="userRoleCompaniesTotalTable">
-      <tr>
-        <th>Company Name</th>
-        <th>UserID</th>
-        <th>Logins</th>
-        <th>Company Name</th>
-        <th>UserID</th>
-        <th>Logins</th>
-        <th>Company Name</th>
-        <th>UserID</th>
-        <th>Logins</th>
-      </tr>
-    </table>
-    
     <div id="loader3"></div>
+    
+    <div>
+      <table id="userRoleCompaniesUniqueTable">
+        <tr>
+          <th>Company Name</th>
+          <th>UserID</th>
+          <th>Company Name</th>
+          <th>UserID</th>
+          <th>Company Name</th>
+          <th>UserID</th>
+        </tr>
+      </table>
+    
+      <table id="userRoleCompaniesTotalTable">
+        <tr>
+          <th>Company Name</th>
+          <th>UserID</th>
+          <th>Logins</th>
+          <th>Company Name</th>
+          <th>UserID</th>
+          <th>Logins</th>
+          <th>Company Name</th>
+          <th>UserID</th>
+          <th>Logins</th>
+        </tr>
+      </table>
+      <div id="loader4"></div>
+    </div>
+    
+    
+    
     </div>
     
     <script>
@@ -1055,10 +1088,14 @@
                     }
                 });
                 
-
+              
               canvas.onclick = function(e) {
                 var activeBars = barChart.getElementAtEvent(e)[0];
                 if (activeBars) {
+                  // show loader
+                  var loader = document.getElementById("loader4");
+                  loader.style.display = "block";
+                  
                 	var year = document.getElementById("userRoleGraphYear").value;
                 	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                 	var userRole = activeBars._model.label.split(" ")[0];
@@ -1109,6 +1146,9 @@
                     makeNColumnTable(2,3,data,tbody);
                     userRoleCompaniesUniqueTable.style.display = "block";
                     userRoleCompaniesTotalTable.style.display = "none";
+                    
+                    // hide loader
+                    loader.style.display = "none";
                     //makeUserRoleCompaniesTable(results);
                 	});
                 }
@@ -1197,6 +1237,10 @@
                 canvas.onclick = function(e) {
                   var activeBars = barChart.getElementAtEvent(e)[0];
                   if (activeBars) {
+                    // show loader
+                    var loader = document.getElementById("loader4");
+                    loader.style.display = "block";
+                  
                   	var year = document.getElementById("userRoleGraphYear").value;
                   	var quarter = parseInt(activeBars._model.datasetLabel.split(" ")[1]);
                   	var userRole = activeBars._model.label.split(" ")[0];
@@ -1246,6 +1290,9 @@
                       makeNColumnTable(3,3,data,tbody);
                       userRoleCompaniesUniqueTable.style.display = "none";
                       userRoleCompaniesTotalTable.style.display = "block";
+                      
+                      // hide loader
+                      loader.style.display = "none";
                   	});
                   }
                 }
