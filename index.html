@@ -95,6 +95,10 @@
         position:relative;
       }
       
+      #loginChartCompanyNamesSpan {
+        font-weight: bold;
+      }
+      
       #loginChartCompanyNames {
         display: none;
       }
@@ -433,6 +437,8 @@
           <td hidden>7</td>
         </tr>
       </table>
+      
+      <span id="loginChartCompanyNamesSpan"></span>
       
       <!-- Show Company Names Table -->
       <table id="loginChartCompanyNames">
@@ -776,32 +782,46 @@
                   td.classList.add("blueU");
                   // adds onclick
                   td.onclick = function(e) {
-                    // gets the row of the table, and the correct set
-                    var rowNum = parseInt(e.path[1].children[e.path[1].childElementCount-1].innerText);
-                    var data = Array.from(totalCompanies[rowNum]).sort();
-                    var numOfCompanies = data.length;
-                    var formattedData = [];
-                    for (let i = 0; i < data.length; i++) {
-                      formattedData.push([data[i]]);
-                    }
-                    var loginChartCompanyNames = document.getElementById("loginChartCompanyNames");
-                    var tbody = loginChartCompanyNames.children[0];
-                    // makes and displays the table
-                    // if (numOfCompanies >= 1 && numOfCompanies <= 7) {
-                    //   makeNColumnTable(1,1,formattedData,tbody);
-                    // } else 
-                    if (numOfCompanies >= 1 && numOfCompanies <= 15){
-                      makeNColumnTable(1,2,formattedData,tbody);
-                    } else if (numOfCompanies >= 16 && numOfCompanies <= 22){
-                      makeNColumnTable(1,3,formattedData,tbody);
-                    } else {
-                      makeNColumnTable(1,4,formattedData,tbody);
-                    }
-                    if (numOfCompanies) {
-                      loginChartCompanyNames.style.display = "block";
-                    } else {
-                      loginChartCompanyNames.style.display = "none";
-                    }
+                    console.log(e);
+                    if (e.srcElement.classList[0] == "blueU") {
+                      // gets the row number if the table
+                      var rowNum = parseInt(e.path[1].children[e.path[1].childElementCount-1].innerText);
+                      
+                      // shows the header span
+                      var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
+                      var ct = e.target.parentElement.children[0].innerText;
+                      var cc = e.target.parentElement.children[1].innerText;
+                      loginChartCompanyNamesSpan.textContent = ct + " " + cc + ":";
+                      
+                      
+                      // gets the row of the table, and the correct set
+                      
+                      var data = Array.from(totalCompanies[rowNum]).sort();
+                      var numOfCompanies = data.length;
+                      var formattedData = [];
+                      for (let i = 0; i < data.length; i++) {
+                        formattedData.push([data[i]]);
+                      }
+                      var loginChartCompanyNames = document.getElementById("loginChartCompanyNames");
+                      var tbody = loginChartCompanyNames.children[0];
+                      // makes and displays the table
+                      // if (numOfCompanies >= 1 && numOfCompanies <= 7) {
+                      //   makeNColumnTable(1,1,formattedData,tbody);
+                      // } else 
+                      if (numOfCompanies >= 1 && numOfCompanies <= 15){
+                        makeNColumnTable(1,2,formattedData,tbody);
+                      } else if (numOfCompanies >= 16 && numOfCompanies <= 22){
+                        makeNColumnTable(1,3,formattedData,tbody);
+                      } else {
+                        makeNColumnTable(1,4,formattedData,tbody);
+                      }
+                      if (numOfCompanies) {
+                        loginChartCompanyNames.style.display = "block";
+                      } else {
+                        loginChartCompanyNames.style.display = "none";
+                      }
+                   }
+                    
                   }
                   // gets companies with a login (3)
                   var total = totalCompanies[i].size;
