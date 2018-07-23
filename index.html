@@ -77,6 +77,16 @@
         border-radius: 0 15px 0 0; 
       }
       
+      #loginChart td .blueU{
+        color: blue;
+        text-decoration: underline;
+      }
+      
+      #loginChart td .black{
+        color: black;
+        text-decoration: none;
+      }
+      
       #loginTableWrapper {
         position:relative;
       }
@@ -273,7 +283,7 @@
         display: none;
         position: absolute;
         left: 55%;
-        top: 25%;
+        /*top: 25%;*/
         z-index: 1;
         width: 150px;
         height: 150px;
@@ -400,6 +410,12 @@
         </tr>
       </table>
       
+      <!-- Show Company Names Table -->
+      <table id="loginChartCompanyNames">
+        <tr>
+          <th>Company Name</th>
+        </tr>
+      </table>
       <div id="loader"></div>
     </div>
     <!-- USER ROLE TABLE -->
@@ -491,7 +507,9 @@
     <div id="loader3"></div>
     
     <div>
+      
       <span id="userRoleGraphCompanyNames"></span><h2 style="display: inline-block;">&nbsp;Company Names:</h2>
+      <div id="loader4"></div>
       <table id="userRoleCompaniesUniqueTable">
         <tr>
           <th>Company Name</th>
@@ -506,7 +524,7 @@
           <th>Logins</th>
         </tr>
       </table>
-      <div id="loader4"></div>
+      
     </div>
     
     
@@ -730,9 +748,9 @@
                   // number of companies with at least one contract and at least one active user column (2)
                   var CUSize = parseInt(rows[i+1].children[customerColumn].textContent);
                   
-                  // gets total number of companies (3)
-                  var total = totalCompanies[i].size; 
-                  // fills out the total companies column (3)
+                  // gets companies with a login (3)
+                  var total = totalCompanies[i].size;
+                  // fills out companies with a login column (3)
                   rows[i+1].children[totalColumn].innerHTML = total;
                   
                   // fills out the portal companies column (4)
