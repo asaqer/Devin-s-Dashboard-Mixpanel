@@ -102,7 +102,7 @@
       #loginChartCompanyNames {
         display: none;
         opacity: 0;
-        animation: fadeIn 3s ease forwards;
+        animation: fadeIn 2.5s ease forwards;
       }
       
       @keyframes fadeIn {
@@ -264,7 +264,7 @@
       #userRoleCompaniesUniqueTable {
         display:none;
         opacity: 0;
-        animation: fadeIn 3s ease forwards;
+        animation: fadeIn 2.5s ease forwards;
       }
       
       #userRoleCompaniesUniqueTable th:nth-child(2n+1) {
@@ -291,7 +291,7 @@
       #userRoleCompaniesTotalTable {
         display: none;
         opacity: 0;
-        animation: fadeIn 3s ease forwards;
+        animation: fadeIn 2.5s ease forwards;
       }
       
       #userRoleCompaniesTotalTable tr td {
@@ -821,14 +821,14 @@
                       loginChartCompanyNamesSpan.textContent = ct + " " + cc + ":";
                       
                       
-                      // gets the row of the table, and the correct set
-                      
+                      // gets the row of the table, and the correct set (by index)
                       var data = Array.from(totalCompanies[rowNum]).sort();
                       var numOfCompanies = data.length;
                       var formattedData = [];
                       for (let i = 0; i < data.length; i++) {
                         formattedData.push([data[i]]);
                       }
+                      // gets table and makes the table
                       var loginChartCompanyNames = document.getElementById("loginChartCompanyNames");
                       var tbody = loginChartCompanyNames.children[0];
                       // makes and displays the table
