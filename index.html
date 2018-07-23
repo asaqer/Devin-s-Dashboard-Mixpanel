@@ -237,6 +237,14 @@
         padding: 8px;
       }
       
+      #userRoleCompaniesUniqueTable tr td:last-child {
+        border-right: none;
+      }
+      
+      #userRoleCompaniesUniqueTable tr th:last-child {
+        border-right: none;
+      }
+      
       #userRoleCompaniesTotalTable {
         display: none;
       }
@@ -395,7 +403,7 @@
       <!-- above user role table -->
       <label class=date>From:&nbsp;</label>
       <input type="date" value="2018-06-01" id="fromLogins">&nbsp;
-      <label class=date>From:&nbsp;</label>
+      <label class=date>To:&nbsp;</label>
       <input type="date" value="2018-06-30" id="toLogins">&nbsp;
       
       <!-- quarter input-->
@@ -483,21 +491,11 @@
         <tr>
           <th>Company Name</th>
           <th>UserID</th>
-          <th>Company Name</th>
-          <th>UserID</th>
-          <th>Company Name</th>
-          <th>UserID</th>
         </tr>
       </table>
     
       <table id="userRoleCompaniesTotalTable">
         <tr>
-          <th>Company Name</th>
-          <th>UserID</th>
-          <th>Logins</th>
-          <th>Company Name</th>
-          <th>UserID</th>
-          <th>Logins</th>
           <th>Company Name</th>
           <th>UserID</th>
           <th>Logins</th>
@@ -1141,8 +1139,6 @@
                     var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
                     var userRoleCompaniesTotalTable = document.getElementById("userRoleCompaniesTotalTable");
                     var tbody = userRoleCompaniesUniqueTable.children[0];
-                    var headerRowHTML = tbody.children[0].innerHTML;
-                    tbody.innerHTML = headerRowHTML;
                     makeNColumnTable(2,3,data,tbody);
                     userRoleCompaniesUniqueTable.style.display = "block";
                     userRoleCompaniesTotalTable.style.display = "none";
@@ -1284,9 +1280,6 @@
                       var userRoleCompaniesUniqueTable = document.getElementById("userRoleCompaniesUniqueTable");
                       var userRoleCompaniesTotalTable = document.getElementById("userRoleCompaniesTotalTable");
                       var tbody = userRoleCompaniesTotalTable.children[0];
-                      var headerRowHTML = tbody.children[0].innerHTML;
-                      tbody.innerHTML = headerRowHTML;
-                      
                       makeNColumnTable(3,3,data,tbody);
                       userRoleCompaniesUniqueTable.style.display = "none";
                       userRoleCompaniesTotalTable.style.display = "block";
@@ -1305,6 +1298,24 @@
         // makes an N column table
         // data should be have n columns
         var makeNColumnTable = function(columns,repeated,data,tbody) {
+            // working here
+            // rewrites the header of the table
+            var headerRow = tbody.children[0];
+            var headers = [];
+            for (let i = 0; i < columns; i++) {
+              headers.push(headerRow.children[i].textContent);
+            }
+            tbody.innerHTML = "<tr></tr>";
+            var tr = tbody.children[0];
+            for (let i = 0; i < repeated; i++) {
+              for (let j = 0; j < headers.length; j++) {
+                var th = document.createElement("th");
+                var txt = document.createTextNode(headers[j]);
+                th.appendChild(txt);
+                tr.appendChild(th);
+              }
+            }
+            // make the table (tds)
         		var dataLength = data.length;
             // totalColumns is the actual number of columns
             if (dataLength % repeated) { // trNum is the number of rows needed to be added to the table
