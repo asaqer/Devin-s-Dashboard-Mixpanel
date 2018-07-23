@@ -1218,6 +1218,8 @@
                 	// change title
                   var span  = document.getElementById("userRoleGraphCompanyNames");
                   span.textContent = year + " Q" + quarter + " " + userRole + " Unique User Logins:";
+                  // show title
+                  span.style.display = "block";
                 	
                 	MP.api.jql(function main() {
                     return Events({
@@ -1365,6 +1367,8 @@
                     	// change title
                     var span  = document.getElementById("userRoleGraphCompanyNames");
                     span.textContent = year + " Q" + quarter + " " + userRole + " Total User Logins:";
+                  	// show title
+                  	span.style.display = "block";
                   	
                   	MP.api.jql(function main() {
                       return Events({
@@ -1577,6 +1581,10 @@
         
         // set user role graph table
         var setUserRoleGraph = function() {
+              // hides the table and the span
+              document.getElementById("userRoleCompaniesUniqueTable").style.display = "none";
+              document.getElementById("userRoleCompaniesTotalTable").style.display = "none";
+              document.getElementById("userRoleGraphCompanyNames").style.display = "none";
               
               makeAllLoginCharts();
               
@@ -1643,6 +1651,8 @@
             } else {
               from.style.background = "red";
             }
+            document.getElementById("loginChartCompanyNames").style.display = "none";
+            document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
           // changing the to date above the login chart
           document.getElementById("to").addEventListener("change", function(){
@@ -1652,6 +1662,8 @@
             } else {
               to.style.background = "red";
             }
+            document.getElementById("loginChartCompanyNames").style.display = "none";
+            document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
           // submit button above the login chart
           document.getElementById("submit").addEventListener("click", runQuery);
