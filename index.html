@@ -101,6 +101,26 @@
       
       #loginChartCompanyNames {
         display: none;
+        opacity: 0;
+        animation: fadeIn 3s ease forwards;
+      }
+      
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
       }
       
       /* Center the loader */
@@ -243,7 +263,8 @@
       
       #userRoleCompaniesUniqueTable {
         display:none;
-        /*position: absolute;*/
+        opacity: 0;
+        animation: fadeIn 3s ease forwards;
       }
       
       #userRoleCompaniesUniqueTable th:nth-child(2n+1) {
@@ -269,6 +290,8 @@
       
       #userRoleCompaniesTotalTable {
         display: none;
+        opacity: 0;
+        animation: fadeIn 3s ease forwards;
       }
       
       #userRoleCompaniesTotalTable tr td {
