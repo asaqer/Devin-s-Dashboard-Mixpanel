@@ -538,7 +538,7 @@
     
     <div>
       
-      <span id="userRoleGraphCompanyNames"></span><h2 style="display: inline-block;">&nbsp;Company Names:</h2>
+      <span id="userRoleGraphCompanyNames"></span>
       <div id="loader4"></div>
       <table id="userRoleCompaniesUniqueTable">
         <tr>
@@ -777,7 +777,7 @@
                 for (var i = 0; i < totalCompanies.length; i++) {
                   // number of companies with at least one contract and at least one active user column (2)
                   var CUSize = parseInt(rows[i+1].children[customerColumn].textContent);
-                  // working here
+                  
                   var td = rows[i+1].children[totalColumn];
                   td.classList.add("blueU");
                   // adds onclick
@@ -1217,7 +1217,7 @@
                 	
                 	// change title
                   var span  = document.getElementById("userRoleGraphCompanyNames");
-                  span.textContent = year + " Q" + quarter + " " + userRole;
+                  span.textContent = year + " Q" + quarter + " " + userRole + " Unique User Logins:";
                 	
                 	MP.api.jql(function main() {
                     return Events({
@@ -1364,7 +1364,7 @@
                   	
                     	// change title
                     var span  = document.getElementById("userRoleGraphCompanyNames");
-                    span.textContent = year + " Q" + quarter + " " + userRole;
+                    span.textContent = year + " Q" + quarter + " " + userRole + " Total User Logins:";
                   	
                   	MP.api.jql(function main() {
                       return Events({
