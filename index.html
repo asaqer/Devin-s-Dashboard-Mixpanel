@@ -195,7 +195,7 @@
       #loader3 {
         position: absolute;
         left: 55%;
-        top: 1360px;
+        top: 50%;
         z-index: 1;
         width: 150px;
         height: 150px;
@@ -295,6 +295,10 @@
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+      
+      #userRoleGraphCompanyNames {
+        font-weight: bold; 
       }
       
     </style>
@@ -487,6 +491,7 @@
     <div id="loader3"></div>
     
     <div>
+      <span id="userRoleGraphCompanyNames"></span><h2 style="display: inline-block;">&nbsp;Company Names:</h2>
       <table id="userRoleCompaniesUniqueTable">
         <tr>
           <th>Company Name</th>
@@ -1044,7 +1049,7 @@
                 }
                 
                 var td = tr.children[quarterIndex % 2];
-                td.innerHTML = "<canvas></canvas>"
+                td.innerHTML = "<canvas></canvas>";
                 
                 // chooses the correct canvas in the table
                 let canvas = td.children[0];
@@ -1113,6 +1118,10 @@
                 	  to: year + quarters[quarterIndex][1],
                 	  userRole: paramsUserRole
                 	};
+                	
+                	// change title
+                  var span  = document.getElementById("userRoleGraphCompanyNames");
+                  span.textContent = year + " Q" + quarter + " " + userRole;
                 	
                 	MP.api.jql(function main() {
                     return Events({
@@ -1188,7 +1197,7 @@
                 }
                 
                 var td = tr.children[quarterIndex % 2];
-                td.innerHTML = "<canvas></canvas>"
+                td.innerHTML = "<canvas></canvas>";
                 
                 // chooses the correct canvas in the table
                 let canvas = td.children[0];
@@ -1256,6 +1265,10 @@
                   	  to: year + quarters[quarterIndex][1],
                   	  userRole: paramsUserRole
                   	};
+                  	
+                    	// change title
+                    var span  = document.getElementById("userRoleGraphCompanyNames");
+                    span.textContent = year + " Q" + quarter + " " + userRole;
                   	
                   	MP.api.jql(function main() {
                       return Events({
@@ -1441,6 +1454,7 @@
         }
         // creates all the quarterly login charts
         var makeAllLoginCharts = function() {
+          document.getElementById("loader3").style.display = "block";
           var year = document.getElementById("userRoleGraphYear").value;
           // calculates max of all values in all quarters
           var q1Max = maxValueInQuarter("-01-01","-03-31",year);
@@ -1464,6 +1478,23 @@
           makeQuarterLoginChart("-10-01","-12-31",year,4,max,stepSize);
           document.getElementById("loader3").style.display = "none";
         }
+        
+        // set user role graph table
+        var setUserRoleGraph = function() {
+              
+              makeAllLoginCharts();
+              
+              // changes the caption of the table
+              var year = document.getElementById("userRoleGraphYear").value;
+              var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
+              var loginType = document.getElementById("userRoleGraphSelect").value;
+              if (loginType == "unique") {
+                caption.textContent = year + " Quarterly Unique Logins";
+              } else if (loginType == "total") {
+                caption.textContent = year + " Quarterly Total Logins";
+              }
+              document.getElementById("loader3").style.display = "none";
+          }
         
         
         // ON LOAD
@@ -1502,21 +1533,7 @@
           // chart
           makeAllLoginCharts(); // year depends on the value in the input
           
-          // set user role graph table
-          var setUserRoleGraph = function() {
-              document.getElementById("loader3").style.display = "block";
-              makeAllLoginCharts();
-              
-              // changes the caption of the table
-              var year = document.getElementById("userRoleGraphYear").value;
-              var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
-              var loginType = document.getElementById("userRoleGraphSelect").value;
-              if (loginType == "unique") {
-                caption.textContent = year + " Quarterly Unique Logins";
-              } else if (loginType == "total") {
-                caption.textContent = year + " Quarterly Total Logins";
-              }
-          }
+          
           
           
           // Event Listeners
