@@ -162,28 +162,18 @@
         -webkit-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;
       }
-
-      
-      
-      /* above user role table*/
-      /* Select which quarter (1-4) *
-      .quarter {
-        border-radius: 5px;
+    
+      /* USER ROLE TABLE*/
+      #userRoleTableWrapper {
+        position: relative;
       }
       
-      
-      
-      /* user role table*/
       #userRoleTable tr {
         border-bottom: 0.5px solid gray;
       }
       
       #userRoleTable tr:last-child {
         border-bottom: none;
-      }
-      
-      #userRoleTableWrapper {
-        position: relative;
       }
       
       #loader2 {
@@ -203,16 +193,20 @@
         animation: spin 2s linear infinite;
       }
       
+      /* USER ROLE GRAPH */
+      #userRoleGraphWrapper {
+        position: relative;
+      }
+      
       #userRoleGraph td {
         width: calc(100%/2);
-        /*background: none;*/
       }
       
       #userRoleGraph caption {
         font-weight: bold;
         font-size: 24px;
       }
-      
+      /* curve the tds because the table has no th*/
       #userRoleGraph tr:first-child td:first-child {
         border-radius: 15px 0 0 0;
       }
@@ -221,17 +215,9 @@
         border-radius: 0 15px 0 0;
       }
       
-      #userRoleGraphCompanies {
-        width: 531px;
-      }
-      
       #userRoleGraphLabel {
         display: inline-block;
         font-weight: bold;
-      }
-      
-      #userRoleGraphWrapper {
-        position: relative;
       }
       
       #loader3 {
@@ -251,6 +237,7 @@
         animation: spin 2s linear infinite;
       }
       
+      /* USER ROLE COMPANIES UNIQUE TABLE */
       #userRoleCompaniesUniqueTable {
         display:none;
         opacity: 0;
@@ -270,14 +257,11 @@
         padding: 8px;
       }
       
-      #userRoleCompaniesUniqueTable tr td:last-child {
+      #userRoleCompaniesUniqueTable tr th:last-child, #userRoleCompaniesUniqueTable tr td:last-child {
         border-right: none;
       }
       
-      #userRoleCompaniesUniqueTable tr th:last-child {
-        border-right: none;
-      }
-      
+      /* USER ROLE COMPANIES TOTAL TABLE*/
       #userRoleCompaniesTotalTable {
         display: none;
         opacity: 0;
