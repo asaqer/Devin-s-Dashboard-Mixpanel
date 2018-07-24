@@ -656,11 +656,9 @@
               var CUColumn = 2;
               var rows = document.querySelectorAll("#loginChart tr");
               // fills out the at least 1 active contract and active user column
-              rows.forEach(function(row,index) {
+              rows.forEach(function(row,i) {
                 if (row.firstElementChild.tagName.toLowerCase() == "td") {
-                  // i is 0 based
-                  var i = index - 1;
-                  row.children[CUColumn].textContent = companiesCU[i].size;
+                  row.children[CUColumn].textContent = companiesCU[i-1].size;
                 }
               });
               runQuery();
@@ -875,10 +873,8 @@
                 var totalColumn = 3;
                 var portalViewerColumn = 4;
                 var percentageColumn = 5;
-                rows.forEach(function(row,index) {
+                rows.forEach(function(row,i) {
                   if (row.firstElementChild.tagName.toLowerCase() == "td") {
-                    // i is 0 based
-                    var i = index - 1;
                     // number of companies with at least one contract and at least one active user column (2)
                     var CUSize = parseInt(row.children[customerColumn].textContent);
                     
@@ -928,7 +924,7 @@
                       
                     }
                     // gets companies with a login (3)
-                    var total = totalCompanies[i].size;
+                    var total = totalCompanies[i-1].size;
                     if (total == 0) {
                       td.classList.remove("blueU");
                     }
@@ -937,7 +933,7 @@
                     row.children[totalColumn].textContent = total;
                     
                     // fills out the portal companies column (4)
-                    var portal = portalCompanies[i].size; 
+                    var portal = portalCompanies[i-1].size; 
                     // fills out the total companies column (4)
                     row.children[portalViewerColumn].textContent = portal;
                     
@@ -1010,10 +1006,8 @@
               var uniqueLogins = [enernoc, supplier, partner, customer];
               
               var firstRow = document.querySelectorAll("#userRoleTable tr:nth-child(2) td");
-              console.log(firstRow);
               firstRow.forEach(function(td,index) {
                 if (index > 0) { // first td is a label
-                console.log("got in");
                   td.textContent = uniqueLogins[index-1];
                 }
               });
