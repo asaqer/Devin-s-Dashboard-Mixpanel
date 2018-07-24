@@ -1554,50 +1554,51 @@
         }
         // creates all the quarterly login charts
         var makeAllLoginCharts = function() {
-          document.getElementById("loader3").style.display = "block";
           var year = document.getElementById("userRoleGraphYear").value;
           // calculates max of all values in all quarters
-          var q1Max = maxValueInQuarter("-01-01","-03-31",year);
-          var q2Max = maxValueInQuarter("-04-01","-06-30",year);
-          var q3Max = maxValueInQuarter("-07-01","-9-30",year);
-          var q4Max = maxValueInQuarter("-10-01","-12-31",year);
-          var maxes = [q1Max,q2Max,q3Max,q4Max]
-          var max = q1Max;
-          for (let i = 1; i < maxes.length; i++) {
-            if (maxes[i] > q1Max) {
-              max = maxes[i];
-            }
-          }
+          // var q1Max = maxValueInQuarter("-01-01","-03-31",year);
+          // var q2Max = maxValueInQuarter("-04-01","-06-30",year);
+          // var q3Max = maxValueInQuarter("-07-01","-9-30",year);
+          // var q4Max = maxValueInQuarter("-10-01","-12-31",year);
+          // var maxes = [q1Max,q2Max,q3Max,q4Max]
+          // var max = q1Max;
+          // for (let i = 1; i < maxes.length; i++) {
+          //   if (maxes[i] > q1Max) {
+          //     max = maxes[i];
+          //   }
+          // }
           
-          // calculates step size
-          var stepSize = Math.ceil(max / 9);
+          // // calculates step size
+          // var stepSize = Math.ceil(max / 9);
           
-          makeQuarterLoginChart("-01-01","-03-31",year,1,max,stepSize);
-          makeQuarterLoginChart("-04-01","-06-30",year,2,max,stepSize);
-          makeQuarterLoginChart("-07-01","-9-30",year,3,max,stepSize);
-          makeQuarterLoginChart("-10-01","-12-31",year,4,max,stepSize);
-          document.getElementById("loader3").style.display = "none";
+          
+          makeQuarterLoginChart("-01-01","-03-31",year,1);
+          makeQuarterLoginChart("-04-01","-06-30",year,2);
+          makeQuarterLoginChart("-07-01","-9-30",year,3);
+          makeQuarterLoginChart("-10-01","-12-31",year,4);
+          // document.getElementById("loader3").style.display = "none";
         }
         
         // set user role graph table
         var setUserRoleGraph = function() {
-              // hides the table and the span
-              document.getElementById("userRoleCompaniesUniqueTable").style.display = "none";
-              document.getElementById("userRoleCompaniesTotalTable").style.display = "none";
-              document.getElementById("userRoleGraphCompanyNames").style.display = "none";
-              
-              makeAllLoginCharts();
-              
-              // changes the caption of the table
-              var year = document.getElementById("userRoleGraphYear").value;
-              var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
-              var loginType = document.getElementById("userRoleGraphSelect").value;
-              if (loginType == "unique") {
-                caption.textContent = year + " Quarterly Unique Logins";
-              } else if (loginType == "total") {
-                caption.textContent = year + " Quarterly Total Logins";
-              }
-              document.getElementById("loader3").style.display = "none";
+            document.getElementById("loader3").style.display = "block";
+            // hides the tables and the span
+            document.getElementById("userRoleCompaniesUniqueTable").style.display = "none";
+            document.getElementById("userRoleCompaniesTotalTable").style.display = "none";
+            document.getElementById("userRoleGraphCompanyNames").style.display = "none";
+            
+            makeAllLoginCharts();
+            
+            // changes the caption of the table
+            var year = document.getElementById("userRoleGraphYear").value;
+            var caption = document.querySelector("#userRoleGraph caption");
+            var loginType = document.getElementById("userRoleGraphSelect").value;
+            if (loginType == "unique") {
+              caption.textContent = year + " Quarterly Unique Logins";
+            } else if (loginType == "total") {
+              caption.textContent = year + " Quarterly Total Logins";
+            }
+            document.getElementById("loader3").style.display = "none";
           }
           
         // SET DATES AND LABELS
@@ -1621,9 +1622,6 @@
         
         // ON LOAD
         window.onload = function () {
-          // displays the loader
-          document.getElementById("loader2").style.display = "block";
-          
           // gets the current date and sets dates/labels
           var d = new Date();
           var thisYear = d.getFullYear();
@@ -1635,7 +1633,6 @@
           
 
           // first table
-          var year = document.getElementById("userRoleGraphYear").value;
           runPeopleQuery(); //runQuery()
           
           // second table
@@ -1645,7 +1642,8 @@
           
           
           // chart
-          makeAllLoginCharts(); // year depends on the value in the input
+          //makeAllLoginCharts(); // year depends on the value in the input
+          setUserRoleGraph();
           // makeQuarterLoginChart x 4
           
           
