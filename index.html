@@ -11,6 +11,38 @@
     
     
     <style>
+      /* KEYFRAMES */
+      
+      /* SPIN KEYFRAME */
+      @-webkit-keyframes spin {
+        0% { -webkit-transform: rotate(0deg); }
+        100% { -webkit-transform: rotate(360deg); }
+      }
+      
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      
+      /* FADE IN FADE OUT*/ 
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+      
       /* FOR TABLES IN GENERAL */
       table {
           font-family: arial, sans-serif;
@@ -114,24 +146,6 @@
         animation: fadeIn 2.5s ease forwards;
       }
       
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      
-      @keyframes fadeOut {
-        from {
-          opacity: 1;
-        }
-        to {
-          opacity: 0;
-        }
-      }
-      
       #loader {
         position: absolute;
         left: 50%;
@@ -149,24 +163,14 @@
         animation: spin 2s linear infinite;
       }
 
-      /* SPIN KEYFRAME */
-      @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-      }
       
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
       
       /* above user role table*/
-      /* Select which quarter (1-4) */
-      #userRoleTableQuarter {
-        border-radius:5px;
+      /* Select which quarter (1-4) *
+      .quarter {
+        border-radius: 5px;
       }
       
-      /* Choose the Year */
       
       
       /* user role table*/
@@ -197,16 +201,6 @@
         height: 25px;
         -webkit-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;
-      }
-
-      /*@-webkit-keyframes spin {*/
-      /*  0% { -webkit-transform: rotate(0deg); }*/
-      /*  100% { -webkit-transform: rotate(360deg); }*/
-      /*}*/
-      
-      /*@keyframes spin {*/
-      /*  0% { transform: rotate(0deg); }*/
-      /*  100% { transform: rotate(360deg); }*/
       }
       
       #userRoleGraph td {
@@ -256,16 +250,6 @@
         -webkit-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;
       }
-
-      /*@-webkit-keyframes spin {*/
-      /*  0% { -webkit-transform: rotate(0deg); }*/
-      /*  100% { -webkit-transform: rotate(360deg); }*/
-      /*}*/
-      
-      /*@keyframes spin {*/
-      /*  0% { transform: rotate(0deg); }*/
-      /*  100% { transform: rotate(360deg); }*/
-      /*}*/
       
       #userRoleCompaniesUniqueTable {
         display:none;
@@ -490,7 +474,7 @@
       <input type="date" value="2018-06-30" id="toLogins">&nbsp;
       
       <!-- quarter input-->
-      <select id="userRoleTableQuarter">
+      <select id="userRoleTableQuarter" class="quarter">
         <option value=0>Quarter 1</option>
         <option value=1 selected>Quarter 2</option>
         <option value=2>Quarter 3</option>
