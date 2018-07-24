@@ -1503,6 +1503,7 @@
                   max = userRoles[i];
                 }
               }
+              // document.getElementById("max1").value = max;
               
           });
           } else if (loginType == "total") {
@@ -1554,7 +1555,7 @@
           // calculates max of all values in all quarters
           // var q1Max = maxValueInQuarter("-01-01","-03-31",year);
           // console.log(q1Max);
-          // var q2Max = maxValueInQuarter("-04-01","-06-30",year);
+          // maxValueInQuarter("-04-01","-06-30",year);
           // console.log(q2Max);
           // var q3Max = maxValueInQuarter("-07-01","-9-30",year);
           // var q4Max = maxValueInQuarter("-10-01","-12-31",year);
@@ -1580,6 +1581,7 @@
         // set user role graph table
         var setUserRoleGraph = function() {
             document.getElementById("loader3").style.display = "block";
+
             // hides the tables and the span
             document.getElementById("userRoleCompaniesUniqueTable").style.display = "none";
             document.getElementById("userRoleCompaniesTotalTable").style.display = "none";
@@ -1597,6 +1599,8 @@
               caption.textContent = year + " Quarterly Total Logins";
             }
             document.getElementById("loader3").style.display = "none";
+            
+            
           }
           
         // SET DATES AND LABELS
