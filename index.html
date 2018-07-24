@@ -707,7 +707,7 @@
                 fromDate: from.value,
                 toDate: to.value
               };
-            
+              setTimeout(
               MP.api.jql(function main() {
                return Events ({
                     from_date: params.fromDate,
@@ -949,7 +949,8 @@
                 
                 // hides the loader
                 document.getElementById("loader").style.display = "none";
-              });
+              })
+              ,0); // timeout
             }
         }
         
@@ -1023,6 +1024,7 @@
             to: toLogins.value
           };
           
+          setTimeout(
            MP.api.jql(function main() {
               return Events({
                 from_date: params.from,
@@ -1057,9 +1059,9 @@
                   td.textContent = totalLogins[index-1];
                 }
               });
-                
                 calculateLoginPerUser();
             })
+          ,0); //set timeout
         }
         var calculateLoginPerUser = function() {
           var userRoleTable = document.getElementById("userRoleTable");
@@ -1087,6 +1089,7 @@
           fromLogins.value = year + quarterDates[quarter][0];
           toLogins.value = year + quarterDates[quarter][1];
         }
+        
         // runs all the functions to make the user role table
         var userRoleTableQuery = function() {
           document.getElementById("loader2").style.display = "block";
@@ -1119,7 +1122,6 @@
               var partner = 0;
               var customer = 0;
               
-
               for (let i = 0; i < results.length; i++) {
                 var result = results[i].value;
                 if (results[i].key[0] == "Employee") {
@@ -1147,7 +1149,7 @@
                 
                 // chooses the correct canvas in the table
                 let canvas = td.children[0];
-
+                
                 let barChart = new Chart(canvas, {
                 		type: "bar",
                     data: {
