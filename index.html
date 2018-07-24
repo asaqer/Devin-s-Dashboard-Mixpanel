@@ -116,6 +116,11 @@
         width: 50px;
       }
       
+      /* QUARTER */
+      .quarter {
+        border-radius: 5px;
+      }
+      
       /* LOGIN CHART */
       #loginTableWrapper {
         position:relative;
@@ -305,21 +310,12 @@
         -webkit-animation: spin 2s linear infinite;
         animation: spin 2s linear infinite;
       }
-
-      /*@-webkit-keyframes spin {*/
-      /*  0% { -webkit-transform: rotate(0deg); }*/
-      /*  100% { -webkit-transform: rotate(360deg); }*/
-      /*}*/
-      
-      /*@keyframes spin {*/
-      /*  0% { transform: rotate(0deg); }*/
-      /*  100% { transform: rotate(360deg); }*/
-      /*}*/
       
       #userRoleGraphCompanyNames {
         font-weight: bold; 
       }
       
+      /* ONCLICK TABLES*/ 
       #loginChartCompanyNames tr th, #userRoleCompaniesUniqueTable tr th, #userRoleCompaniesTotalTable tr th {
         background-color: #a6a6a6;
       }
@@ -338,7 +334,6 @@
   
       <label class=date>To:&nbsp;</label>
       <input type="date" name=to value="2018-06-30" id="to">&nbsp;
-      
       
       <input type="submit" value="Submit" id="submit" class="submit">
       
@@ -447,6 +442,7 @@
           <th>Company Name</th>
         </tr>
       </table>
+      <!-- loader --> 
       <div id="loader"></div>
     </div>
     <!-- USER ROLE TABLE -->
@@ -504,7 +500,7 @@
         </tr>
         
       </table>
-      
+      <!-- loader2 -->
       <div id="loader2"></div>
     </div>
     <!-- USER ROLE GRAPH-->
@@ -521,45 +517,45 @@
       
       <input type="submit" value="Submit" id="userRoleGraphSubmit" class="submit">
     
-    <hr>
-    
-    <!-- user role graph-->
-    <table id="userRoleGraph">
-      <caption></caption>
-      <tr>
-        <td><canvas></canvas></td>
-        <td><canvas></canvas></td>
-      </tr>
-      <tr>
-        <td><canvas></canvas></td>
-        <td><canvas></canvas></td>
-      </tr>
-    </table>
-    <div id="loader3"></div>
-    
-    <div>
+      <hr>
       
-      <span id="userRoleGraphCompanyNames"></span>
-      <div id="loader4"></div>
-      <table id="userRoleCompaniesUniqueTable">
+      <!-- user role graph-->
+      <table id="userRoleGraph">
+        <caption></caption>
         <tr>
-          <th>Company Name</th>
-          <th>UserID</th>
+          <td><canvas></canvas></td>
+          <td><canvas></canvas></td>
+        </tr>
+        <tr>
+          <td><canvas></canvas></td>
+          <td><canvas></canvas></td>
         </tr>
       </table>
-    
-      <table id="userRoleCompaniesTotalTable">
-        <tr>
-          <th>Company Name</th>
-          <th>UserID</th>
-          <th>Logins</th>
-        </tr>
-      </table>
+      <!-- loader 3-->
+      <div id="loader3"></div>
       
-    </div>
-    
-    
-    
+      <!-- USER ROLE GRAPH COMPANY NAMES -->
+      <div>
+        <!-- label -->
+        <span id="userRoleGraphCompanyNames"></span>
+        <!-- loader 4-->
+        <div id="loader4"></div>
+        <!-- UNIQUE TABLE-->
+        <table id="userRoleCompaniesUniqueTable">
+          <tr>
+            <th>Company Name</th>
+            <th>UserID</th>
+          </tr>
+        </table>
+        <!-- TOTAL TABLE -->
+        <table id="userRoleCompaniesTotalTable">
+          <tr>
+            <th>Company Name</th>
+            <th>UserID</th>
+            <th>Logins</th>
+          </tr>
+        </table>
+      </div>
     </div>
     
     <script>
@@ -610,8 +606,6 @@
             
               MP.api.jql(function main() {
                return Events ({
-                    // from_date: "2018-05-01",
-                    // to_date: "2018-05-31",
                     from_date: params.fromDate,
                     to_date: params.toDate,
                   event_selectors:[{event: "Login"}]
@@ -1032,14 +1026,11 @@
               })
                 .groupBy(["properties.UserRole"], mixpanel.reducer.count())
             },params).done(function(results){
-              
-              
                 var enernoc = 0;
                 var supplier = 0;
                 var partner = 0;
                 var customer = 0;
                 
-               
                 for (let i = 0; i < results.length; i++) {
                   var total = results[i].value;
                   if (results[i].key[0] == "Employee") {
@@ -1612,6 +1603,7 @@
           var thisYear = d.getFullYear();
           document.getElementById("userRoleTableYear").value = thisYear;
           document.getElementById("userRoleGraphYear").value = thisYear;
+          // Sets the caption for the user role graph table
           var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
           var loginType = document.getElementById("userRoleGraphSelect").value;
           if (loginType == "unique") {
@@ -1632,16 +1624,15 @@
           // second table
           userRoleTableQuery();
           // setUserRoleTableName()
-          // uniqueUserLoginsQuery() // totalUserLoginsQuery() // calculateLoginPerUser() // makeQuarterLoginChart x 4
+          // uniqueUserLoginsQuery() // totalUserLoginsQuery() // calculateLoginPerUser() 
           
           
           // chart
           makeAllLoginCharts(); // year depends on the value in the input
+          // makeQuarterLoginChart x 4
           
           
-          
-          
-          // Event Listeners
+          // EVENT LISTENERS
           
           // LOGIN CHART
           // changing the from date above the login chart
