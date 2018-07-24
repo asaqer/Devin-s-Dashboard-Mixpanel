@@ -517,7 +517,12 @@
       <input type="number" id="userRoleGraphYear" class="year">
       
       <input type="submit" value="Submit" id="userRoleGraphSubmit" class="submit">
-    
+      
+      <input type="number" id="userRoleMaxQ1" hidden>
+      <input type="number" id="userRoleMaxQ2" hidden>
+      <input type="number" id="userRoleMaxQ3" hidden>
+      <input type="number" id="userRoleMaxQ4" hidden>
+      
       <hr>
       
       <!-- user role graph-->
@@ -1099,7 +1104,7 @@
         
         // USER ROLE GRAPH
         // makes a quarterly login chart
-        var makeQuarterLoginChart = function(from,to,year,quarter) {
+        var makeQuarterLoginChart = function(from,to,year,quarter,max,stepSize) {
           var params = {
             from: year + from,
             to: year + to
@@ -1166,15 +1171,15 @@
                       }]
                     },
                     options: {
-                      // scales: {
-                      //   yAxes: [{
-                      //     ticks: {
-                      //       min: 0,
-                      //       max: max,
-                      //       stepSize: stepSize
-                      //     }
-                      //   }]
-                      // }
+                      scales: {
+                        yAxes: [{
+                          ticks: {
+                            min: 0,
+                            max: max,
+                            stepSize: stepSize
+                          }
+                        }]
+                      },
                       onHover: function(e) {
                         var activeBars = barChart.getElementAtEvent(e)[0];
                         if (activeBars) {
@@ -1316,15 +1321,15 @@
                       }]
                     },
                     options: {
-                      // scales: {
-                      //   yAxes: [{
-                      //     ticks: {
-                      //       min: 0,
-                      //       max: max,
-                      //       stepSize: stepSize
-                      //     }
-                      //   }]
-                      // }
+                      scales: {
+                        yAxes: [{
+                          ticks: {
+                            min: 0,
+                            max: max,
+                            stepSize: stepSize
+                          }
+                        }]
+                      },
                       onHover: function(e) {
                         var activeBars = barChart.getElementAtEvent(e)[0];
                         if (activeBars) {
@@ -1465,6 +1470,18 @@
           to: year + to
           };
           
+          if (from == "-01-01") {
+            var quarter = 0;
+          } else if (from == "-04-01") {
+            var quarter = 1;
+          } else if (from == "-07-01") {
+            var quarter = 2;
+          } else if (from == "-10-01") {
+            var quarter = 3;
+          }
+          
+          var maxIDs = ["userRoleMaxQ1","userRoleMaxQ2","userRoleMaxQ3","userRoleMaxQ4"]
+          
           var loginType = document.getElementById("userRoleGraphSelect").value;
           if (loginType == "unique") {
             MP.api.jql(function main() {
@@ -1503,7 +1520,7 @@
                   max = userRoles[i];
                 }
               }
-              // document.getElementById("max1").value = max;
+              document.getElementById(maxIDs[quarter]).value = max;
               
           });
           } else if (loginType == "total") {
@@ -1543,14 +1560,13 @@
                     max = userRoles[i];
                   }
                 }
-                
-                // return max;
+                document.getElementById(maxIDs[quarter]).value = max;
                 
             });
           }
         }
         // creates all the quarterly login charts
-        var makeAllLoginCharts = function() {
+        var makeAllLoginCharts = function(max,stepSize) {
           var year = document.getElementById("userRoleGraphYear").value;
           // calculates max of all values in all quarters
           // var q1Max = maxValueInQuarter("-01-01","-03-31",year);
@@ -1571,23 +1587,66 @@
           // var stepSize = Math.ceil(max / 9);
           
           
-          makeQuarterLoginChart("-01-01","-03-31",year,1);
-          makeQuarterLoginChart("-04-01","-06-30",year,2);
-          makeQuarterLoginChart("-07-01","-9-30",year,3);
-          makeQuarterLoginChart("-10-01","-12-31",year,4);
+          makeQuarterLoginChart("-01-01","-03-31",year,1,max,stepSize);
+          makeQuarterLoginChart("-04-01","-06-30",year,2,max,stepSize);
+          makeQuarterLoginChart("-07-01","-9-30",year,3,max,stepSize);
+          makeQuarterLoginChart("-10-01","-12-31",year,4,max,stepSize);
           // document.getElementById("loader3").style.display = "none";
         }
         
         // set user role graph table
         var setUserRoleGraph = function() {
             document.getElementById("loader3").style.display = "block";
-
+            
             // hides the tables and the span
             document.getElementById("userRoleCompaniesUniqueTable").style.display = "none";
             document.getElementById("userRoleCompaniesTotalTable").style.display = "none";
             document.getElementById("userRoleGraphCompanyNames").style.display = "none";
             
-            makeAllLoginCharts();
+            // resets max values
+            var maxes = ["userRoleMaxQ1","userRoleMaxQ2","userRoleMaxQ3","userRoleMaxQ4"];
+            maxes.forEach(function(quarter) {
+              document.getElementById(quarter).value = "";
+            });
+            
+            // calculates max of all values in all quarters
+            var year = document.getElementById("userRoleGraphYear").value;
+            maxValueInQuarter("-01-01","-03-31",year);
+            maxValueInQuarter("-04-01","-06-30",year);
+            maxValueInQuarter("-07-01","-9-30",year);
+            maxValueInQuarter("-10-01","-12-31",year);
+            
+            function makeAllLoginChartsTemp() {
+              var q1 = parseInt(document.getElementById("userRoleMaxQ1").value);
+              var q2 = parseInt(document.getElementById("userRoleMaxQ2").value);
+              var q3 = parseInt(document.getElementById("userRoleMaxQ3").value);
+              var q4 = parseInt(document.getElementById("userRoleMaxQ4").value);
+              
+              if (!isNaN(q1) && !isNaN(q2) && !isNaN(q3) && !isNaN(q4)) {
+                var maxes = [q1,q2,q3,q4];
+                var max = maxes[0];
+                for (let i = 1; i < maxes.length; i++) {
+                  var current = maxes[i];
+                  if (current > max) {
+                    max = current;
+                  }
+                }
+
+                max = Math.ceil(max/100)*100;
+                stepSize = max / 10;
+                if (stepSize > 100) {
+                  stepSize = Math.ceil(stepSize/100)*100;
+                } else if (stepSize > 1000) {
+                  stepSize = Math.ceil(stepSize/1000)*1000;
+                }
+                makeAllLoginCharts(max,stepSize);
+              } else {
+                setTimeout(makeAllLoginChartsTemp,500);
+              }
+            }
+            makeAllLoginChartsTemp();
+            
+            //makeAllLoginCharts();
             
             // changes the caption of the table
             var year = document.getElementById("userRoleGraphYear").value;
