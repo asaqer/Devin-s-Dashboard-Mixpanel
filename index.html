@@ -865,11 +865,6 @@
             var Retail_Auction_CU = new Set();
             
             var companiesCU = [];
-
-            
-            // gets the login chart table
-            var loginChart = document.getElementById("loginChart");
-            var rows = loginChart.children[0].children;
             
             for (var i = 0; i < results.length; i++) {
                 // if (results[i].properties.CompanyName.toUpperCase() == ("Leidos, Inc.").toUpperCase()) {
@@ -917,7 +912,6 @@
               }
               
               Retail_Auction_CU = new Set(...[NA_Auction_CU,...NA_Both_CU,...A_Auction_CU,...A_Both_CU]);
-              
                           
               companiesCU.push(NA_Auction_CU);
               companiesCU.push(NA_DS_CU);
@@ -938,11 +932,19 @@
               // console.log(A_Both_CU);
               // console.log(Retail_Auction_CU);
               
-              var CUColumn = 2;
+              // gets the login chart table
+              // var loginChart = document.getElementById("loginChart");
+              // var rows = loginChart.children[0].children;
+              
+              // working here
+              var CUColumn = 3;
+              var rows = document.querySelectorAll("#loginChart tr");
               // fills out the at least 1 active contract and active user column
-              for (let i = 1; i <= companiesCU.length; i++) {
-                rows[i].children[CUColumn].innerHTML = companiesCU[i-1].size;
-              }
+              rows.forEach(function(row,i) {
+                if (row.firstElementChild.tagName.toLowerCase() == "td") {
+                  row.querySelector("td:nth-child(" + 3 + ")").textContent = companiesCU[i-1].size;
+                }
+              });
               runQuery();
           });
         }
