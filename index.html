@@ -1039,17 +1039,17 @@
                 var customer = 0;
                 
                 results.forEach(function(result) {
-                var count = result.value;
-                if (result.key[0] == "Employee") {
-                  enernoc = count;
-                } else if (result.key[0] == "Bidder") {
-                  supplier = count;
-                } else if (result.key[0] == "Partner") {
-                  partner = count;
-                } else if (result.key[0] == "Customer") {
-                  customer = count;
-                }
-              });
+                  var count = result.value;
+                  if (result.key[0] == "Employee") {
+                    enernoc = count;
+                  } else if (result.key[0] == "Bidder") {
+                    supplier = count;
+                  } else if (result.key[0] == "Partner") {
+                    partner = count;
+                  } else if (result.key[0] == "Customer") {
+                    customer = count;
+                  }
+                });
                 
                 var totalLogins = [enernoc, supplier, partner, customer];
                 
@@ -1481,19 +1481,18 @@
               var partner = 0;
               var customer = 0;
               
-
-              for (let i = 0; i < results.length; i++) {
-                var result = results[i].value;
-                if (results[i].key[0] == "Employee") {
-                  enernoc = result;
-                } else if (results[i].key[0] == "Bidder") {
-                  supplier = result;
-                } else if (results[i].key[0] == "Partner") {
-                  partner = result;
-                } else if (results[i].key[0] == "Customer") {
-                  customer = result;
-                }
-              }
+              results.forEach(function(result) {
+                  var count = result.value;
+                  if (result.key[0] == "Employee") {
+                    enernoc = count;
+                  } else if (result.key[0] == "Bidder") {
+                    supplier = count;
+                  } else if (result.key[0] == "Partner") {
+                    partner = count;
+                  } else if (result.key[0] == "Customer") {
+                    customer = count;
+                  }
+                });
               
               // gets the highest user role value
               var userRoles = [enernoc,supplier,partner,customer];
