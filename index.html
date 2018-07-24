@@ -625,7 +625,6 @@
                     )
                   
               }, params).done(function(results) {
-                console.log(results);
                 // total number of companies
                 var NA_Wholesale_Total = new Set();
                 var NA_Auction_Total = new Set();
@@ -760,6 +759,7 @@
                 
                 var table = document.getElementById("loginChart");
                 var rows = table.children[0].children;
+                var rows = document.querySelectorAll("#loginChart tr");
                 
                 // fills in the columns of the table
                 // rows[i+1] chooses the row
@@ -769,76 +769,81 @@
                 var totalColumn = 3;
                 var portalViewerColumn = 4;
                 var percentageColumn = 5;
-                for (var i = 0; i < totalCompanies.length; i++) {
-                  // number of companies with at least one contract and at least one active user column (2)
-                  var CUSize = parseInt(rows[i+1].children[customerColumn].textContent);
-                  
-                  var td = rows[i+1].children[totalColumn];
-                  td.classList.add("blueU");
-                  // adds onclick
-                  td.onclick = function(e) {
-                    console.log(e);
-                    if (e.srcElement.classList[0] == "blueU") {
-                      // gets the row number if the table
-                      var rowNum = parseInt(e.path[1].children[e.path[1].childElementCount-1].innerText);
-                      
-                      // shows the header span
-                      var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
-                      var ct = e.target.parentElement.children[0].innerText;
-                      var cc = e.target.parentElement.children[1].innerText;
-                      loginChartCompanyNamesSpan.textContent = ct + " " + cc + ":";
-                      
-                      
-                      // gets the row of the table, and the correct set (by index)
-                      var data = Array.from(totalCompanies[rowNum]).sort();
-                      var numOfCompanies = data.length;
-                      var formattedData = [];
-                      for (let i = 0; i < data.length; i++) {
-                        formattedData.push([data[i]]);
-                      }
-                      // gets table and makes the table
-                      var loginChartCompanyNames = document.getElementById("loginChartCompanyNames");
-                      var tbody = loginChartCompanyNames.children[0];
-                      // makes and displays the table
-                      // if (numOfCompanies >= 1 && numOfCompanies <= 7) {
-                      //   makeNColumnTable(1,1,formattedData,tbody);
-                      // } else 
-                      if (numOfCompanies >= 1 && numOfCompanies <= 15){
-                        makeNColumnTable(1,2,formattedData,tbody);
-                      } else if (numOfCompanies >= 16 && numOfCompanies <= 22){
-                        makeNColumnTable(1,3,formattedData,tbody);
-                      } else {
-                        makeNColumnTable(1,4,formattedData,tbody);
-                      }
-                      if (numOfCompanies) {
-                        loginChartCompanyNames.style.display = "block";
-                      } else {
-                        loginChartCompanyNames.style.display = "none";
-                      }
-                   }
+                rows.forEach(function(row,index) {
+                  if (row.firstElementChild.tagName.toLowerCase() == "td") {
+                    // i is 0 based
+                    var i = index - 1;
+                    // number of companies with at least one contract and at least one active user column (2)
+                    var CUSize = parseInt(row.children[customerColumn].textContent);
                     
+                    var td = row.children[totalColumn];
+                    td.classList.add("blueU");
+                    // adds onclick
+                    td.onclick = function(e) {
+                      console.log(e);
+                      if (e.srcElement.classList[0] == "blueU") {
+                        // gets the row number if the table
+                        var rowNum = parseInt(e.path[1].children[e.path[1].childElementCount-1].innerText);
+                        
+                        // shows the header span
+                        var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
+                        var ct = e.target.parentElement.children[0].innerText;
+                        var cc = e.target.parentElement.children[1].innerText;
+                        loginChartCompanyNamesSpan.textContent = ct + " " + cc + ":";
+                        
+                        
+                        // gets the row of the table, and the correct set (by index)
+                        var data = Array.from(totalCompanies[rowNum]).sort();
+                        var numOfCompanies = data.length;
+                        var formattedData = [];
+                        for (let i = 0; i < data.length; i++) {
+                          formattedData.push([data[i]]);
+                        }
+                        // gets table and makes the table
+                        var tbody = document.querySelector("#loginChartCompanyNames tbody");
+                        // makes and displays the table
+                        // if (numOfCompanies >= 1 && numOfCompanies <= 7) {
+                        //   makeNColumnTable(1,1,formattedData,tbody);
+                        // } else 
+                        if (numOfCompanies >= 1 && numOfCompanies <= 15){
+                          makeNColumnTable(1,2,formattedData,tbody);
+                        } else if (numOfCompanies >= 16 && numOfCompanies <= 22){
+                          makeNColumnTable(1,3,formattedData,tbody);
+                        } else {
+                          makeNColumnTable(1,4,formattedData,tbody);
+                        }
+                        loginChartCompanyNames.style.display = "block";
+                        // if (numOfCompanies) {
+                        //   loginChartCompanyNames.style.display = "block";
+                        // } else {
+                        //   loginChartCompanyNames.style.display = "none";
+                        // }
+                     }
+                      
+                    }
+                    // gets companies with a login (3)
+                    var total = totalCompanies[i].size;
+                    if (total == 0) {
+                      td.classList.remove("blueU");
+                    }
+                    
+                    // fills out companies with a login column (3)
+                    row.children[totalColumn].textContent = total;
+                    
+                    // fills out the portal companies column (4)
+                    var portal = portalCompanies[i].size; 
+                    // fills out the total companies column (4)
+                    row.children[portalViewerColumn].textContent = portal;
+                    
+                    // Total/CU * 100% Percentage column (5)
+                    var perc = (total/CUSize * 100).toFixed(2);
+                    if (isNaN(perc) || !isFinite(perc)) {
+                      row.children[percentageColumn].textContent = "0.00%";
+                    } else {
+                      row.children[percentageColumn].textContent = perc + "%";
+                    }
                   }
-                  // gets companies with a login (3)
-                  var total = totalCompanies[i].size;
-                  if (total == 0) {
-                    td.classList.remove("blueU");
-                  }
-                  // fills out companies with a login column (3)
-                  td.innerHTML = total;
-                  
-                  // fills out the portal companies column (4)
-                  var portal = portalCompanies[i].size; 
-                  // fills out the total companies column (4)
-                  rows[i+1].children[portalViewerColumn].innerHTML = portal;
-                  
-                  // Total/CU * 100% Percentage column (5)
-                  var perc = (total/CUSize * 100).toFixed(2);
-                  if (isNaN(perc) || !isFinite(perc)) {
-                    rows[i+1].children[percentageColumn].innerHTML = "0.00%";
-                  } else {
-                    rows[i+1].children[percentageColumn].innerHTML = perc + "%";
-                  }
-                }
+                });
                 
                 // hides the loader
                 document.getElementById("loader").style.display = "none";
@@ -937,12 +942,14 @@
               // var rows = loginChart.children[0].children;
               
               // working here
-              var CUColumn = 3;
+              var CUColumn = 2;
               var rows = document.querySelectorAll("#loginChart tr");
               // fills out the at least 1 active contract and active user column
-              rows.forEach(function(row,i) {
+              rows.forEach(function(row,index) {
                 if (row.firstElementChild.tagName.toLowerCase() == "td") {
-                  row.querySelector("td:nth-child(" + 3 + ")").textContent = companiesCU[i-1].size;
+                  // i is 0 based
+                  var i = index - 1;
+                  row.children[CUColumn].textContent = companiesCU[i].size;
                 }
               });
               runQuery();
