@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
-    
+    <!-- CHARTJS SCRIPT-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     
     
@@ -953,7 +953,6 @@
             }
         }
         
-        
         // USER ROLE TABLE
         var setUserRoleTableName = function() {
           var quarter = document.getElementById("userRoleTableQuarter").value;
@@ -1037,26 +1036,27 @@
                 var partner = 0;
                 var customer = 0;
                 
-                for (let i = 0; i < results.length; i++) {
-                  var total = results[i].value;
-                  if (results[i].key[0] == "Employee") {
-                    enernoc = total;
-                  } else if (results[i].key[0] == "Bidder") {
-                    supplier = total;
-                  } else if (results[i].key[0] == "Partner") {
-                    partner = total;
-                  } else if (results[i].key[0] == "Customer") {
-                    customer = total;
-                  }
+                results.forEach(function(result) {
+                var count = result.value;
+                if (result.key[0] == "Employee") {
+                  enernoc = count;
+                } else if (result.key[0] == "Bidder") {
+                  supplier = count;
+                } else if (result.key[0] == "Partner") {
+                  partner = count;
+                } else if (result.key[0] == "Customer") {
+                  customer = count;
                 }
+              });
                 
                 var totalLogins = [enernoc, supplier, partner, customer];
                 
-                var userRoleTable = document.getElementById("userRoleTable");
-                var firstRow = userRoleTable.children[0].children[2];
-                for (let i = 1; i < firstRow.children.length; i++) {
-                  firstRow.children[i].textContent = totalLogins[i-1];
+                var firstRow = document.querySelectorAll("#userRoleTable tr:nth-child(3) td");
+              firstRow.forEach(function(td,index) {
+                if (index > 0) { // first td is a label
+                  td.textContent = totalLogins[index-1];
                 }
+              });
                 
                 calculateLoginPerUser();
             })
@@ -1622,7 +1622,7 @@
           // displays the loader
           document.getElementById("loader2").style.display = "block";
           
-          
+          // gets the current date and sets dates/labels
           var d = new Date();
           var thisYear = d.getFullYear();
           setCurrentDates(thisYear);
@@ -1658,7 +1658,7 @@
             } else {
               from.style.background = "red";
             }
-            runPeopleQuery();
+            runQuery();
             document.getElementById("loginChartCompanyNames").style.display = "none";
             document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
@@ -1670,7 +1670,7 @@
             } else {
               to.style.background = "red";
             }
-            runPeopleQuery();
+            runQuery();
             document.getElementById("loginChartCompanyNames").style.display = "none";
             document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
