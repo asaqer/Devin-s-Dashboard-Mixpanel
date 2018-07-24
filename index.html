@@ -11,7 +11,57 @@
     
     
     <style>
-      /* above login chart*/
+      /* FOR TABLES IN GENERAL */
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+          text-align: center;
+          margin-bottom: 25px;
+      }
+      
+      th {
+        background-color: #D3D3D3;
+        font-size: 18px;
+        padding: 8px;
+        border-right: 1px solid gray;
+      }
+      
+      td {
+        background-color: #FAFAFA;
+        font-size: 16px;
+        padding: 10px;
+        height: 45px;
+        border-bottom: 0.5px solid gray;
+      }
+      
+      th:last-child {
+        border-right: none;
+      }
+      
+      tr:last-child td {
+        border-bottom: none;
+      }
+      
+      /* CURVED EDGES FOR TABLES */
+      /* bottom (td) */
+      tr:last-child td:first-child {
+        border-radius: 0 0 0 15px;
+      }
+      
+      tr:last-child td:last-child {
+        border-radius: 0 0 15px 0;
+      }
+      /*top (th)*/
+      tr:first-child th:first-child { 
+        border-radius: 15px 0 0 0; 
+      } 
+      
+      tr:first-child th:last-child { 
+        border-radius: 0 15px 0 0; 
+      }
+      
+      /* FOR DATES AND SUBMIT BUTTON*/
       .date {
         font-size: 14px;
         font-weight: bold;
@@ -28,57 +78,20 @@
         border: 1px solid gray;
         cursor: pointer;
       }
-    
-      /* login chart*/
-      table {
-          font-family: arial, sans-serif;
-          border-collapse: collapse;
-          width: 100%;
-          text-align: center;
-          margin-bottom: 25px;
+      
+      /* YEAR */
+      .year {
+        width: 50px;
       }
       
-      th {
-        background-color: #D3D3D3;
-        font-size: 18px;
-        padding: 8px;
-        border-right: 1px solid gray;
+      /* LOGIN CHART */
+      #loginTableWrapper {
+        position:relative;
       }
       
-      th:last-child {
-        border-right: none;
-      }
-      
-      td {
-        background-color: #FAFAFA;
-        font-size: 16px;
-        padding: 10px;
-        height: 45px;
-        border-bottom: 0.5px solid gray;
-      }
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-      /*bottom is curved*/
-      tr:last-child td:first-child {
-        border-radius: 0 0 0 15px;
-      }
-      
-      tr:last-child td:last-child {
-        border-radius: 0 0 15px 0;
-      }
-      
+      /* curve second to last column because of hidden column in loginChart*/
       #loginChart tr:last-child td:nth-last-child(2) {
         border-radius: 0 0 15px 0;
-      }
-      /* top (ths) are curved*/
-      tr:first-child th:first-child { 
-        border-radius: 15px 0 0 0; 
-      } 
-      
-      tr:first-child th:last-child { 
-        border-radius: 0 15px 0 0; 
       }
       
       #loginChart .blueU {
@@ -89,10 +102,6 @@
       #loginChart .blueU:hover {
         cursor: pointer;
         background: #999;
-      }
-      
-      #loginTableWrapper {
-        position:relative;
       }
       
       #loginChartCompanyNamesSpan {
@@ -123,7 +132,6 @@
         }
       }
       
-      /* Center the loader */
       #loader {
         position: absolute;
         left: 50%;
@@ -141,6 +149,7 @@
         animation: spin 2s linear infinite;
       }
 
+      /* SPIN KEYFRAME */
       @-webkit-keyframes spin {
         0% { -webkit-transform: rotate(0deg); }
         100% { -webkit-transform: rotate(360deg); }
@@ -158,9 +167,7 @@
       }
       
       /* Choose the Year */
-      .userRoleYear {
-        width: 50px;
-      }
+      
       
       /* user role table*/
       #userRoleTable tr {
@@ -192,16 +199,15 @@
         animation: spin 2s linear infinite;
       }
 
-      @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-      }
+      /*@-webkit-keyframes spin {*/
+      /*  0% { -webkit-transform: rotate(0deg); }*/
+      /*  100% { -webkit-transform: rotate(360deg); }*/
+      /*}*/
       
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+      /*@keyframes spin {*/
+      /*  0% { transform: rotate(0deg); }*/
+      /*  100% { transform: rotate(360deg); }*/
       }
-
       
       #userRoleGraph td {
         width: calc(100%/2);
@@ -251,15 +257,15 @@
         animation: spin 2s linear infinite;
       }
 
-      @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-      }
+      /*@-webkit-keyframes spin {*/
+      /*  0% { -webkit-transform: rotate(0deg); }*/
+      /*  100% { -webkit-transform: rotate(360deg); }*/
+      /*}*/
       
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
+      /*@keyframes spin {*/
+      /*  0% { transform: rotate(0deg); }*/
+      /*  100% { transform: rotate(360deg); }*/
+      /*}*/
       
       #userRoleCompaniesUniqueTable {
         display:none;
@@ -332,15 +338,15 @@
         animation: spin 2s linear infinite;
       }
 
-      @-webkit-keyframes spin {
-        0% { -webkit-transform: rotate(0deg); }
-        100% { -webkit-transform: rotate(360deg); }
-      }
+      /*@-webkit-keyframes spin {*/
+      /*  0% { -webkit-transform: rotate(0deg); }*/
+      /*  100% { -webkit-transform: rotate(360deg); }*/
+      /*}*/
       
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
+      /*@keyframes spin {*/
+      /*  0% { transform: rotate(0deg); }*/
+      /*  100% { transform: rotate(360deg); }*/
+      /*}*/
       
       #userRoleGraphCompanyNames {
         font-weight: bold; 
@@ -492,7 +498,7 @@
       </select>
       
       <label class="date">Year:</label>
-      <input type="number" id="userRoleTableYear" class="userRoleYear">
+      <input type="number" id="userRoleTableYear" class="year">
       
       <input type="submit" value="Submit" id="userRoleTableSubmit" class="submit">
       
@@ -543,7 +549,7 @@
       </select>
       
       <label class="date">Year:</label>
-      <input type="number" id="userRoleGraphYear" class="userRoleYear">
+      <input type="number" id="userRoleGraphYear" class="year">
       
       <input type="submit" value="Submit" id="userRoleGraphSubmit" class="submit">
     
