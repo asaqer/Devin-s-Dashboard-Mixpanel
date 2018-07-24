@@ -336,6 +336,17 @@
       <label class=date>To:&nbsp;</label>
       <input type="date" name=to value="2018-06-30" id="to">&nbsp;
       
+      <!-- quarter input-->
+      <select id="loginChartTableQuarter" class="quarter">
+        <option value=0>Quarter 1</option>
+        <option value=1 selected>Quarter 2</option>
+        <option value=2>Quarter 3</option>
+        <option value=3>Quarter 4</option>
+      </select>
+      
+      <label class="date">Year:</label>
+      <input type="number" id="loginChartTableYear" class="year">
+      
       <input type="submit" value="Submit" id="submit" class="submit">
       
       <hr>
@@ -1086,13 +1097,13 @@
           document.getElementById("loader2").style.display = "none";
         }
         // updates from and to dates based on which quarter is chosen
-        var updateUserRoleTableQuarter = function() {
-          var quarter = document.getElementById("userRoleTableQuarter").value;
-          var year = document.getElementById("userRoleTableYear").value;
+        var updateFromAndTo = function(from,to,quarter,year) {
+          // var quarter = document.getElementById("userRoleTableQuarter").value;
+          // var year = document.getElementById("userRoleTableYear").value;
           var quarterDates = [["-01-01","-03-31"],["-04-01","-06-30"],["-07-01","-09-30"],["-10-01","-12-31"]];
           
-          fromLogins.value = year + quarterDates[quarter][0];
-          toLogins.value = year + quarterDates[quarter][1];
+          from.value = year + quarterDates[quarter][0];
+          to.value = year + quarterDates[quarter][1];
         }
         
         // runs all the functions to make the user role table
@@ -1666,6 +1677,7 @@
         // set year
         var setCurrentDates = function(year) {
           // sets the year for user role table and graph
+          document.getElementById("loginChartTableYear").value = year;
           document.getElementById("userRoleTableYear").value = year;
           document.getElementById("userRoleGraphYear").value = year;
         }
@@ -1735,22 +1747,45 @@
             document.getElementById("loginChartCompanyNames").style.display = "none";
             document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
+          // quarter input for login chart
+          document.getElementById("loginChartTableQuarter").addEventListener("change", function() {
+              var from = document.getElementById("from");
+              var to = document.getElementById("to");
+              var quarter = document.getElementById("loginChartTableQuarter").value;
+              var year = document.getElementById("loginChartTableYear").value;
+              updateFromAndTo(from,to,quarter,year);
+              runQuery();
+          });
+          // year for login chart
+          document.getElementById("loginChartTableYear").addEventListener("change", function() {
+              var from = document.getElementById("from");
+              var to = document.getElementById("to");
+              var quarter = document.getElementById("loginChartTableQuarter").value;
+              var year = document.getElementById("loginChartTableYear").value;
+              updateFromAndTo(from,to,quarter,year);
+              runQuery();
+          });
           // submit button above the login chart
           document.getElementById("submit").addEventListener("click", runQuery);
           
           // USER ROLE TABLE
           // quarter input for user role table
           document.getElementById("userRoleTableQuarter").addEventListener("change", function() {
-              updateUserRoleTableQuarter();
-              userRoleTableQuery();
+            var from = document.getElementById("fromLogins");
+            var to = document.getElementById("toLogins");
+            var quarter = document.getElementById("userRoleTableQuarter").value;
+            var year = document.getElementById("userRoleTableYear").value;
+            updateFromAndTo(from,to,quarter,year);
+            userRoleTableQuery();
           });
           // year for user role table
           document.getElementById("userRoleTableYear").addEventListener("change", function() {
-            // var userRoleTableYear = document.getElementById("userRoleTableYear");
-            //   userRoleTableYear.readOnly = true;
-              updateUserRoleTableQuarter();
-              userRoleTableQuery();
-              //userRoleTableYear.readOnly = false;
+            var from = document.getElementById("fromLogins");
+            var to = document.getElementById("toLogins");
+            var quarter = document.getElementById("userRoleTableQuarter").value;
+            var year = document.getElementById("userRoleTableYear").value;
+            updateFromAndTo(from,to,quarter,year);
+            userRoleTableQuery();
           });
           // submit button above the user role table
           document.getElementById("userRoleTableSubmit").addEventListener("click", userRoleTableQuery);
