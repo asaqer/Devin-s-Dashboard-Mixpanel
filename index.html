@@ -1597,6 +1597,24 @@
               }
               document.getElementById("loader3").style.display = "none";
           }
+          
+        // SET DATES AND LABELS
+        // set year
+        var setCurrentDates = function(year) {
+          // sets the year for user role table and graph
+          document.getElementById("userRoleTableYear").value = year;
+          document.getElementById("userRoleGraphYear").value = year;
+        }
+        // set labels
+        var setLabels = function(year) {
+          var caption = document.querySelector("#userRoleGraph caption");
+          var loginType = document.getElementById("userRoleGraphSelect").value;
+          if (loginType == "unique") {
+            caption.textContent = year + " Quarterly Unique Logins";
+          } else if (loginType == "total") {
+            caption.textContent = year + " Quarterly Total Logins";
+          }
+        }
         
         
         // ON LOAD
@@ -1604,21 +1622,12 @@
           // displays the loader
           document.getElementById("loader2").style.display = "block";
           
-          // sets the year for user role table and graph
+          
           var d = new Date();
           var thisYear = d.getFullYear();
-          document.getElementById("userRoleTableYear").value = thisYear;
-          document.getElementById("userRoleGraphYear").value = thisYear;
-          // Sets the caption for the user role graph table
-          var caption = document.getElementById("userRoleGraph").getElementsByTagName("caption")[0];
-          var loginType = document.getElementById("userRoleGraphSelect").value;
-          if (loginType == "unique") {
-            caption.textContent = thisYear + " Quarterly Unique Logins";
-          } else if (loginType == "total") {
-            caption.textContent = thisYear + " Quarterly Total Logins";
-          }
-          
-          
+          setCurrentDates(thisYear);
+          setLabels(thisYear);
+
           // sets the from and to date for the user role table (need to set up year before doing this)
           //updateUserRoleTableQuarter(); // uncomment this once we hide from and to dates for user role table
           
@@ -1668,7 +1677,6 @@
           // submit button above the login chart
           document.getElementById("submit").addEventListener("click", runQuery);
           
-          
           // USER ROLE TABLE
           // quarter input for user role table
           document.getElementById("userRoleTableQuarter").addEventListener("change", function() {
@@ -1685,7 +1693,6 @@
           });
           // submit button above the user role table
           document.getElementById("userRoleTableSubmit").addEventListener("click", userRoleTableQuery);
-          
           
           // USER ROLE GRAPH
           // user role graph login select
