@@ -561,6 +561,111 @@
     
     <script>
         // LOGIN CHART TABLE
+        var runPeopleQuery = function() {
+          MP.api.jql(function main() {
+            return People()
+            .filter(function(p) {
+              return p.properties.FlowingContractsCount > 0 && p.properties.ActiveUsersCount > 0
+            })
+          }).done(function(results) {
+            // companies with at least one active contract and user
+            var NA_Wholesale_CU = new Set();
+            var NA_Auction_CU = new Set();
+            var NA_DS_CU = new Set();
+            var NA_Both_CU = new Set();
+           
+            var A_Auction_CU = new Set();
+            var A_DS_CU = new Set();
+            var A_Both_CU = new Set();
+            
+            var Retail_Auction_CU = new Set();
+            
+            var companiesCU = [];
+            
+            for (var i = 0; i < results.length; i++) {
+                // if (results[i].properties.CompanyName.toUpperCase() == ("Leidos, Inc.").toUpperCase()) {
+                //   console.log(results[i]);
+                // } else {
+                //   console.log("not found");
+                // }
+                
+                var result = results[i].properties;
+                if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
+                  if (result.BusinessTypes != null) {
+                      if (result.BusinessTypes == "Wholesale") { // NA-Wholesale
+                      NA_Wholesale_CU.add(result.CompanyName);
+                    } else {
+                      var auction = false;
+                      var ds = false;
+                      if (result.EventTypes != null) {
+                        auction = result.EventTypes.includes("Auction");
+                        ds = result.EventTypes.includes("Direct Sourcing");
+                      }
+                      if (auction && ds) { // both
+                        NA_Both_CU.add(result.CompanyName);
+                      } else if (auction) { // auction-only
+                        NA_Auction_CU.add(result.CompanyName);
+                      } else if (ds) { // direct sourcing only
+                        NA_DS_CU.add(result.CompanyName);
+                      }
+                    }
+                  } else { // With Advisory (A)
+                      var auction = false;
+                      var ds = false;
+                      if (result.EventTypes != null) {
+                        auction = result.EventTypes.includes("Auction");
+                        ds = result.EventTypes.includes("Direct Sourcing");
+                      }
+                      if (auction && ds) { // both
+                        A_Both_CU.add(result.CompanyName);
+                      } else if (auction) { // auction-only
+                        A_Auction_CU.add(result.CompanyName);
+                      } else if (ds) { // direct sourcing only
+                        A_DS_CU.add(result.CompanyName);
+                      }
+                   }
+                }
+              }
+              
+              Retail_Auction_CU = new Set(...[NA_Auction_CU,...NA_Both_CU,...A_Auction_CU,...A_Both_CU]);
+                          
+              companiesCU.push(NA_Auction_CU);
+              companiesCU.push(NA_DS_CU);
+              companiesCU.push(NA_Both_CU);
+              companiesCU.push(NA_Wholesale_CU);
+              companiesCU.push(A_Auction_CU);
+              companiesCU.push(A_DS_CU);
+              companiesCU.push(A_Both_CU);
+              companiesCU.push(Retail_Auction_CU);
+              
+              // console.log("Companies With At Least 1 Active Contract and Active User Account");
+              // console.log(NA_Auction_CU);
+              // console.log(NA_DS_CU);
+              // console.log(NA_Wholesale_CU);
+              // console.log(NA_Both_CU);
+              // console.log(A_Auction_CU);
+              // console.log(A_DS_CU);
+              // console.log(A_Both_CU);
+              // console.log(Retail_Auction_CU);
+              
+              // gets the login chart table
+              // var loginChart = document.getElementById("loginChart");
+              // var rows = loginChart.children[0].children;
+              
+              // working here
+              var CUColumn = 2;
+              var rows = document.querySelectorAll("#loginChart tr");
+              // fills out the at least 1 active contract and active user column
+              rows.forEach(function(row,index) {
+                if (row.firstElementChild.tagName.toLowerCase() == "td") {
+                  // i is 0 based
+                  var i = index - 1;
+                  row.children[CUColumn].textContent = companiesCU[i].size;
+                }
+              });
+              runQuery();
+          });
+        }
         var runQuery = function() {
             var error = document.getElementById("error");
             var errorMessage = "";
@@ -851,111 +956,7 @@
               });
             }
         }
-        var runPeopleQuery = function() {
-          MP.api.jql(function main() {
-            return People()
-            .filter(function(p) {
-              return p.properties.FlowingContractsCount > 0 && p.properties.ActiveUsersCount > 0
-            })
-          }).done(function(results) {
-            // companies with at least one active contract and user
-            var NA_Wholesale_CU = new Set();
-            var NA_Auction_CU = new Set();
-            var NA_DS_CU = new Set();
-            var NA_Both_CU = new Set();
-           
-            var A_Auction_CU = new Set();
-            var A_DS_CU = new Set();
-            var A_Both_CU = new Set();
-            
-            var Retail_Auction_CU = new Set();
-            
-            var companiesCU = [];
-            
-            for (var i = 0; i < results.length; i++) {
-                // if (results[i].properties.CompanyName.toUpperCase() == ("Leidos, Inc.").toUpperCase()) {
-                //   console.log(results[i]);
-                // } else {
-                //   console.log("not found");
-                // }
-                
-                var result = results[i].properties;
-                if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
-                  if (result.BusinessTypes != null) {
-                      if (result.BusinessTypes == "Wholesale") { // NA-Wholesale
-                      NA_Wholesale_CU.add(result.CompanyName);
-                    } else {
-                      var auction = false;
-                      var ds = false;
-                      if (result.EventTypes != null) {
-                        auction = result.EventTypes.includes("Auction");
-                        ds = result.EventTypes.includes("Direct Sourcing");
-                      }
-                      if (auction && ds) { // both
-                        NA_Both_CU.add(result.CompanyName);
-                      } else if (auction) { // auction-only
-                        NA_Auction_CU.add(result.CompanyName);
-                      } else if (ds) { // direct sourcing only
-                        NA_DS_CU.add(result.CompanyName);
-                      }
-                    }
-                  } else { // With Advisory (A)
-                      var auction = false;
-                      var ds = false;
-                      if (result.EventTypes != null) {
-                        auction = result.EventTypes.includes("Auction");
-                        ds = result.EventTypes.includes("Direct Sourcing");
-                      }
-                      if (auction && ds) { // both
-                        A_Both_CU.add(result.CompanyName);
-                      } else if (auction) { // auction-only
-                        A_Auction_CU.add(result.CompanyName);
-                      } else if (ds) { // direct sourcing only
-                        A_DS_CU.add(result.CompanyName);
-                      }
-                   }
-                }
-              }
-              
-              Retail_Auction_CU = new Set(...[NA_Auction_CU,...NA_Both_CU,...A_Auction_CU,...A_Both_CU]);
-                          
-              companiesCU.push(NA_Auction_CU);
-              companiesCU.push(NA_DS_CU);
-              companiesCU.push(NA_Both_CU);
-              companiesCU.push(NA_Wholesale_CU);
-              companiesCU.push(A_Auction_CU);
-              companiesCU.push(A_DS_CU);
-              companiesCU.push(A_Both_CU);
-              companiesCU.push(Retail_Auction_CU);
-              
-              // console.log("Companies With At Least 1 Active Contract and Active User Account");
-              // console.log(NA_Auction_CU);
-              // console.log(NA_DS_CU);
-              // console.log(NA_Wholesale_CU);
-              // console.log(NA_Both_CU);
-              // console.log(A_Auction_CU);
-              // console.log(A_DS_CU);
-              // console.log(A_Both_CU);
-              // console.log(Retail_Auction_CU);
-              
-              // gets the login chart table
-              // var loginChart = document.getElementById("loginChart");
-              // var rows = loginChart.children[0].children;
-              
-              // working here
-              var CUColumn = 2;
-              var rows = document.querySelectorAll("#loginChart tr");
-              // fills out the at least 1 active contract and active user column
-              rows.forEach(function(row,index) {
-                if (row.firstElementChild.tagName.toLowerCase() == "td") {
-                  // i is 0 based
-                  var i = index - 1;
-                  row.children[CUColumn].textContent = companiesCU[i].size;
-                }
-              });
-              runQuery();
-          });
-        }
+        
         
         // USER ROLE TABLE
         var setUserRoleTableName = function() {
