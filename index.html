@@ -968,9 +968,8 @@
           title += " ";
           title += year;
           
-          var userRoleTable = document.getElementById("userRoleTable");
-          var firstRow = userRoleTable.children[0].children[0];
-          firstRow.children[0].textContent = title;
+          var firstRowTH = document.querySelector("#userRoleTable tr th:first-child");
+          firstRowTH.textContent = title;
         }
         var uniqueUserLoginsQuery = function() {
           var fromLogins = document.getElementById("fromLogins");
@@ -995,27 +994,29 @@
               var partner = 0;
               var customer = 0;
               
-
-              for (let i = 0; i < results.length; i++) {
-                var result = results[i].value;
-                if (results[i].key[0] == "Employee") {
-                  enernoc = result;
-                } else if (results[i].key[0] == "Bidder") {
-                  supplier = result;
-                } else if (results[i].key[0] == "Partner") {
-                  partner = result;
-                } else if (results[i].key[0] == "Customer") {
-                  customer = result;
+              results.forEach(function(result) {
+                var count = result.value;
+                if (result.key[0] == "Employee") {
+                  enernoc = count;
+                } else if (result.key[0] == "Bidder") {
+                  supplier = count;
+                } else if (result.key[0] == "Partner") {
+                  partner = count;
+                } else if (result.key[0] == "Customer") {
+                  customer = count;
                 }
-              }
-
+              });
+              
               var uniqueLogins = [enernoc, supplier, partner, customer];
               
-              var userRoleTable = document.getElementById("userRoleTable");
-              var firstRow = userRoleTable.children[0].children[1];
-              for (let i = 1; i < firstRow.children.length; i++) {
-                firstRow.children[i].textContent = uniqueLogins[i-1];
-              }
+              var firstRow = document.querySelectorAll("#userRoleTable tr:nth-child(2) td");
+              console.log(firstRow);
+              firstRow.forEach(function(td,index) {
+                if (index > 0) { // first td is a label
+                console.log("got in");
+                  td.textContent = uniqueLogins[index-1];
+                }
+              });
               totalUserLoginsQuery();
           })
             
