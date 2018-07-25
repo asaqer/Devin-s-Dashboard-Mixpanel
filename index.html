@@ -659,7 +659,7 @@
               });
               runQuery();
           });
-        }
+        };
         var runQuery = function() {
             var error = document.getElementById("error");
             var errorMessage = "";
@@ -949,7 +949,7 @@
                 document.getElementById("loader").style.display = "none";
               })
             }
-        }
+        };
         
         // USER ROLE TABLE
         var setUserRoleTableName = function() {
@@ -963,7 +963,7 @@
           
           var firstRowTH = document.querySelector("#userRoleTable tr th:first-child");
           firstRowTH.textContent = title;
-        }
+        };
         var uniqueUserLoginsQuery = function() {
           var fromLogins = document.getElementById("fromLogins");
           var toLogins = document.getElementById("toLogins");
@@ -1011,7 +1011,7 @@
               totalUserLoginsQuery();
           })
             
-        }
+        };
         var totalUserLoginsQuery = function() {
           var fromLogins = document.getElementById("fromLogins");
           var toLogins = document.getElementById("toLogins");
@@ -1057,7 +1057,7 @@
               });
                 calculateLoginPerUser();
             })
-        }
+        };
         var calculateLoginPerUser = function() {
           var userRoleTable = document.getElementById("userRoleTable");
           var uniqueLoginsRow = userRoleTable.children[0].children[1];
@@ -1074,7 +1074,7 @@
             }
           }
           document.getElementById("loader2").style.display = "none";
-        }
+        };
         // updates from and to dates based on which quarter is chosen
         var updateFromAndTo = function(from,to,quarter,year) {
           // var quarter = document.getElementById("userRoleTableQuarter").value;
@@ -1083,14 +1083,14 @@
           
           from.value = year + quarterDates[quarter][0];
           to.value = year + quarterDates[quarter][1];
-        }
+        };
         
         // runs all the functions to make the user role table
         var userRoleTableQuery = function() {
           document.getElementById("loader2").style.display = "block";
           setUserRoleTableName();
           uniqueUserLoginsQuery();
-        }
+        };
         
         // USER ROLE GRAPH
         // makes a quarterly login chart
@@ -1402,7 +1402,7 @@
 
             });
           }
-        }
+        };
         // makes an N column table
         // data should be have n columns
         var makeNColumnTable = function(columns,repeated,data,tbody) {
@@ -1452,7 +1452,7 @@
               // appends the row to the table
               tbody.appendChild(tr);
             }	
-        }
+        };
         
         var maxValueInQuarter = function(from,to,year) {
           var params = {
@@ -1554,7 +1554,7 @@
                 
             });
           }
-        }
+        };
         // creates all the quarterly login charts
         var makeAllLoginCharts = function(max,stepSize) {
           var year = document.getElementById("userRoleGraphYear").value;
@@ -1582,7 +1582,7 @@
           makeQuarterLoginChart("-07-01","-9-30",year,3,max,stepSize);
           makeQuarterLoginChart("-10-01","-12-31",year,4,max,stepSize);
           // document.getElementById("loader3").style.display = "none";
-        }
+        };
         
         // set user role graph table
         var setUserRoleGraph = function() {
@@ -1650,7 +1650,7 @@
             
             
             
-          }
+          };
           
         // SET DATES AND LABELS
         // set year
@@ -1659,7 +1659,7 @@
           document.getElementById("loginChartTableYear").value = year;
           document.getElementById("userRoleTableYear").value = year;
           document.getElementById("userRoleGraphYear").value = year;
-        }
+        };
         // set labels
         var setLabels = function(year) {
           var caption = document.querySelector("#userRoleGraph caption");
@@ -1669,7 +1669,7 @@
           } else if (loginType == "total") {
             caption.textContent = year + " Quarterly Total Logins";
           }
-        }
+        };
         
         
         // ON LOAD
@@ -1775,7 +1775,7 @@
           document.getElementById("userRoleGraphYear").addEventListener("change", setUserRoleGraph)
           // submit button for user role graph
           document.getElementById("userRoleGraphSubmit").addEventListener("click", setUserRoleGraph);
-        }
+        };
     </script>
   </body>
 </html>
