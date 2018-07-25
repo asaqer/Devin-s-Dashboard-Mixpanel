@@ -713,6 +713,10 @@
               // shows the loader 
               document.getElementById("loader").style.display = "block";
               
+              // hides the login chart company names table and span
+              document.getElementById("loginChartCompanyNames").style.display = "none";
+              document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
+              
               // no error, so set the backgrounds of the dates to white
               from.style.background = "white";
               to.style.background = "white";
@@ -724,7 +728,7 @@
                 fromDate: from.value,
                 toDate: to.value
               };
-              setTimeout(
+              
               MP.api.jql(function main() {
                return Events ({
                     from_date: params.fromDate,
@@ -878,8 +882,6 @@
                 // console.log(A_Both_Total);
                 // console.log(Retail_Auction_Total);
                 
-                var table = document.getElementById("loginChart");
-                var rows = table.children[0].children;
                 var rows = document.querySelectorAll("#loginChart tr");
                 
                 // fills in the columns of the table
@@ -970,7 +972,6 @@
                 // hides the loader
                 document.getElementById("loader").style.display = "none";
               })
-              ,0); // timeout
             }
         }
         
@@ -1044,7 +1045,6 @@
             to: toLogins.value
           };
           
-          setTimeout(
            MP.api.jql(function main() {
               return Events({
                 from_date: params.from,
@@ -1081,7 +1081,6 @@
               });
                 calculateLoginPerUser();
             })
-          ,0); //set timeout
         }
         var calculateLoginPerUser = function() {
           var userRoleTable = document.getElementById("userRoleTable");
@@ -1736,8 +1735,6 @@
               from.style.background = "red";
             }
             runQuery();
-            document.getElementById("loginChartCompanyNames").style.display = "none";
-            document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
           // changing the to date above the login chart
           document.getElementById("to").addEventListener("change", function(){
@@ -1748,8 +1745,6 @@
               to.style.background = "red";
             }
             runQuery();
-            document.getElementById("loginChartCompanyNames").style.display = "none";
-            document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
           });
           // quarter input for login chart
           document.getElementById("loginChartTableQuarter").addEventListener("change", function() {
@@ -1770,7 +1765,10 @@
               runQuery();
           });
           // submit button above the login chart
-          document.getElementById("submit").addEventListener("click", runQuery);
+          document.getElementById("submit").addEventListener("click", function() {
+            runQuery();
+            
+          });
           
           // USER ROLE TABLE
           // quarter input for user role table
