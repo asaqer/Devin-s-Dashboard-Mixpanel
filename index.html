@@ -126,11 +126,6 @@
         position:relative;
       }
       
-      /* curve second to last column because of hidden column in loginChart*/
-      #loginChart tr:last-child td:nth-last-child(2) {
-        border-radius: 0 0 15px 0;
-      }
-      
       #loginChart tr td.blueU {
         color: blue;
         text-decoration: underline;
@@ -372,8 +367,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>0</td>
         </tr>
         <tr>
           <td>Non-Advisory</td>
@@ -382,8 +375,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>1</td>
         </tr>
         <tr>
           <td>Non-Advisory</td>
@@ -392,8 +383,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>2</td>
         </tr>
         <tr>
           <td>Non-Advisory</td>
@@ -402,8 +391,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>3</td>
         </tr>
         <tr>
           <td>Advisory</td>
@@ -412,8 +399,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>4</td>
         </tr>
         <tr>
           <td>Advisory</td>
@@ -422,8 +407,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>5</td>
         </tr>
         <tr>
           <td>Advisory</td>
@@ -432,8 +415,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>6</td>
         </tr>
         <tr>
           <td></td>
@@ -442,8 +423,6 @@
           <td></td>
           <td></td>
           <td></td>
-          <!-- fake column-->
-          <td hidden>7</td>
         </tr>
       </table>
       
@@ -748,7 +727,6 @@
                     && e.value.properties.BusinessType != null && e.value.properties.EventType != null
                     }
                     )
-                  
               }, params).done(function(results) {
                 // total number of companies
                 var NA_Wholesale_Total = new Set();
@@ -777,7 +755,6 @@
                 var Retail_Auction_Portal = new Set();
                 
                 var portalCompanies = [];
-                
                 
                 for (var i = 0; i < results.length; i++) {
                   // if (results[i].value.properties.CompanyName.toUpperCase() == ("Alkermes, Inc.").toUpperCase()) {
@@ -901,10 +878,9 @@
                     td.classList.add("blueU");
                     // adds onclick
                     td.onclick = function(e) {
-                      console.log(e);
                       if (e.srcElement.classList[0] == "blueU") {
                         // gets the row number if the table
-                        var rowNum = parseInt(e.path[1].children[e.path[1].childElementCount-1].innerText);
+                        var rowNum = e.target.parentElement.rowIndex - 1;
                         
                         // shows the header span
                         var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
