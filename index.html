@@ -145,12 +145,27 @@
       
       #loginChartCompanyNamesSpan {
         font-weight: bold;
+        display: none;
+      }
+      
+      #loginChartCompanyNamesSpan.fadeIn {
+        animation: fadeIn 2.5s ease forwards;
+      }
+      
+      #loginChartCompanyNamesSpan.fadeOut {
+        animation: fadeOut 1s ease forwards;
       }
       
       #loginChartCompanyNames {
         display: none;
-        opacity: 0;
+      }
+      
+      #loginChartCompanyNames.fadeIn {
         animation: fadeIn 2.5s ease forwards;
+      }
+      
+      #loginChartCompanyNames.fadeOut {
+        animation: fadeOut 1s ease forwards;
       }
       
       #loader {
@@ -245,10 +260,13 @@
         animation: spin 2s linear infinite;
       }
       
+      /* USER ROLE COMPANIES SPAN */
+      #userRoleGraphCompanyNames.fadeIn {
+        animation: fadeIn 2.5s ease forwards;
+      }
+      
       /* USER ROLE COMPANIES UNIQUE TABLE */
-      #userRoleCompaniesUniqueTable {
-        display:none;
-        opacity: 0;
+      #userRoleCompaniesUniqueTable.fadeIn {
         animation: fadeIn 2.5s ease forwards;
       }
       
@@ -270,9 +288,7 @@
       }
       
       /* USER ROLE COMPANIES TOTAL TABLE*/
-      #userRoleCompaniesTotalTable {
-        display: none;
-        opacity: 0;
+      #userRoleCompaniesTotalTable.fadeIn {
         animation: fadeIn 2.5s ease forwards;
       }
       
@@ -540,18 +556,18 @@
       <!-- USER ROLE GRAPH COMPANY NAMES -->
       <div>
         <!-- label -->
-        <span id="userRoleGraphCompanyNames"></span>
+        <span id="userRoleGraphCompanyNames" class="fadeIn"></span>
         <!-- loader 4-->
         <div id="loader4"></div>
         <!-- UNIQUE TABLE-->
-        <table id="userRoleCompaniesUniqueTable">
+        <table id="userRoleCompaniesUniqueTable" class="fadeIn">
           <tr>
             <th>Company Name</th>
             <th>UserID</th>
           </tr>
         </table>
         <!-- TOTAL TABLE -->
-        <table id="userRoleCompaniesTotalTable">
+        <table id="userRoleCompaniesTotalTable" class="fadeIn">
           <tr>
             <th>Company Name</th>
             <th>UserID</th>
@@ -698,16 +714,33 @@
               // shows the loader 
               document.getElementById("loader").style.display = "block";
               
-              // hides the login chart company names table and span
-              document.getElementById("loginChartCompanyNames").style.display = "none";
-              document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
-              
               // no error, so set the backgrounds of the dates to white
               from.style.background = "white";
               to.style.background = "white";
               
               // remove errorMessage
               error.innerHTML = "";
+              
+              // gets login chart company names table
+              var loginChartCompanyNamesTable = document.getElementById("loginChartCompanyNames");
+              loginChartCompanyNamesTable.classList.remove("fadeIn");
+              loginChartCompanyNamesTable.classList.add("fadeOut");
+              // gets login chart company names span 
+              var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
+              loginChartCompanyNamesSpan.classList.remove("fadeIn");
+              loginChartCompanyNamesSpan.classList.add("fadeOut");
+              // hides the login chart company names table and span after fadeout animation
+              setTimeout(function() {
+                loginChartCompanyNamesTable.style.display = "none";
+                loginChartCompanyNamesSpan.style.display = "none";
+              },1000);
+              
+              // iterates through the tds and make sure they are original
+              var trs = document.querySelectorAll("#loginChart tr");
+              trs.forEach(function(tr) {
+                var td = tr.children[3];
+                td.classList.remove("selected");
+              });
               
               var params = {
                 fromDate: from.value,
@@ -884,12 +917,38 @@
                     td.classList.add("blueU");
                     // adds onclick
                     td.onclick = function(e) {
-                      console.log(e.srcElement.classList);
+                      var loginChartCompanyNamesTable = document.getElementById("loginChartCompanyNames");
+                      var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
+                      
+                      // onclick, if table was faded out, make it fade in
+                      if (loginChartCompanyNamesTable.classList.value.indexOf("fadeOut") >= 0) { 
+                        // table
+                        loginChartCompanyNamesTable.classList.remove("fadeOut");
+                        loginChartCompanyNamesTable.classList.add("fadeIn");
+                        
+                        // span
+                        loginChartCompanyNamesSpan.classList.remove("fadeOut");
+                        loginChartCompanyNamesSpan.classList.add("fadeIn");
+                      }
+                      
+                      // selected cell is clicked on
                       if (e.srcElement.classList.value.indexOf("selected") >= 0) {
+                        // removes the background from the selected cell
                         td.classList.remove("selected");
-                        document.getElementById("loginChartCompanyNames").style.display = "none";
-                        document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
-                      } else if (e.srcElement.classList.value.indexOf("blueU") >= 0) {
+                        
+                        // table
+                        loginChartCompanyNamesTable.classList.remove("fadeIn");
+                        loginChartCompanyNamesTable.classList.add("fadeOut");
+                        
+                        // span
+                        loginChartCompanyNamesSpan.classList.remove("fadeIn");
+                        loginChartCompanyNamesSpan.classList.add("fadeOut");
+                        // makes the table and span disappear after animation
+                        setTimeout(function() {
+                          document.getElementById("loginChartCompanyNames").style.display = "none";
+                          document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
+                        },1000);
+                      } else if (e.srcElement.classList.value.indexOf("blueU") >= 0) { // normal cell was clicked on
                         // gets the row number if the table
                         var rowNum = e.target.parentElement.rowIndex - 1;
                         // working here
@@ -1575,26 +1634,7 @@
         };
         // creates all the quarterly login charts
         var makeAllLoginCharts = function(max,stepSize) {
-          var year = document.getElementById("userRoleGraphYear").value;
-          // calculates max of all values in all quarters
-          // var q1Max = maxValueInQuarter("-01-01","-03-31",year);
-          // console.log(q1Max);
-          // maxValueInQuarter("-04-01","-06-30",year);
-          // console.log(q2Max);
-          // var q3Max = maxValueInQuarter("-07-01","-9-30",year);
-          // var q4Max = maxValueInQuarter("-10-01","-12-31",year);
-          // var maxes = [q1Max,q2Max,q3Max,q4Max]
-          // var max = q1Max;
-          // for (let i = 1; i < maxes.length; i++) {
-          //   if (maxes[i] > q1Max) {
-          //     max = maxes[i];
-          //   }
-          // }
-          
-          // // calculates step size
-          // var stepSize = Math.ceil(max / 9);
-          
-          
+          var year = document.getElementById("userRoleGraphYear").value
           makeQuarterLoginChart("-01-01","-03-31",year,1,max,stepSize);
           makeQuarterLoginChart("-04-01","-06-30",year,2,max,stepSize);
           makeQuarterLoginChart("-07-01","-9-30",year,3,max,stepSize);
