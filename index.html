@@ -131,8 +131,14 @@
         text-decoration: underline;
       }
       
-      #loginChart .blueU:hover {
+      #loginChart tr td.blueU:hover {
         cursor: pointer;
+        background: #999;
+        color: #fff;
+      }
+      
+      #loginChart tr td.selected {
+        cursor: default;
         background: #999;
         color: #fff;
       }
@@ -878,9 +884,27 @@
                     td.classList.add("blueU");
                     // adds onclick
                     td.onclick = function(e) {
-                      if (e.srcElement.classList[0] == "blueU") {
+                      console.log(e.srcElement.classList);
+                      if (e.srcElement.classList.value.indexOf("selected") >= 0) {
+                        td.classList.remove("selected");
+                        document.getElementById("loginChartCompanyNames").style.display = "none";
+                        document.getElementById("loginChartCompanyNamesSpan").style.display = "none";
+                      } else if (e.srcElement.classList.value.indexOf("blueU") >= 0) {
                         // gets the row number if the table
                         var rowNum = e.target.parentElement.rowIndex - 1;
+                        // working here
+                        // revert all other cells to original colors
+                        var trs = document.querySelectorAll("#loginChart tr");
+                        trs.forEach(function(tr) {
+                          if (tr.firstElementChild.tagName.toLowerCase() == "td") {
+                            var td = tr.children[3];
+                            if (parseInt(td.textContent)) {
+                              td.classList.remove("selected");
+                            }
+                          }
+                        });
+                        // highlight table cell and change color
+                        e.target.classList.add("selected");
                         
                         // shows the header span
                         var loginChartCompanyNamesSpan = document.getElementById("loginChartCompanyNamesSpan");
@@ -912,12 +936,6 @@
                         // Shows the table and the span
                         loginChartCompanyNames.style.display = "block";
                         loginChartCompanyNamesSpan.style.display = "block";
-                        
-                        // if (numOfCompanies) {
-                        //   loginChartCompanyNames.style.display = "block";
-                        // } else {
-                        //   loginChartCompanyNames.style.display = "none";
-                        // }
                      }
                       
                     }
