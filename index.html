@@ -754,16 +754,20 @@
                   event_selectors:[{event: "Login"}]
                   })
                   
-                  .groupBy(
-                    mixpanel.multiple_keys(["properties.EventType","properties.BusinessType", "properties.CustomerType", "properties.CompanyName"]),
-                    //Take a count of the Companies in Event Type and Business Type categories 
-                    mixpanel.reducer.any()
-                  )
+                  // .groupBy(
+                  //   mixpanel.multiple_keys(["properties.EventType","properties.BusinessType", "properties.CustomerType", "properties.CompanyName"]),
+                  //   //Take a count of the Companies in Event Type and Business Type categories 
+                  //   mixpanel.reducer.any()
+                  // )
                   
                   // we don't want to count EnerNOC logins
+                  // .filter(
+                  //   function(e) {return e.value.properties.CompanyName != "EnerNOC" 
+                  //   && e.value.properties.BusinessType != null && e.value.properties.EventType != null
+                  //   }
+                  //   )
                   .filter(
-                    function(e) {return e.value.properties.CompanyName != "EnerNOC" 
-                    && e.value.properties.BusinessType != null && e.value.properties.EventType != null
+                    function(e) {return e.properties.CompanyName != "EnerNOC" 
                     }
                     )
               }, params).done(function(results) {
@@ -802,7 +806,7 @@
                   //   console.log("not found");
                   // }
                   
-                  var result = results[i].value.properties;
+                  var result = results[i].properties;
                   var activeContract = result.FlowingContractCount;
                   var activeUser = result.ActiveUsersAtCustomerCount;
                   var isPortalViewer = false;
@@ -840,32 +844,33 @@
                               }
                           }
                         }
-                      } else { // With Advisory (A)
-                          var auction = false;
-                          var ds = false;
-                          if (result.EventType != null) {
-                            auction = result.EventType.includes("Auction");
-                            ds = result.EventType.includes("Direct Sourcing");
+                    }
+                  } else { // With Advisory (A)
+                      var auction = false;
+                      var ds = false;
+                      if (result.EventType != null) {
+                        auction = result.EventType.includes("Auction");
+                        ds = result.EventType.includes("Direct Sourcing");
+                      }
+                      if (auction && ds) { // both
+                          A_Both_Total.add(result.CompanyName);
+                          if (isPortalViewer) {
+                            A_Both_Portal.add(result.CompanyName);
+                        }
+                      } else if (auction) { // auction-only
+                          A_Auction_Total.add(result.CompanyName);
+                          if (isPortalViewer) {
+                            A_Auction_Portal.add(result.CompanyName);
                           }
-                          if (auction && ds) { // both
-                              A_Both_Total.add(result.CompanyName);
-                              if (isPortalViewer) {
-                                A_Both_Portal.add(result.CompanyName);
-                            }
-                          } else if (auction) { // auction-only
-                              A_Auction_Total.add(result.CompanyName);
-                              if (isPortalViewer) {
-                                A_Auction_Portal.add(result.CompanyName);
-                              }
-                          } else if (ds) { // direct sourcing only
-                             A_DS_Total.add(result.CompanyName);
-                             if (isPortalViewer) {
-                                A_DS_Portal.add(result.CompanyName);
-                            }
-                          }
+                      } else if (ds) { // direct sourcing only
+                         A_DS_Total.add(result.CompanyName);
+                         if (isPortalViewer) {
+                            A_DS_Portal.add(result.CompanyName);
+                        }
                       }
                   }
                 }
+                
                 Retail_Auction_Total = new Set([...NA_Auction_Total,...NA_Both_Total,...A_Auction_Total,...A_Both_Total]);
                 Retail_Auction_Portal = new Set([...NA_Auction_Portal,...NA_Both_Portal,...A_Auction_Portal,...A_Both_Portal]);
                 
