@@ -601,11 +601,11 @@
             var companiesCU = [];
             
             for (var i = 0; i < results.length; i++) {
-                // if (results[i].properties.CompanyName.toUpperCase() == ("Leidos, Inc.").toUpperCase()) {
-                //   console.log(results[i]);
-                // } else {
-                //   console.log("not found");
-                // }
+                if (results[i].properties.CompanyName.toUpperCase() == ("C&S Wholesale Grocers, Inc. (HQ)").toUpperCase()) {
+                  console.log(results[i]);
+                } else {
+                  console.log("not found");
+                }
                 
                 var result = results[i].properties;
                 if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
@@ -627,22 +627,23 @@
                         NA_DS_CU.add(result.CompanyName);
                       }
                     }
-                  } else { // With Advisory (A)
-                      var auction = false;
-                      var ds = false;
-                      if (result.EventTypes != null) {
-                        auction = result.EventTypes.includes("Auction");
-                        ds = result.EventTypes.includes("Direct Sourcing");
-                      }
-                      if (auction && ds) { // both
-                        A_Both_CU.add(result.CompanyName);
-                      } else if (auction) { // auction-only
-                        A_Auction_CU.add(result.CompanyName);
-                      } else if (ds) { // direct sourcing only
-                        A_DS_CU.add(result.CompanyName);
-                      }
-                   }
-                }
+                  }
+                } else { // With Advisory (A)
+                    var auction = false;
+                    var ds = false;
+                    if (result.EventTypes != null) {
+                      auction = result.EventTypes.includes("Auction");
+                      ds = result.EventTypes.includes("Direct Sourcing");
+                    }
+                    if (auction && ds) { // both
+                      A_Both_CU.add(result.CompanyName);
+                    } else if (auction) { // auction-only
+                      A_Auction_CU.add(result.CompanyName);
+                    } else if (ds) { // direct sourcing only
+                      A_DS_CU.add(result.CompanyName);
+                    }
+                 }
+                
               }
               
               Retail_Auction_CU = new Set(...[NA_Auction_CU,...NA_Both_CU,...A_Auction_CU,...A_Both_CU]);
