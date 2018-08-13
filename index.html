@@ -601,11 +601,11 @@
             var companiesCU = [];
             
             for (var i = 0; i < results.length; i++) {
-                if (results[i].properties.CompanyName.toUpperCase() == ("C&S Wholesale Grocers, Inc. (HQ)").toUpperCase()) {
-                  console.log(results[i]);
-                } else {
-                  console.log("not found");
-                }
+                // if (results[i].properties.CompanyName.toUpperCase() == ("C&S Wholesale Grocers, Inc. (HQ)").toUpperCase()) {
+                //   console.log(results[i]);
+                // } else {
+                //   console.log("not found");
+                // }
                 
                 var result = results[i].properties;
                 if (!(result.hasOwnProperty('CustomerType')) || result.CustomerType === null) { // Without Advisory (NA)
