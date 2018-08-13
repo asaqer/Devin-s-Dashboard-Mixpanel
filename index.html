@@ -982,7 +982,7 @@
                         var data = Array.from(totalCompanies[rowNum]).sort();
                         var numOfCompanies = data.length;
                         var formattedData = [];
-                        for (let i = 0; i < data.length; i++) {
+                        for (var i = 0; i < data.length; i++) {
                           formattedData.push([data[i]]);
                         }
                         // gets table and makes the table
@@ -1146,7 +1146,7 @@
           var uniqueLoginsRow = userRoleTable.children[0].children[1];
           var totalLoginsRow = userRoleTable.children[0].children[2];
           var loginPerUserRow = userRoleTable.children[0].children[3];
-          for (let i = 1; i < loginPerUserRow.children.length; i++) {
+          for (var i = 1; i < loginPerUserRow.children.length; i++) {
             var uniqueLoginsValue = parseInt(uniqueLoginsRow.children[i].textContent);
             var totalLoginsValue = parseInt(totalLoginsRow.children[i].textContent);
             var loginPerUserValue = (totalLoginsValue/uniqueLoginsValue).toFixed(1);
@@ -1200,7 +1200,7 @@
               var partner = 0;
               var customer = 0;
               
-              for (let i = 0; i < results.length; i++) {
+              for (var i = 0; i < results.length; i++) {
                 var result = results[i].value;
                 if (results[i].key[0] == "Employee") {
                   enernoc = result;
@@ -1226,9 +1226,9 @@
                 td.innerHTML = "<canvas></canvas>";
                 
                 // chooses the correct canvas in the table
-                let canvas = td.children[0];
+                var canvas = td.children[0];
                 
-                let barChart = new Chart(canvas, {
+                var barChart = new Chart(canvas, {
                 		type: "bar",
                     data: {
                     	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
@@ -1314,7 +1314,7 @@
                     
                     
                     var data = [];
-                    for (let i = 0; i < results.length; i++) {
+                    for (var i = 0; i < results.length; i++) {
                       var companyName = results[i].key[0];
                       var userID = results[i].key[1];
                       var tuple = [companyName,userID];
@@ -1350,7 +1350,7 @@
                 var customer = 0;
                 
                 // gets the values for each of the 4 user roles
-                for (let i = 0; i < results.length; i++) {
+                for (var i = 0; i < results.length; i++) {
                   var total = results[i].value;
                   if (results[i].key[0] == "Employee") {
                     enernoc = total;
@@ -1376,9 +1376,9 @@
                 td.innerHTML = "<canvas></canvas>";
                 
                 // chooses the correct canvas in the table
-                let canvas = td.children[0];
+                var canvas = td.children[0];
                 
-                let barChart = new Chart(canvas, {
+                var barChart = new Chart(canvas, {
                 		type: "bar",
                     data: {
                     	labels: ["EnerNOC User ("+enernoc+")", "Supplier ("+supplier+")", "Partner ("+partner+")", "Customer ("+customer+")"],
@@ -1460,7 +1460,7 @@
                       .groupBy(["properties.CompanyName","distinct_id"],mixpanel.reducer.count())
                     },params).done(function(results) {
                       var data = [];
-                      for (let i = 0; i < results.length; i++) {
+                      for (var i = 0; i < results.length; i++) {
                         var companyName = results[i].key[0];
                         var userID = results[i].key[1];
                         var logins = results[i].value;
@@ -1493,13 +1493,13 @@
             // rewrites the header of the table
             var headerRow = tbody.children[0];
             var headers = [];
-            for (let i = 0; i < columns; i++) {
+            for (var i = 0; i < columns; i++) {
               headers.push(headerRow.children[i].textContent);
             }
             tbody.innerHTML = "<tr></tr>";
             var tr = tbody.children[0];
-            for (let i = 0; i < repeated; i++) {
-              for (let j = 0; j < headers.length; j++) {
+            for (var i = 0; i < repeated; i++) {
+              for (var j = 0; j < headers.length; j++) {
                 var th = document.createElement("th");
                 var txt = document.createTextNode(headers[j]);
                 th.appendChild(txt);
@@ -1514,13 +1514,13 @@
             } else {
             	var trNum = dataLength/repeated;	
             }
-            for (let i = 0; i < trNum; i++) { // adds in the trs
+            for (var i = 0; i < trNum; i++) { // adds in the trs
             	var tr = document.createElement("tr");
               // adds in the tds
-              for (let j = 0; j < repeated; j++) { // number of "big/repeated" columns
+              for (var j = 0; j < repeated; j++) { // number of "big/repeated" columns
                 var dataIndex = i+j*trNum;
                 var dataArray = data[dataIndex];
-                	for (let k = 0; k < columns; k++) { // number of regular column
+                	for (var k = 0; k < columns; k++) { // number of regular column
                   	// going horizontally, you add the number of rows
                     var td = document.createElement("td");
                      if ( dataIndex < dataLength) { // only indices less than the length of the data is put in
@@ -1588,7 +1588,7 @@
               var userRoles = [enernoc,supplier,partner,customer];
               
               var max = userRoles[0];
-              for (let i = 1; i < userRoles.length; i++) {
+              for (var i = 1; i < userRoles.length; i++) {
                 if (userRoles[i] > max) {
                   max = userRoles[i];
                 }
@@ -1611,7 +1611,7 @@
                 var customer = 0;
                 
                 // gets the values for each of the 4 user roles
-                for (let i = 0; i < results.length; i++) {
+                for (var i = 0; i < results.length; i++) {
                   var total = results[i].value;
                   if (results[i].key[0] == "Employee") {
                     enernoc = total;
@@ -1628,7 +1628,7 @@
                 var userRoles = [enernoc,supplier,partner,customer];
                 
                 var max = userRoles[0];
-                for (let i = 1; i < userRoles.length; i++) {
+                for (var i = 1; i < userRoles.length; i++) {
                   if (userRoles[i] > max) {
                     max = userRoles[i];
                   }
@@ -1679,7 +1679,7 @@
               if (!isNaN(q1) && !isNaN(q2) && !isNaN(q3) && !isNaN(q4)) {
                 var maxes = [q1,q2,q3,q4];
                 var max = maxes[0];
-                for (let i = 1; i < maxes.length; i++) {
+                for (var i = 1; i < maxes.length; i++) {
                   var current = maxes[i];
                   if (current > max) {
                     max = current;
